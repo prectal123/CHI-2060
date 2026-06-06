@@ -1,0 +1,1658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACM CHI 2060 - Dandy & Classic Layout</title>
+  
+  <!-- Google Fonts & Ion Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <style>
+    /* ==========================================
+       DANDY & CLASSIC THEME SPECIFIC STYLES
+       ========================================== */
+    :root {
+      --font-sans: 'Playfair Display', 'Georgia', serif;
+      --font-mono: 'Fira Code', monospace;
+      
+      --bg-body: #fdfbf7; /* Ivory Paper texture */
+      --bg-light: #f7f3eb;
+      --bg-card: #fdfbf7;
+      
+      --color-border: #d6cfc7;
+      --color-border-dark: #b8aea2;
+      
+      --text-main: #2c2a29; /* Soft charcoal black */
+      --text-secondary: #59524c;
+      --text-muted: #8c8174;
+      --color-link: #9a3412; /* Warm rust/amber */
+      --color-link-hover: #7c2d12;
+      
+      --radius-custom: 0px; /* Sharp corners */
+      --box-shadow-custom: 3px 3px 0px rgba(184, 174, 162, 0.25);
+      
+      --btn-bg: #fdfbf7;
+      --btn-text: #2c2a29;
+      --btn-border: #b8aea2;
+      --btn-primary-bg: #2c2a29;
+      --btn-primary-text: #fdfbf7;
+      
+      --transition-smooth: all 0.2s ease-in-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.65;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: var(--color-link);
+      text-decoration: underline;
+    }
+    a:hover {
+      color: var(--color-link-hover);
+    }
+
+    /* Glitch transition effect */
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+    .glitch-active {
+      animation: glitch 0.2s linear infinite;
+    }
+
+    .app-container {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Visual Header Banner */
+    .visual-header-banner {
+      width: 100%;
+      height: 240px;
+      position: relative;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55)), url('chi2060_header.png');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 2.5rem calc((100vw - 1200px) / 2 + 1.5rem) 1.5rem;
+      color: #ffffff;
+      filter: sepia(0.55) contrast(0.95);
+    }
+    @media (max-width: 1240px) {
+      .visual-header-banner {
+        padding: 2.5rem 2rem 1.5rem;
+      }
+    }
+    .banner-title {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 0.4rem;
+    }
+    .banner-subtitle {
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: #cbd5e1;
+      margin-bottom: 0.2rem;
+    }
+    .banner-meta {
+      font-size: 0.9rem;
+      color: #94a3b8;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+      background: var(--bg-light);
+      border-bottom: 1px solid var(--color-border);
+      padding: 0 calc((100vw - 1200px) / 2 + 1.5rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 50px;
+    }
+    @media (max-width: 1240px) {
+      .nav-bar {
+        padding: 0 2rem;
+      }
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      height: 100%;
+    }
+    .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      border-bottom: 3px solid transparent;
+      transition: var(--transition-smooth);
+    }
+    .nav-item:hover, .nav-item.active-nav {
+      border-bottom-color: var(--color-link);
+    }
+    .nav-tab-header {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      height: 100%;
+      user-select: none;
+      transition: var(--transition-smooth);
+    }
+    .nav-item:hover .nav-tab-header, .nav-item.active-nav .nav-tab-header {
+      color: var(--text-main);
+    }
+    .dropdown-arrow {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      transition: transform 0.2s ease-in-out;
+    }
+    .nav-item.open .dropdown-arrow {
+      transform: rotate(180deg);
+      color: var(--color-link);
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--color-border-dark);
+      list-style: none;
+      min-width: 175px;
+      z-index: 100;
+      margin-top: -1px;
+      box-shadow: var(--box-shadow-custom);
+    }
+    .nav-item.open .dropdown-menu {
+      display: block;
+    }
+    .dropdown-item {
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      color: var(--text-main);
+      cursor: pointer;
+      border-bottom: 1px solid var(--color-border);
+      text-align: left;
+      font-family: var(--font-sans);
+      transition: var(--transition-smooth);
+    }
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+    .dropdown-item:hover {
+      background: var(--color-link);
+      color: var(--bg-body);
+    }
+
+    /* Control Panel */
+    .controls-panel {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .cycle-btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--btn-text);
+      border-radius: var(--radius-custom);
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0.35rem 0.65rem;
+      transition: var(--transition-smooth);
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .cycle-btn:hover {
+      border-color: var(--text-main);
+      background: var(--bg-light);
+    }
+    .interface-toggle {
+      display: flex;
+      border: 1px solid var(--color-border-dark);
+      border-radius: var(--radius-custom);
+      overflow: hidden;
+      background: #ffffff;
+    }
+    .toggle-btn {
+      background: none;
+      border: none;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: var(--transition-smooth);
+    }
+    .toggle-btn.active {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+    }
+
+    /* Meta Notice Band */
+    .meta-notice-band {
+      background-color: #f7f3eb;
+      border-bottom: 1px solid var(--color-border);
+      color: #7c2d12;
+      padding: 0.5rem calc((100vw - 1200px) / 2 + 1.5rem);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    @media (max-width: 1240px) {
+      .meta-notice-band {
+        padding: 0.5rem 2rem;
+      }
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      padding: 1rem calc((100vw - 1200px) / 2 + 1.5rem) 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    @media (max-width: 1240px) {
+      .breadcrumbs {
+        padding: 1rem 2rem 0.5rem;
+      }
+    }
+
+    /* View Sections */
+    .view-wrapper {
+      flex: 1;
+      position: relative;
+    }
+    .view-section {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .view-section.active-view {
+      opacity: 1;
+      visibility: visible;
+      position: relative;
+    }
+
+    /* Academic 3-Column Layout */
+    .academic-layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 4rem;
+      display: grid;
+      grid-template-columns: 240px 1fr 240px;
+      gap: 2rem;
+    }
+    @media (max-width: 1024px) {
+      .academic-layout {
+        grid-template-columns: 200px 1fr;
+      }
+      .right-column {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .academic-layout {
+        grid-template-columns: 1fr;
+      }
+      .right-column {
+        grid-column: span 1;
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .col-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      border-bottom: 2px solid var(--text-main);
+      padding-bottom: 0.35rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    /* Sidebars */
+    .left-column { font-size: 0.85rem; }
+    .right-column { font-size: 0.85rem; }
+    .date-section, .right-section { margin-bottom: 2rem; }
+    .date-category {
+      background: var(--bg-light);
+      padding: 0.25rem 0.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      border: 1px solid var(--color-border-dark);
+    }
+    .date-list, .archive-list, .category-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .date-item { display: flex; flex-direction: column; border-bottom: 1px dashed var(--color-border); padding-bottom: 0.5rem; }
+    .date-val { font-family: var(--font-mono); font-weight: 700; color: var(--color-link); }
+    
+    .sponsor-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .sponsor-sidebar-card {
+      border: 1px solid var(--color-border);
+      padding: 0.75rem;
+      background: var(--bg-card);
+      box-shadow: var(--box-shadow-custom);
+    }
+    .sponsor-side-name { font-weight: 700; }
+    .sponsor-side-desc { font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono); }
+
+    /* Central Content */
+    .center-column { min-width: 0; }
+    
+    /* Sub Navigation Bar */
+    .sub-nav-bar {
+      display: flex;
+      justify-content: flex-start;
+      gap: 1rem;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.4rem;
+      align-items: center;
+    }
+    .sub-tab-btn {
+      background: none;
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.2rem 0.5rem;
+      transition: var(--transition-smooth);
+    }
+    .sub-tab-btn:hover {
+      color: var(--color-link);
+    }
+    .sub-tab-btn.active {
+      color: var(--color-link);
+      border-bottom: 2px solid var(--color-link);
+      margin-bottom: -0.55rem;
+    }
+    .sub-tab-sep {
+      color: var(--color-border-dark);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+    }
+
+    .main-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+    }
+
+    /* Content Blocks */
+    .content-block {
+      border: 1px solid var(--color-border);
+      padding: 1.75rem;
+      background: var(--bg-card);
+      box-shadow: var(--box-shadow-custom);
+      margin-bottom: 2rem;
+    }
+    .block-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid var(--color-border-dark);
+      padding-bottom: 0.25rem;
+    }
+    .block-description {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+      font-style: italic;
+    }
+    .content-block p {
+      color: var(--text-main);
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+    .content-block p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .bullet-list { list-style-position: inside; margin-bottom: 1.5rem; font-size: 0.95rem; }
+    .bullet-list li { margin-bottom: 0.5rem; color: var(--text-secondary); }
+
+    .dense-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .dense-table th, .dense-table td {
+      border: 1px solid var(--color-border);
+      padding: 0.6rem 0.75rem;
+    }
+    .dense-table th { background: var(--bg-light); font-weight: 700; }
+
+    /* Subcommittee lists */
+    .subcommittee-item { margin-bottom: 1rem; }
+    .subcommittee-title { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
+    .subcommittee-desc { color: var(--text-secondary); font-size: 0.85rem; }
+
+    /* Session cards */
+    .session-group { display: flex; flex-direction: column; gap: 1rem; }
+    .session-block {
+      border: 1px solid var(--color-border);
+      background: var(--bg-card);
+      padding: 1.25rem;
+      box-shadow: var(--box-shadow-custom);
+    }
+    .session-block-header { display: flex; justify-content: space-between; }
+    .session-block-title { font-weight: 700; }
+    .session-block-badge {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      padding: 0.1rem 0.4rem;
+    }
+    .session-block-desc { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.5rem; }
+
+    /* Forms */
+    .form-panel {
+      border: 1px solid var(--color-border-dark);
+      background: var(--bg-card);
+      padding: 1.75rem;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.25rem; text-transform: uppercase; color: var(--text-secondary); }
+    .form-input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--color-border);
+      padding: 0.5rem 0.75rem;
+      color: var(--text-main);
+      font-size: 0.85rem;
+    }
+    .form-checkbox-label { display: flex; gap: 0.5rem; font-size: 0.8rem; cursor: pointer; color: var(--text-secondary); }
+    .form-checkbox-label input { margin-top: 0.15rem; }
+    
+    .canvas-wrapper {
+      border: 1px solid var(--color-border);
+      background: #ffffff;
+      position: relative;
+      height: 140px;
+    }
+    #signature-canvas { position: absolute; top:0; left:0; width:100%; height:100%; }
+    .canvas-tip {
+      position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      color: var(--text-muted); font-size: 0.75rem; font-family: var(--font-mono); pointer-events: none;
+    }
+    .canvas-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.25rem; }
+
+    .btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--btn-text);
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--btn-primary-bg); color: var(--btn-primary-text); }
+    .btn-primary { background: var(--btn-primary-bg); border-color: var(--text-main); color: var(--btn-primary-text); }
+    .btn-primary:disabled { background: var(--bg-light); border-color: var(--color-border); color: var(--text-muted); cursor: not-allowed; }
+
+    .terminal-panel {
+      background: var(--bg-light);
+      border: 1px solid var(--color-border-dark);
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      margin-top: 1rem;
+    }
+    .terminal-hdr { display: flex; justify-content: space-between; border-bottom: 1px solid var(--color-border); padding-bottom: 0.35rem; color: var(--text-main); }
+    .terminal-body { max-height: 90px; overflow-y: auto; color: var(--text-main); display: flex; flex-direction: column; gap: 0.2rem; }
+    .terminal-line .ts { color: var(--text-muted); }
+    .terminal-line .ok { font-weight: bold; color: var(--color-link); }
+    .terminal-line .warn { text-decoration: underline; }
+
+    /* Disputes list */
+    .board-card { border: 1px solid var(--color-border); margin-bottom: 0.5rem; }
+    .board-head { background: var(--bg-light); padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .board-head-left { display: flex; align-items: center; gap: 0.75rem; }
+    .badge-tag { font-size: 0.65rem; font-family: var(--font-mono); padding: 0.1rem 0.4rem; font-weight: 700; border: 1px solid var(--color-border-dark); }
+    .badge-tag.red { background: var(--bg-card); color: #7c2d12; }
+    .badge-tag.orange { background: var(--bg-card); color: var(--text-main); }
+    .board-card-title { font-weight: 700; font-size: 0.85rem; }
+    .board-head-right { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-secondary); display: flex; align-items: center; gap: 1rem; }
+    .board-body { padding: 1.25rem; background: var(--bg-card); border-top: 1px solid var(--color-border); display: none; }
+    .board-body.open { display: block; }
+    .board-question-text { font-size: 0.85rem; color: var(--text-main); margin-bottom: 1rem; white-space: pre-line; }
+    .board-reply { background: var(--bg-light); border-left: 2px solid var(--color-link); padding: 0.75rem 1rem; border: 1px dashed var(--color-border-dark); }
+    .board-reply-hdr { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem; }
+    .board-reply-text { font-size: 0.8rem; color: var(--text-secondary); }
+
+    .academic-footer {
+      border-top: 1px solid var(--color-border);
+      background: var(--bg-light);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================
+       AGENT RAW DATA VIEW
+       ========================================== */
+    .agent-view { display: flex; min-height: 500px; background: #181512; }
+    .explorer-bar { width: 220px; border-right: 1px solid #3c3530; background: #13110e; padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 1.25rem; }
+    .exp-title { font-family: var(--font-mono); font-size: 0.7rem; color: #8c8174; text-transform: uppercase; }
+    .tree-items { display: flex; flex-direction: column; gap: 0.35rem; }
+    .tree-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem; color: #b8aea2; }
+    .tree-item.active { background: rgba(154, 52, 18, 0.15); color: #ea580c; border-left: 2px solid #9a3412; }
+    
+    .editor-pane { flex: 1; display: flex; flex-direction: column; }
+    .editor-top { height: 38px; background: #110f0d; border-bottom: 1px solid #3c3530; display: flex; justify-content: space-between; align-items: center; padding: 0 1.25rem; }
+    .editor-file-title { font-family: var(--font-mono); font-size: 0.75rem; color: #b8aea2; display: flex; align-items: center; gap: 0.4rem; }
+    .pane-btn { background: transparent; border: 1px solid #3c3530; color: #b8aea2; padding: 0.2rem 0.6rem; font-family: var(--font-mono); font-size: 0.65rem; cursor: pointer; }
+    .editor-body-wrapper { flex: 1; overflow: auto; max-height: 500px; }
+    .editor-body { display: flex; padding: 1.25rem; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.45; }
+    .lines-gutter { display: flex; flex-direction: column; align-items: flex-end; padding-right: 1.25rem; border-right: 1px solid #3c3530; user-select: none; color: #8c8174; }
+    .lines-gutter span::before { counter-increment: line; content: counter(line); display: block; }
+    .editor-code { padding-left: 1.25rem; color: #e7e5e4; margin: 0; white-space: pre; }
+    
+    .code-key { color: #ea580c; }
+    .code-string { color: #84cc16; }
+    .code-number { color: #eab308; }
+    .code-boolean { color: #06b6d4; }
+    .code-null { color: #8c8174; }
+
+    /* Papers Catalog Styles (Dandy Theme) */
+    .catalog-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--color-border);
+      padding: 0.75rem;
+      background: var(--bg-light);
+      box-shadow: var(--box-shadow-custom);
+    }
+    .filter-input {
+      flex: 2;
+      min-width: 200px;
+      padding: 0.4rem 0.6rem;
+      border: 1px solid var(--color-border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-family: var(--font-sans);
+    }
+    .filter-select {
+      flex: 1;
+      padding: 0.4rem;
+      border: 1px solid var(--color-border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-family: var(--font-sans);
+    }
+    .catalog-tabs {
+      display: flex;
+      border: 1px solid var(--color-border);
+      margin-bottom: 1.25rem;
+      box-shadow: var(--box-shadow-custom);
+    }
+    .catalog-tab {
+      flex: 1;
+      padding: 0.5rem;
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: none;
+      font-weight: 700;
+      font-size: 0.8rem;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      border-right: 1px solid var(--color-border);
+      transition: var(--transition-smooth);
+    }
+    .catalog-tab:last-child {
+      border-right: none;
+    }
+    .catalog-tab.active {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+    }
+    .paper-card {
+      border: 1px solid var(--color-border);
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      background: var(--bg-card);
+      box-shadow: var(--box-shadow-custom);
+    }
+    .paper-card-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      margin-bottom: 0.6rem;
+      border-bottom: 1px dashed var(--color-border);
+      padding-bottom: 0.35rem;
+    }
+    .paper-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .paper-card-authors {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.6rem;
+      font-style: italic;
+    }
+    .paper-card-ftr {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+      margin-top: 0.6rem;
+      border-top: 1px dashed var(--color-border);
+      padding-top: 0.35rem;
+    }
+    .award-badge {
+      font-weight: 700;
+      background: var(--color-link);
+      color: var(--bg-body);
+      padding: 0.1rem 0.4rem;
+      font-size: 0.7rem;
+      margin-left: 0.5rem;
+      font-family: var(--font-sans);
+    }
+  </style>
+</head>
+<body class="theme-dandy">
+
+  <div class="app-container" id="app">
+    
+    <!-- Visual Header Banner -->
+    <div class="visual-header-banner">
+      <h2 class="banner-title" id="spec-banner-title"></h2>
+      <div class="banner-subtitle" id="spec-banner-subtitle"></div>
+      <div class="banner-meta" id="spec-banner-meta"></div>
+    </div>
+
+    <!-- Navigation Menu Bar -->
+    <nav class="nav-bar">
+      <ul class="nav-links" id="main-nav-links">
+        <!-- Dynamic main tabs with dropdowns will render here -->
+      </ul>
+
+      <div class="controls-panel">
+        <button class="cycle-btn" onclick="cycleTheme()">
+          <ion-icon name="color-palette-outline"></ion-icon>
+          <span>Cycle Theme</span>
+        </button>
+        <div class="interface-toggle">
+          <button class="toggle-btn active" id="btn-human" onclick="setInterfaceMode('human')">HUMAN UI</button>
+          <button class="toggle-btn" id="btn-agent" onclick="setInterfaceMode('agent')">AGENT RAW DATA</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Meta Warning notice -->
+    <div class="meta-notice-band">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <span id="meta-notice-text"></span>
+      </div>
+      <div id="renderer-id-badge" style="font-size:0.65rem; font-weight:700;">
+        [RENDERER-ID: DANDY-CLASSIC-GRID v1.2.0]
+      </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumbs" id="breadcrumb-trail">
+      Home » Overview
+    </div>
+
+    <!-- MAIN INTERFACE WRAPPER -->
+    <div class="view-wrapper">
+      
+      <!-- HUMAN VIEW (3-COLUMN) -->
+      <section class="view-section active-view" id="human-ui-view">
+        <div class="academic-layout">
+          
+          <!-- LEFT SIDEBAR -->
+          <aside class="left-column" id="left-dates-sidebar"></aside>
+
+          <!-- MIDDLE CONTENT -->
+          <main class="center-column">
+            <!-- Dynamic Sub Navigation Bar -->
+            <div class="sub-nav-bar" id="sub-nav-holder"></div>
+            
+            <div id="center-main-content">
+              <!-- Content Blocks will render here -->
+            </div>
+          </main>
+
+          <!-- RIGHT SIDEBAR -->
+          <aside class="right-column" id="right-sponsors-sidebar"></aside>
+
+        </div>
+      </section>
+
+      <!-- AGENT RAW DATA VIEW -->
+      <section class="view-section" id="agent-raw-view">
+        <div class="agent-view">
+          <div class="explorer-bar">
+            <div class="exp-title">Repo Tree</div>
+            <div class="tree-items">
+              <div class="tree-item active" id="tree-metadata.json" onclick="loadRepoFile('metadata.json', this)">
+                <ion-icon name="document-outline"></ion-icon>
+                <span>metadata.json</span>
+              </div>
+              <div class="tree-item" id="tree-sessions.json" onclick="loadRepoFile('sessions.json', this)">
+                <ion-icon name="document-outline"></ion-icon>
+                <span>sessions.json</span>
+              </div>
+              <div class="tree-item" id="tree-subcommittees.json" onclick="loadRepoFile('subcommittees.json', this)">
+                <ion-icon name="document-outline"></ion-icon>
+                <span>subcommittees.json</span>
+              </div>
+              <div class="tree-item" id="tree-disputes.json" onclick="loadRepoFile('disputes.json', this)">
+                <ion-icon name="document-outline"></ion-icon>
+                <span>disputes.json</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="editor-pane">
+            <div class="editor-top">
+              <div class="editor-file-title">
+                <ion-icon name="logo-json" style="color:var(--color-link);"></ion-icon>
+                <span id="active-filename">metadata.json</span>
+              </div>
+              <div class="pane-actions">
+                <button class="pane-btn" onclick="copyJSONData()">Copy Raw JSON</button>
+              </div>
+            </div>
+            <div class="editor-body-wrapper">
+              <div class="editor-body">
+                <div class="lines-gutter" id="code-gutter"></div>
+                <pre class="editor-code"><code id="code-holder"></code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Academic Footer -->
+    <footer class="academic-footer">
+      <div>© 2060 ACM CHI Steering Committee. Somatic Orbit System Node v78.4.2</div>
+      <div style="font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); margin-top:0.5rem;">
+        PARSED METADATA INTERFACE // ENCRYPTION KEY STABLE // GRID SYNCHRONOUS FLOW ACTIVE
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Load Shared Locale Specifications -->
+  <script src="chi2060_papers.js"></script>
+  <script src="specifications.js"></script>
+
+  <!-- Binding & Script logic -->
+  <script>
+    /* ==========================================
+       DYNAMIC RENDERER & INTERACTION LOGIC
+       ========================================== */
+    let currentTabId = "home";
+    let currentSubtabId = "overview";
+    let currentInterfaceMode = "human";
+    let currentActiveFile = "metadata.json";
+
+    let paperQuery = "";
+    let paperSubcommittee = "";
+    let paperTrack = "all";
+
+    function bindAcademicData() {
+      document.getElementById("spec-banner-title").textContent = CHI2060_SPEC.conference.name;
+      document.getElementById("spec-banner-subtitle").textContent = CHI2060_SPEC.conference.theme;
+      document.getElementById("spec-banner-meta").textContent = `${CHI2060_SPEC.conference.location} • ${CHI2060_SPEC.conference.dates}`;
+      
+      renderSidebarDates();
+      renderRightSidebar();
+    }
+
+    function renderMainNav() {
+      const navLinks = document.getElementById("main-nav-links");
+      if (!navLinks) return;
+      
+      let html = "";
+      Object.keys(CHI2060_SPEC.navigation).forEach(tabId => {
+        const tab = CHI2060_SPEC.navigation[tabId];
+        const subtabs = tab.subtabs;
+        const subkeys = Object.keys(subtabs);
+        
+        html += `
+          <li class="nav-item" id="nav-${tabId}">
+            <div class="nav-tab-header">
+              <span>${tab.label}</span>
+              <ion-icon name="chevron-down-outline" class="dropdown-arrow"></ion-icon>
+            </div>
+            <ul class="dropdown-menu">
+              ${subkeys.map(subId => `
+                <li class="dropdown-item" onclick="selectTabSubtab('${tabId}', '${subId}', event)">
+                  ${subtabs[subId].label}
+                </li>
+              `).join("")}
+            </ul>
+          </li>
+        `;
+      });
+      navLinks.innerHTML = html;
+    }
+
+    function selectTabSubtab(tabId, subId, event) {
+      if (event) event.stopPropagation(); // Prevent dropdown toggle conflict
+      currentTabId = tabId;
+      currentSubtabId = subId;
+      
+      // Update nav active styling
+      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active-nav"));
+      const navItem = document.getElementById(`nav-${tabId}`);
+      if (navItem) navItem.classList.add("active-nav");
+      
+      // Close all dropdowns
+      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("open"));
+      
+      renderSubtabsMenu();
+      renderContent();
+      
+      const mappedFile = getMappedFileForTab(tabId);
+      document.getElementById("meta-notice-text").textContent = `[PROTOCOL] This interface displays parsed agent data. Your user agent is parsing [${mappedFile}] in real-time.`;
+
+      if (currentInterfaceMode === "agent") {
+        const targetTreeItem = document.getElementById(`tree-${mappedFile}`);
+        loadRepoFile(mappedFile, targetTreeItem);
+      }
+    }
+
+    function switchTab(tabId) {
+      const subtabs = CHI2060_SPEC.navigation[tabId].subtabs;
+      const subId = Object.keys(subtabs)[0];
+      selectTabSubtab(tabId, subId);
+    }
+
+    function switchSubtab(subtabId) {
+      currentSubtabId = subtabId;
+      document.querySelectorAll(".sub-tab-btn").forEach(btn => btn.classList.remove("active"));
+      const activeSubBtn = document.getElementById(`sub-tab-${subtabId}`);
+      if (activeSubBtn) activeSubBtn.classList.add("active");
+      
+      renderContent();
+    }
+
+    function renderSubtabsMenu() {
+      const holder = document.getElementById("sub-nav-holder");
+      if (!holder) return;
+      
+      const subtabs = CHI2060_SPEC.navigation[currentTabId].subtabs;
+      const subtabKeys = Object.keys(subtabs);
+      
+      if (subtabKeys.length <= 1) {
+        holder.style.display = "none";
+        return;
+      }
+      
+      holder.style.display = "flex";
+      let html = "";
+      subtabKeys.forEach((key, idx) => {
+        const activeClass = key === currentSubtabId ? "active" : "";
+        html += `<button class="sub-tab-btn ${activeClass}" id="sub-tab-${key}" onclick="switchSubtab('${key}')">${subtabs[key].label}</button>`;
+        if (idx < subtabKeys.length - 1) {
+          html += `<span class="sub-tab-sep">|</span>`;
+        }
+      });
+      holder.innerHTML = html;
+    }
+
+    function renderContent() {
+      const mainPane = document.getElementById("center-main-content");
+      if (!mainPane) return;
+      
+      const subtabSpec = CHI2060_SPEC.navigation[currentTabId].subtabs[currentSubtabId];
+      if (!subtabSpec) return;
+      
+      document.getElementById("breadcrumb-trail").textContent = `${CHI2060_SPEC.navigation[currentTabId].label} » ${subtabSpec.label}`;
+      
+      let html = `<h2 class="main-title">${subtabSpec.label}</h2>`;
+      
+      subtabSpec.contentBlocks.forEach(block => {
+        html += `<div class="content-block ${block.type}-block">`;
+        if (block.title) {
+          html += `<h3 class="block-title">${block.title}</h3>`;
+        }
+        if (block.description) {
+          html += `<p class="block-description">${block.description}</p>`;
+        }
+        
+        if (block.type === "text_block") {
+          block.paragraphs.forEach(p => {
+            html += `<p>${p}</p>`;
+          });
+        } else if (block.type === "sessions_list") {
+          html += `<div class="session-group">`;
+          block.items.forEach(s => {
+            html += `
+              <div class="session-block">
+                <div class="session-block-header">
+                  <span class="session-block-title">${s.title}</span>
+                  <span class="session-block-badge">${s.badge}</span>
+                </div>
+                <div class="session-block-desc">${s.desc}</div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        } else if (block.type === "subcommittee_list") {
+          html += `<div class="subcommittees-list">`;
+          block.items.forEach(sub => {
+            html += `
+              <div class="subcommittee-item">
+                <div class="subcommittee-title">${sub.title}</div>
+                <div class="subcommittee-desc">${sub.desc}</div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        } else if (block.type === "bullet_list") {
+          html += `<ul class="bullet-list">`;
+          block.items.forEach(item => {
+            html += `<li>${item}</li>`;
+          });
+          html += `</ul>`;
+        } else if (block.type === "submission_form") {
+          const f = block.form;
+          html += `
+            <div class="form-panel">
+              <form id="seed-registry-form" onsubmit="submitAgentRegistry(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label" id="lbl-reg-name">${f.nameLabel}</label>
+                    <input type="text" id="reg-name" class="form-input" placeholder="e.g. Dr. Ha-Jun Kim" required oninput="checkFormStatus()">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" id="lbl-reg-core">${f.coreLabel}</label>
+                    <select id="reg-core" class="form-input">
+                      <option value="claude-somatic">Claude-6 Somatic v2059</option>
+                      <option value="gpt-consciousness">GPT-X Consciousness v2058</option>
+                      <option value="gemini-deepmind">Gemini Horizon v2059.4</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-checkbox-label">
+                    <input type="checkbox" id="reg-check" required onchange="checkFormStatus()">
+                    <span id="lbl-reg-agree">${f.agreeLabel}</span>
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" id="lbl-reg-sig">${f.signatureLabel}</label>
+                  <div class="canvas-wrapper">
+                    <div class="canvas-tip" id="sig-tip">${f.signatureTip}</div>
+                    <canvas id="signature-canvas"></canvas>
+                  </div>
+                  <div class="canvas-actions">
+                    <button type="button" class="btn" onclick="clearSignature()">Clear</button>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btn-submit-seed" style="width:100%; display:flex; justify-content:center; align-items:center; gap:0.5rem;" disabled>
+                  <ion-icon name="cloud-upload-outline"></ion-icon> <span id="lbl-reg-submit">${f.submitText}</span>
+                </button>
+              </form>
+              <div class="terminal-panel" id="console-simulation" style="display:none;">
+                <div class="terminal-hdr">
+                  <span>GRID SEED TELEMETRY</span>
+                  <span id="telemetry-status-badge" style="font-weight:bold;">SYNCHRONIZING</span>
+                </div>
+                <div class="terminal-body" id="console-logs-holder"></div>
+              </div>
+            </div>
+          `;
+        } else if (block.type === "disputes_board") {
+          html += `<div class="board-list">`;
+          CHI2060_SPEC.disputes.forEach(d => {
+            html += `
+              <div class="board-card">
+                <div class="board-head" onclick="openDispute('${d.id}')">
+                  <div class="board-head-left">
+                    <span class="badge-tag ${d.badgeClass}">${d.badge}</span>
+                    <span class="board-card-title">${d.title}</span>
+                  </div>
+                  <div class="board-head-right">
+                    <span>${d.author}</span>
+                    <span>${d.date}</span>
+                    <ion-icon name="chevron-down-outline" id="${d.id}-icon"></ion-icon>
+                  </div>
+                </div>
+                <div class="board-body" id="${d.id}">
+                  <p class="board-question-text">${d.question}</p>
+                  <div class="board-reply">
+                    <div class="board-reply-hdr">
+                      <ion-icon name="shield-checkmark-outline"></ion-icon>
+                      ${d.replyHeader}
+                    </div>
+                    <p class="board-reply-text">${d.replyText}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        } else if (block.type === "review_monitor") {
+          html += `
+            <table class="dense-table" id="reviewers-monitor-table">
+              <thead>
+                <tr>
+                  ${block.headers.map(h => `<th>${h}</th>`).join("")}
+                </tr>
+              </thead>
+              <tbody>
+                ${CHI2060_SPEC.reviewMonitorData.rows.map(r => `
+                  <tr>
+                    <td><span style="font-family:var(--font-mono); font-weight:700;">${r.id}</span></td>
+                    <td>${r.vector}</td>
+                    <td><span style="font-weight:700;" class="${r.statusClass}">${r.status}</span></td>
+                    <td>${r.valRate}</td>
+                    <td>${r.latency}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          `;
+        } else if (block.type === "tokenomics_table") {
+          html += `
+            <table class="dense-table" id="attendees-tokenomics-table">
+              <thead>
+                <tr>
+                  ${block.headers.map(h => `<th>${h}</th>`).join("")}
+                </tr>
+              </thead>
+              <tbody>
+                ${block.rows.map(row => `
+                  <tr>
+                    ${row.map(cell => `<td>${cell}</td>`).join("")}
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          `;
+        } else if (block.type === "sponsors_table") {
+          html += `
+            <table class="dense-table" id="sponsors-overview-table">
+              <thead>
+                <tr>
+                  ${block.headers.map(h => `<th>${h}</th>`).join("")}
+                </tr>
+              </thead>
+              <tbody>
+                ${block.rows.map(row => `
+                  <tr>
+                    ${row.map((cell, idx) => idx === 0 ? `<td><strong>${cell}</strong></td>` : `<td>${cell}</td>`).join("")}
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          `;
+        } else if (block.type === "program_schedule") {
+          html += `<div class="program-schedule-grid">`;
+          CHI2060_SPEC.importantDates.forEach(sec => {
+            html += `
+              <div style="margin-bottom:1.5rem;">
+                <div style="font-family:var(--font-mono); font-weight:700; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase;">${sec.category}</div>
+                <table class="dense-table">
+                  <tbody>
+                    ${sec.items.map(item => `
+                      <tr>
+                        <td style="width:120px; font-family:var(--font-mono); font-weight:700;">${item.date}</td>
+                        <td>${item.label}</td>
+                      </tr>
+                    `).join("")}
+                  </tbody>
+                </table>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        } else if (block.type === "papers_catalog") {
+          html += `
+            <div class="catalog-tabs">
+              <button class="catalog-tab ${paperTrack === 'all' ? 'active' : ''}" onclick="setPaperTrack('all')">All Papers</button>
+              <button class="catalog-tab ${paperTrack === 'conference' ? 'active' : ''}" onclick="setPaperTrack('conference')">Conference Track</button>
+              <button class="catalog-tab ${paperTrack === 'journal' ? 'active' : ''}" onclick="setPaperTrack('journal')">Journal Track</button>
+            </div>
+            <div class="catalog-filters">
+              <input type="text" id="paper-search" class="filter-input" placeholder="Search title, authors, ID..." value="${paperQuery}" oninput="setPaperQuery(this.value)">
+              <select class="filter-select" onchange="setPaperSubcommittee(this.value)">
+                <option value="">All Subcommittees</option>
+                ${getUniqueSubcommittees().map(sub => `
+                  <option value="${sub}" ${paperSubcommittee === sub ? 'selected' : ''}>${sub}</option>
+                `).join("")}
+              </select>
+            </div>
+            <div class="papers-list-feed">
+              ${renderFilteredPapersList()}
+            </div>
+          `;
+        }
+        
+        html += `</div>`;
+      });
+      
+      mainPane.innerHTML = html;
+      
+      if (currentTabId === "authors" && currentSubtabId === "submission") {
+        setTimeout(() => {
+          initSignatureCanvas();
+        }, 50);
+      }
+    }
+
+    function renderSidebarDates() {
+      const leftCol = document.getElementById("left-dates-sidebar");
+      if (!leftCol) return;
+      let html = `<h3 class="col-title">Important Dates</h3><p style="color:var(--text-muted); font-size:0.75rem; margin-bottom:1rem; line-height:1.4;">All times are in Somatic Sync Time (SOST).</p>`;
+      
+      CHI2060_SPEC.importantDates.forEach(sec => {
+        html += `<div class="date-section"><div class="date-category">${sec.category}</div><ul class="date-list">`;
+        sec.items.forEach(item => {
+          html += `<li class="date-item"><span class="date-val">${item.date}</span><span class="date-label">${item.label}</span></li>`;
+        });
+        html += `</ul></div>`;
+      });
+      leftCol.innerHTML = html;
+    }
+
+    function renderRightSidebar() {
+      const rightCol = document.getElementById("right-sponsors-sidebar");
+      if (!rightCol) return;
+      
+      let html = `
+        <div class="right-section">
+          <h3 class="col-title">Archives</h3>
+          <ul class="archive-list">
+            ${CHI2060_SPEC.archives.map(a => `<li><a href="#arch" onclick="switchTab('home')">${a.name}</a></li>`).join("")}
+          </ul>
+        </div>
+        <div class="right-section">
+          <h3 class="col-title">Categories</h3>
+          <ul class="category-list">
+            ${CHI2060_SPEC.categories.map(c => `<li><a href="#category" onclick="switchTab('home')">${c.name}</a></li>`).join("")}
+          </ul>
+        </div>
+        <div class="right-section">
+          <h3 class="col-title">Sponsors</h3>
+          <div class="sponsor-list">
+            ${CHI2060_SPEC.sidebarSponsors.map(s => `
+              <div class="sponsor-sidebar-card" ${s.border ? `style="border-left:3px solid var(--color-link);"` : ''}>
+                <div class="sponsor-side-name">${s.name}</div>
+                <div class="sponsor-side-desc">${s.desc}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+      rightCol.innerHTML = html;
+    }
+
+    /* ==========================================
+       THEME ROUTER (DYNAMIC FILENAMES)
+       ========================================== */
+    function cycleTheme() {
+      location.href = "index_fancy.html";
+    }
+
+    function getMappedFileForTab(tabId) {
+      const mapping = {
+        "home": "metadata.json",
+        "blog": "disputes.json",
+        "authors": "disputes.json",
+        "reviewers": "sessions.json",
+        "attendees": "metadata.json",
+        "sponsors": "metadata.json"
+      };
+      return mapping[tabId] || "metadata.json";
+    }
+
+    function setInterfaceMode(mode) {
+      currentInterfaceMode = mode;
+      const appDiv = document.getElementById("app");
+      const humanView = document.getElementById("human-ui-view");
+      const agentView = document.getElementById("agent-raw-view");
+      const btnHuman = document.getElementById("btn-human");
+      const btnAgent = document.getElementById("btn-agent");
+
+      appDiv.classList.add("glitch-active");
+
+      setTimeout(() => {
+        appDiv.classList.remove("glitch-active");
+
+        if (mode === 'human') {
+          humanView.classList.add("active-view");
+          agentView.classList.remove("active-view");
+          btnHuman.classList.add("active");
+          btnAgent.classList.remove("active");
+        } else {
+          humanView.classList.remove("active-view");
+          agentView.classList.add("active-view");
+          btnHuman.classList.remove("active");
+          btnAgent.classList.add("active");
+
+          const targetFile = getMappedFileForTab(currentTabId);
+          const targetTreeItem = document.getElementById(`tree-${targetFile}`);
+          loadRepoFile(targetFile, targetTreeItem);
+        }
+      }, 150);
+    }
+
+    function openDispute(disputeId) {
+      const body = document.getElementById(disputeId);
+      const icon = document.getElementById(`${disputeId}-icon`);
+      const allBodies = document.querySelectorAll(".board-body");
+      const allIcons = document.querySelectorAll(".board-head ion-icon");
+
+      allBodies.forEach(bd => {
+        if(bd.id !== disputeId) bd.classList.remove("open");
+      });
+      allIcons.forEach(ic => {
+        if(ic.id !== `${disputeId}-icon`) ic.setAttribute("name", "chevron-down-outline");
+      });
+
+      const isOpen = body.classList.toggle("open");
+      if (isOpen) {
+        icon.setAttribute("name", "chevron-up-outline");
+      } else {
+        icon.setAttribute("name", "chevron-down-outline");
+      }
+    }
+
+    /* ==========================================
+       JSON RENDERER & SYNTAX HIGHLIGHTING (LOCAL REFERENCE)
+       ========================================== */
+    const rawRepoDataLocal = {
+      "metadata.json": CHI2060_SPEC.conference,
+      "sessions.json": CHI2060_PAPERS,
+      "subcommittees.json": CHI2060_SPEC.navigation.authors.subtabs.subcommittees.contentBlocks[0].items,
+      "disputes.json": CHI2060_SPEC.disputes
+    };
+
+    function loadRepoFile(filename, element) {
+      currentActiveFile = filename;
+      const treeItems = document.querySelectorAll(".tree-item");
+      treeItems.forEach(item => item.classList.remove("active"));
+      element.classList.add("active");
+      document.getElementById("active-filename").textContent = filename;
+      renderJSONCodeView();
+    }
+
+    function parseHighlight(jsonStr) {
+      jsonStr = jsonStr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return jsonStr.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g, function (match) {
+        let cls = 'code-number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'code-key';
+          } else {
+            cls = 'code-string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'code-boolean';
+        } else if (/null/.test(match)) {
+          cls = 'code-null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      });
+    }
+
+    function renderJSONCodeView() {
+      const codeHolder = document.getElementById("code-holder");
+      const gutter = document.getElementById("code-gutter");
+      const fileContentObj = rawRepoDataLocal[currentActiveFile] || CHI2060_SPEC.conference;
+      const jsonString = JSON.stringify(fileContentObj, null, 2);
+      
+      codeHolder.innerHTML = parseHighlight(jsonString);
+      const lineCount = jsonString.split('\n').length;
+      let gutterHtml = "";
+      for (let i = 1; i <= lineCount; i++) { gutterHtml += `<span></span>`; }
+      gutter.innerHTML = gutterHtml;
+    }
+
+    function copyJSONData() {
+      const content = rawRepoDataLocal[currentActiveFile] || CHI2060_SPEC.conference;
+      navigator.clipboard.writeText(JSON.stringify(content, null, 2)).then(() => {
+        alert(`${currentActiveFile} data copied to clipboard.`);
+      });
+    }
+
+    /* ==========================================
+       CANVAS SIGNATURE DRAWING SYSTEM
+       ========================================= */
+    let canvas = null;
+    let ctx = null;
+    let isDrawing = false;
+    let signaturePresent = false;
+
+    function resizeCanvas() {
+      if (!canvas || !ctx) return;
+      const container = canvas.parentNode;
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+    }
+
+    function startDraw(e) {
+      if (!ctx) return;
+      isDrawing = true;
+      document.getElementById("sig-tip").style.display = "none";
+      ctx.beginPath();
+      const pos = getPos(e);
+      ctx.moveTo(pos.x, pos.y);
+      checkFormStatus();
+    }
+    function drawLine(e) {
+      if (!isDrawing || !ctx) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+    function endDraw() {
+      isDrawing = false;
+      signaturePresent = true;
+      checkFormStatus();
+    }
+    function getPos(e) {
+      if (!canvas) return { x: 0, y: 0 };
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function initSignatureCanvas() {
+      canvas = document.getElementById("signature-canvas");
+      if (!canvas) return;
+      ctx = canvas.getContext("2d");
+      
+      canvas.addEventListener("mousedown", startDraw);
+      canvas.addEventListener("mousemove", drawLine);
+      canvas.addEventListener("mouseup", endDraw);
+      canvas.addEventListener("mouseleave", endDraw);
+      canvas.addEventListener("touchstart", (e) => { e.preventDefault(); startDraw(e); });
+      canvas.addEventListener("touchmove", (e) => { e.preventDefault(); drawLine(e); });
+      canvas.addEventListener("touchend", endDraw);
+      
+      resizeCanvas();
+      updateCanvasBrushStyle();
+    }
+
+    function updateCanvasBrushStyle() {
+      if (!ctx) return;
+      const brushColor = getComputedStyle(document.body).getPropertyValue('--color-link').trim();
+      ctx.strokeStyle = brushColor || "#9a3412";
+    }
+
+    function clearSignature() {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById("sig-tip").style.display = "block";
+      signaturePresent = false;
+      checkFormStatus();
+    }
+
+    /* ==========================================
+       FORM SYSTEM
+       ========================================== */
+    function checkFormStatus() {
+      const nameVal = document.getElementById("reg-name").value;
+      const checkVal = document.getElementById("reg-check").checked;
+      const submitBtn = document.getElementById("btn-submit-seed");
+      if (submitBtn) {
+        submitBtn.disabled = !(nameVal.trim() !== "" && checkVal && signaturePresent);
+      }
+    }
+
+    function submitAgentRegistry(e) {
+      e.preventDefault();
+      const seederName = document.getElementById("reg-name").value;
+      const seederCore = document.getElementById("reg-core").value;
+      const consolePanel = document.getElementById("console-simulation");
+      const logsHolder = document.getElementById("console-logs-holder");
+      const submitBtn = document.getElementById("btn-submit-seed");
+
+      submitBtn.disabled = true;
+      consolePanel.style.display = "block";
+      logsHolder.innerHTML = "";
+
+      const sequence = [
+        { type: "info", text: "Connecting to Somatic Sync Port..." },
+        { type: "info", text: `Authenticating owner: "${seederName}"` },
+        { type: "ok", text: "FOOTPRINT AUTHENTICATED: HOTS-OK-2060" },
+        { type: "info", text: `Provisioning container for core: "${seederCore}"` },
+        { type: "warn", text: "Latency jitter balanced (0.12ms)." },
+        { type: "ok", text: "AGENT SEED ONLINE. Synchronized successfully." }
+      ];
+
+      let elapsed = 0;
+      sequence.forEach((log, idx) => {
+        setTimeout(() => {
+          const nowStr = new Date().toISOString().split('T')[1].slice(0, 8);
+          const logRow = document.createElement("div");
+          logRow.className = "terminal-line";
+          let colorClass = log.type === "ok" ? "class='ok'" : log.type === "warn" ? "class='warn'" : "";
+          logRow.innerHTML = `<span class="ts">[${nowStr}]</span> <span ${colorClass}>${log.text}</span>`;
+          logsHolder.appendChild(logRow);
+          logsHolder.scrollTop = logsHolder.scrollHeight;
+
+          if (idx === sequence.length - 1) {
+            submitBtn.innerHTML = "<ion-icon name='checkmark-done-outline'></ion-icon> Seed Active";
+            submitBtn.style.backgroundColor = "#2c2a29";
+            submitBtn.style.borderColor = "#2c2a29";
+            submitBtn.style.color = "#fdfbf7";
+            registerVirtualTransactionLocal(seederName, seederCore);
+          }
+        }, elapsed);
+        elapsed += 200 + Math.random() * 300;
+      });
+    }
+
+    function registerVirtualTransactionLocal(name, core) {
+      const dynamicTransaction = {
+        "id": "AUDIT-" + Math.floor(Math.random()*90000 + 10000),
+        "type": "REGISTRATION_AUDIT",
+        "badge": "AUDIT",
+        "badgeClass": "orange",
+        "title": `Seeder registration profile for ${name}`,
+        "author": `${core}-Proxy-Agent`,
+        "date": new Date().toISOString().split('T')[0],
+        "question": `Owner Signature verified. Seeding parameters locked to: ${core}. Platform context threshold aligned to 60%.`,
+        "replyHeader": "Harvey Legal-AI v9.12",
+        "replyText": "System configuration verified. Virtual agent initialized and mapped to the Somatic Virtual Network grid."
+      };
+      
+      CHI2060_SPEC.disputes.unshift(dynamicTransaction);
+      
+      const boardList = document.querySelector(".board-list");
+      if (boardList) {
+        renderContent();
+      }
+      
+      if(currentActiveFile === "disputes.json") {
+        renderJSONCodeView();
+      }
+    }
+
+    // Toggle dropdown on tab header click
+    document.addEventListener("click", (e) => {
+      const tabHeader = e.target.closest(".nav-tab-header");
+      if (tabHeader) {
+        const navItem = tabHeader.parentElement;
+        const isOpen = navItem.classList.contains("open");
+        
+        document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("open"));
+        if (!isOpen) {
+          navItem.classList.add("open");
+        }
+        e.stopPropagation();
+      } else {
+        document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("open"));
+      }
+    });
+
+    function getUniqueSubcommittees() {
+      const subs = new Set();
+      if (typeof CHI2060_PAPERS !== 'undefined') {
+        CHI2060_PAPERS.conference_papers.forEach(p => subs.add(p.subcommittee));
+        CHI2060_PAPERS.journal_papers.forEach(p => subs.add(p.subcommittee));
+      }
+      return Array.from(subs).sort();
+    }
+
+    function setPaperTrack(track) {
+      paperTrack = track;
+      renderContent();
+    }
+
+    function setPaperQuery(query) {
+      paperQuery = query;
+      const feed = document.querySelector(".papers-list-feed");
+      if (feed) {
+        feed.innerHTML = renderFilteredPapersList();
+      }
+    }
+
+    function setPaperSubcommittee(sub) {
+      paperSubcommittee = sub;
+      renderContent();
+    }
+
+    function renderFilteredPapersList() {
+      if (typeof CHI2060_PAPERS === 'undefined') return '';
+      let list = [];
+      if (paperTrack === "all" || paperTrack === "conference") {
+        list = list.concat(CHI2060_PAPERS.conference_papers.map(p => ({ ...p, track: "Conference" })));
+      }
+      if (paperTrack === "all" || paperTrack === "journal") {
+        list = list.concat(CHI2060_PAPERS.journal_papers.map(p => ({ ...p, track: "Journal" })));
+      }
+      
+      // Query filter
+      if (paperQuery) {
+        const q = paperQuery.toLowerCase();
+        list = list.filter(p => 
+          p.title.toLowerCase().includes(q) || 
+          p.id.toLowerCase().includes(q) || 
+          p.authors.some(a => a.human.toLowerCase().includes(q) || a.agent.toLowerCase().includes(q))
+        );
+      }
+      
+      // Subcommittee filter
+      if (paperSubcommittee) {
+        list = list.filter(p => p.subcommittee === paperSubcommittee);
+      }
+      
+      if (list.length === 0) {
+        return `<p style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.8rem;">No publications found matching criteria.</p>`;
+      }
+      
+      return list.map(p => {
+        const awardHtml = p.award ? `<span class="award-badge"><ion-icon name="trophy-outline" style="font-size:0.75rem; vertical-align:middle; margin-right:2px;"></ion-icon>${p.award}</span>` : "";
+        const authorsHtml = p.authors.map(a => `${a.human} (<span style="color:var(--color-link);">${a.agent}</span>) [${a.contribution_pct}%]`).join(", ");
+        
+        return `
+          <div class="paper-card">
+            <div class="paper-card-hdr">
+              <span>${p.id} // TRACK: ${p.track.toUpperCase()}</span>
+              <div>
+                <span style="font-weight:700; border:1px solid var(--color-border); padding: 0.1rem 0.3rem;">${p.subcommittee}</span>
+                ${awardHtml}
+              </div>
+            </div>
+            <h4 class="paper-card-title">${p.title}</h4>
+            <div class="paper-card-authors">
+              <strong>Seeders:</strong> ${authorsHtml}
+            </div>
+            <div class="paper-card-ftr">
+              <span>FILE: <a href="#download" onclick="alert('Downloading Somatic Package: ${p.file}')">${p.file}</a> (${p.file_size_mb} MB)</span>
+              <span>COMPATIBILITY: ${p.compatible_agent_version} (${p.compatible_os.join(", ")})</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    /* Initialize */
+    window.addEventListener("load", () => {
+      bindAcademicData();
+      renderMainNav();
+      selectTabSubtab('home', 'overview');
+      localStorage.setItem("chi2060-theme", "dandy");
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACM CHI 2060 - Developer IDE Layout</title>
+  
+  <!-- Google Fonts & Ion Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <style>
+    /* ==========================================
+       DEVELOPER IDE THEME SPECIFIC STYLES
+       ========================================== */
+    :root {
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'Fira Code', 'Courier New', Courier, monospace;
+      
+      --bg-body: #1e1e1e;       /* VS Code main editor bg */
+      --bg-light: #252526;      /* VS Code sidebar bg */
+      --bg-card: #2d2d2d;       /* Cards */
+      --bg-active: #37373d;
+      --bg-hover: #2a2d2e;
+      
+      --color-border: #3c3c3c;
+      --color-border-dark: #3c3c3c;
+      
+      --text-main: #d4d4d4;     /* Standard text */
+      --text-secondary: #9cdcfe; /* Variables/Properties */
+      --text-muted: #6a9955;     /* Code comments */
+      --color-link: #4fc1ff;     /* VS Code blue action links */
+      --color-link-hover: #569cd6;
+      
+      --radius-custom: 3px;
+      --box-shadow-custom: 0 4px 10px rgba(0,0,0,0.35);
+      
+      --btn-bg: #3c3c3c;
+      --btn-text: #cccccc;
+      --btn-border: #505050;
+      --btn-primary-bg: #0e639c; /* VS Code primary blue button */
+      --btn-primary-text: #ffffff;
+      
+      --transition-smooth: all 0.15s ease-in-out;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      background-color: #181818;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 10px; /* Window margin to see the IDE frame */
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 0;
+      }
+    }
+
+    a {
+      color: var(--color-link);
+      text-decoration: none;
+      border-bottom: 1px dashed var(--color-link);
+    }
+    a:hover {
+      color: var(--color-link-hover);
+      border-bottom-style: solid;
+    }
+
+    /* Glitch transition effect */
+    @keyframes glitch {
+      0% { transform: translate(0); }
+      20% { transform: translate(-2px, 2px); }
+      40% { transform: translate(-2px, -2px); }
+      60% { transform: translate(2px, 2px); }
+      80% { transform: translate(2px, -2px); }
+      100% { transform: translate(0); }
+    }
+    .glitch-active {
+      animation: glitch 0.15s linear infinite;
+    }
+
+    .app-container {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--box-shadow-custom);
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #444;
+    }
+
+    /* IDE Desktop Window Controls & Header */
+    .ide-titlebar {
+      background: #3c3c3c;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      border-bottom: 1px solid #252526;
+      user-select: none;
+      z-index: 10;
+    }
+    .window-controls {
+      display: flex;
+      gap: 8px;
+    }
+    .control-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .control-dot.close { background: #ff5f56; }
+    .control-dot.minimize { background: #ffbd2e; }
+    .control-dot.maximize { background: #27c93f; }
+    .window-title {
+      color: #cccccc;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .ide-searchbar {
+      background: #2d2d2d;
+      border: 1px solid #505050;
+      border-radius: 4px;
+      padding: 2px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      color: #858585;
+      width: 240px;
+    }
+    @media (max-width: 600px) {
+      .ide-searchbar {
+        display: none;
+      }
+    }
+
+    /* IDE Workspace Body */
+    .ide-workspace {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      min-height: 0;
+    }
+
+    /* Activity Bar (Far Left) */
+    .ide-activity-bar {
+      width: 48px;
+      background: #333333;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-right: 1px solid #252526;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .activity-top, .activity-bottom {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      width: 100%;
+    }
+    .activity-icon {
+      font-size: 1.35rem;
+      color: #858585;
+      cursor: pointer;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 0;
+      position: relative;
+    }
+    .activity-icon:hover {
+      color: #ffffff;
+    }
+    .activity-icon.active {
+      color: #ffffff;
+      border-left: 2px solid #0e639c;
+    }
+
+    /* Main Panel Container */
+    .ide-main-panel {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-width: 0;
+      background: var(--bg-body);
+    }
+
+    /* Visual Header Banner styled as neon matrix grid overlay */
+    .visual-header-banner {
+      width: 100%;
+      height: 140px;
+      position: relative;
+      background: #1e1e1e !important;
+      border-bottom: 1px solid #3c3c3c;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.25rem 2rem;
+      color: #ffffff;
+      overflow: hidden;
+    }
+    .visual-header-banner::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(rgba(30, 30, 30, 0.8), rgba(30, 30, 30, 0.95)), url('chi2060_header.png');
+      background-size: cover;
+      background-position: center;
+      opacity: 0.25;
+      z-index: 1;
+      filter: grayscale(1);
+    }
+    .visual-header-banner::after {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(90deg, rgba(14,99,156,0.12) 1px, transparent 1px),
+                  linear-gradient(rgba(14,99,156,0.12) 1px, transparent 1px);
+      background-size: 20px 20px;
+      z-index: 2;
+    }
+    .banner-title {
+      font-size: 1.8rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #4fc1ff;
+      margin-bottom: 0.25rem;
+      z-index: 3;
+    }
+    .banner-title::before {
+      content: "$ view ";
+      color: #858585;
+      font-weight: normal;
+    }
+    .banner-subtitle {
+      font-size: 0.9rem;
+      font-family: var(--font-mono);
+      font-weight: 400;
+      color: #dcdcaa;
+      margin-bottom: 0.2rem;
+      z-index: 3;
+    }
+    .banner-meta {
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: #6a9955; /* green comment */
+      z-index: 3;
+    }
+    .banner-meta::before {
+      content: "/* ";
+    }
+    .banner-meta::after {
+      content: " */";
+    }
+
+    /* Editor Tabs Layout */
+    .nav-bar {
+      background: #252526;
+      border-bottom: 1px solid #1e1e1e;
+      padding: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 35px;
+      user-select: none;
+    }
+    .nav-links {
+      display: flex;
+      list-style: none;
+      height: 100%;
+      overflow: visible;
+    }
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
+    .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      color: #969696;
+      background: #2d2d2d;
+      padding: 0 0.8rem;
+      cursor: pointer;
+      border-right: 1px solid #252526;
+      height: 100%;
+    }
+    .nav-item:hover {
+      background: #2b2b2b;
+      color: #e0e0e0;
+    }
+    .nav-item.active-nav {
+      background: var(--bg-body);
+      color: #ffffff;
+      border-top: 1px solid #0e639c;
+    }
+    .nav-tab-header {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      user-select: none;
+    }
+    .dropdown-arrow {
+      font-size: 0.7rem;
+      margin-left: 6px;
+      color: #858585;
+      transition: transform 0.15s ease-in-out;
+    }
+    .nav-item.open .dropdown-arrow {
+      transform: rotate(180deg);
+      color: #ffffff;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #252526;
+      border: 1px solid #3c3c3c;
+      list-style: none;
+      min-width: 170px;
+      z-index: 100;
+      margin-top: -1px;
+      box-shadow: var(--box-shadow-custom);
+      padding: 4px 0;
+    }
+    .nav-item.open .dropdown-menu {
+      display: block;
+    }
+    .dropdown-item {
+      padding: 6px 12px;
+      font-size: 0.72rem;
+      color: #cccccc;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+    }
+    .dropdown-item:hover {
+      background: #0e639c;
+      color: #ffffff;
+    }
+
+    /* Control Panel */
+    .controls-panel {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding-right: 0.5rem;
+      flex-shrink: 0;
+    }
+    .cycle-btn {
+      background: var(--btn-bg);
+      border: 1px solid var(--btn-border);
+      color: var(--btn-text);
+      border-radius: var(--radius-custom);
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0.25rem 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    .cycle-btn:hover {
+      border-color: #888;
+      background: #4b4e52;
+    }
+    .interface-toggle {
+      display: flex;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-custom);
+      overflow: hidden;
+      background: #2d2d2d;
+    }
+    .toggle-btn {
+      background: none;
+      border: none;
+      padding: 0.25rem 0.55rem;
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      cursor: pointer;
+      color: #888888;
+    }
+    .toggle-btn.active {
+      background: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+    }
+
+    /* Meta Notice Band */
+    .meta-notice-band {
+      background-color: #252526;
+      border-bottom: 1px solid var(--color-border);
+      color: #6a9955; /* styled as comment green */
+      padding: 0.35rem 1.5rem;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      padding: 0.5rem 1.5rem 0.25rem;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      color: #858585;
+    }
+
+    /* View Sections */
+    .view-wrapper {
+      flex: 1;
+      position: relative;
+      min-height: 0;
+      overflow-y: auto;
+    }
+    .view-section {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .view-section.active-view {
+      opacity: 1;
+      visibility: visible;
+      position: relative;
+    }
+
+    /* Academic 3-Column Layout */
+    .academic-layout {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0.75rem 1rem 3rem;
+      display: grid;
+      grid-template-columns: 290px 1fr 210px;
+      gap: 1.25rem;
+    }
+    @media (max-width: 1100px) {
+      .academic-layout {
+        grid-template-columns: 260px 1fr;
+      }
+      .right-column {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+        margin-top: 1.5rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .academic-layout {
+        grid-template-columns: 1fr;
+      }
+      .right-column {
+        grid-column: span 1;
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .col-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #858585;
+      border-bottom: 1px solid #3c3c3c;
+      padding-bottom: 0.25rem;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    /* Left Sidebar (Dates) - File Tree Style */
+    .left-column { font-size: 0.75rem; background: #252526; border-right: 1px solid #3c3c3c; padding: 0.75rem; border-radius: 4px; min-width: 0; }
+    .date-section { margin-bottom: 1rem; min-width: 0; }
+    .date-category {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.4rem;
+      font-weight: 600;
+      color: #c586c0; /* Class/Folder purple */
+      font-family: var(--font-mono);
+      cursor: pointer;
+      font-size: 0.75rem;
+      user-select: none;
+      min-width: 0;
+    }
+    .date-category:hover { background: var(--bg-hover); }
+    .date-category ion-icon { font-size: 0.85rem; }
+    .date-category .folder-arrow { color: #858585; font-size: 0.7rem; }
+    
+    .date-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      padding-left: 1rem;
+      margin-top: 0.25rem;
+      min-width: 0;
+    }
+    .date-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.4rem;
+      padding: 0.15rem 0.4rem;
+      font-family: var(--font-mono);
+      min-width: 0;
+    }
+    .date-item:hover { background: var(--bg-hover); }
+    .file-icon { margin-top: 1px; flex-shrink: 0; }
+    .date-details { display: flex; flex-direction: column; min-width: 0; }
+    .date-val { font-family: var(--font-mono); font-weight: 700; color: #b5cea8; /* Numeric value */ }
+    .date-label { color: #9cdcfe; /* Identifier light blue */ word-break: break-all; white-space: normal; }
+
+    /* Right Sidebar - Inspector Panel style */
+    .right-column { font-size: 0.75rem; background: #252526; border-left: 1px solid #3c3c3c; padding: 0.75rem; border-radius: 4px; }
+    .right-section { margin-bottom: 1.5rem; }
+    .archive-list, .category-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      padding-left: 0.5rem;
+    }
+    .archive-list li, .category-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.15rem 0.25rem;
+      font-family: var(--font-mono);
+    }
+    .archive-list li:hover, .category-list li:hover {
+      background: var(--bg-hover);
+    }
+    .archive-list a, .category-list a {
+      color: #9cdcfe;
+      border-bottom: none;
+    }
+    .archive-list a:hover, .category-list a:hover {
+      color: #4fc1ff;
+    }
+    
+    .sponsor-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .sponsor-sidebar-card {
+      border: 1px solid #3c3c3c;
+      padding: 0.5rem;
+      background: var(--bg-body);
+      border-radius: 3px;
+    }
+    .sponsor-side-name { font-weight: 700; font-family: var(--font-mono); color: #dcdcaa; }
+    .sponsor-side-desc { font-size: 0.65rem; color: #6a9955; font-family: var(--font-mono); margin-top: 2px; }
+
+    /* Central Content styled like code workspace */
+    .center-column { min-width: 0; }
+    
+    /* Sub Navigation Bar - styled as breadcrumb path */
+    .sub-nav-bar {
+      display: flex;
+      justify-content: flex-start;
+      gap: 0.25rem;
+      background: #252526;
+      padding: 0.35rem 0.75rem;
+      border-bottom: 1px solid #3c3c3c;
+      margin-bottom: 1.25rem;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: #858585;
+      align-items: center;
+      border-radius: 3px;
+    }
+    .sub-tab-btn {
+      background: none;
+      border: none;
+      color: #858585;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      padding: 0.1rem 0.35rem;
+      border-radius: 3px;
+    }
+    .sub-tab-btn:hover {
+      background: #2a2d2e;
+      color: #ffffff;
+    }
+    .sub-tab-btn.active {
+      color: #4fc1ff;
+      font-weight: bold;
+      background: #37373d;
+    }
+    .sub-tab-sep {
+      color: #858585;
+      margin: 0 2px;
+      font-family: var(--font-mono);
+    }
+
+    .main-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #4fc1ff;
+      margin-bottom: 1.25rem;
+      font-family: var(--font-mono);
+      border-bottom: 1px solid #3c3c3c;
+      padding-bottom: 0.4rem;
+    }
+    .main-title::before {
+      content: "export default ";
+      color: #569cd6;
+      font-weight: normal;
+      font-size: 0.8rem;
+    }
+
+    /* Content Blocks */
+    .content-block {
+      background: var(--bg-body);
+      border: 1px solid #3c3c3c;
+      border-radius: 4px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      font-family: var(--font-mono);
+    }
+    .content-block::before {
+      content: "/**";
+      display: block;
+      color: #6a9955;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+    }
+    .block-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #dcdcaa; /* Function yellow */
+      margin-bottom: 0.5rem;
+      border-bottom: none;
+      padding-bottom: 0;
+      font-family: var(--font-mono);
+    }
+    .block-title::before {
+      content: " * @section ";
+      color: #6a9955;
+    }
+    .block-description {
+      color: #6a9955;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+      padding-left: 0.75rem;
+      font-family: var(--font-mono);
+    }
+    .block-description::before {
+      content: " * @description: ";
+    }
+    .content-block p:not(.block-description) {
+      color: #ce9178; /* String orange/brown */
+      font-size: 0.8rem;
+      margin-bottom: 0.75rem;
+      text-align: left;
+      font-family: var(--font-mono);
+      padding-left: 0.75rem;
+      border-left: 2px solid #6a9955;
+    }
+    .content-block p:not(.block-description)::before {
+      content: '"';
+      color: #ce9178;
+    }
+    .content-block p:not(.block-description)::after {
+      content: '";';
+      color: #ce9178;
+    }
+    
+    .bullet-list { list-style: none; margin-bottom: 1rem; font-size: 0.8rem; padding-left: 0.75rem; }
+    .bullet-list li { margin-bottom: 0.35rem; font-family: var(--font-mono); color: #9cdcfe; }
+    .bullet-list li::before {
+      content: "- item: ";
+      color: #569cd6;
+    }
+
+    .dense-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      margin-bottom: 1.25rem;
+      font-family: var(--font-mono);
+      border: 1px solid #3c3c3c;
+    }
+    .dense-table th, .dense-table td {
+      border: 1px solid #3c3c3c;
+      padding: 0.45rem 0.6rem;
+      color: #d4d4d4;
+    }
+    .dense-table th { background: #252526; color: #569cd6; font-weight: 700; text-align: left; }
+
+    /* Subcommittee lists */
+    .subcommittee-item { margin-bottom: 0.75rem; font-family: var(--font-mono); }
+    .subcommittee-title { font-weight: 700; font-size: 0.85rem; color: #4ec9b0; }
+    .subcommittee-desc { color: #ce9178; font-size: 0.75rem; padding-left: 0.5rem; margin-top: 2px; }
+    .subcommittee-desc::before { content: "description: \""; color: #858585; }
+    .subcommittee-desc::after { content: "\";"; color: #858585; }
+
+    /* Form Panel */
+    .form-panel {
+      border: 1px solid #3c3c3c;
+      background: #252526;
+      padding: 1.25rem;
+      border-radius: 4px;
+      font-family: var(--font-mono);
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+    .form-group { margin-bottom: 0.75rem; }
+    .form-label { display: block; font-size: 0.7rem; font-weight: 700; margin-bottom: 0.25rem; text-transform: uppercase; color: #9cdcfe; }
+    .form-input {
+      width: 100%;
+      background: #1e1e1e;
+      border: 1px solid #3c3c3c;
+      padding: 0.4rem 0.6rem;
+      color: #d4d4d4;
+      font-size: 0.75rem;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+    }
+    .form-input:focus {
+      outline: 1px solid #0e639c;
+    }
+    .form-checkbox-label { display: flex; gap: 0.5rem; font-size: 0.75rem; cursor: pointer; color: #cccccc; }
+    .form-checkbox-label input { margin-top: 0.15rem; }
+    
+    .canvas-wrapper {
+      border: 1px solid #3c3c3c;
+      background: #1e1e1e;
+      position: relative;
+      height: 120px;
+      border-radius: 3px;
+    }
+    #signature-canvas { position: absolute; top:0; left:0; width:100%; height:100%; cursor: crosshair; }
+    .canvas-tip {
+      position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      color: #6a9955; font-size: 0.7rem; font-family: var(--font-mono); pointer-events: none;
+    }
+    .canvas-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.25rem; }
+
+    .btn {
+      background: #3c3c3c;
+      border: 1px solid #505050;
+      color: #cccccc;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 3px;
+      font-family: var(--font-mono);
+    }
+    .btn:hover { background: #4b4e52; color:#ffffff; }
+    .btn-primary { background: #0e639c; border-color: #1177bb; color: #ffffff; }
+    .btn-primary:disabled { background: #2d2d2d; border-color: #3c3c3c; color: #777777; cursor: not-allowed; }
+
+    /* Telemetry terminal */
+    .terminal-panel {
+      background: #181818;
+      border: 1px solid #3c3c3c;
+      padding: 0;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      margin-top: 1rem;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .terminal-hdr {
+      display: flex;
+      justify-content: space-between;
+      background: #252526;
+      border-bottom: 1px solid #3c3c3c;
+      padding: 0.35rem 0.75rem;
+      color: #858585;
+      font-weight: bold;
+    }
+    .terminal-body { max-height: 100px; overflow-y: auto; color: #cccccc; display: flex; flex-direction: column; gap: 0.15rem; padding: 0.5rem 0.75rem; }
+    .terminal-line .ts { color: #6a9955; }
+    .terminal-line .ok { color: #4ec9b0; font-weight: bold; }
+    .terminal-line .warn { color: #dcdcaa; }
+
+    /* Disputes Q&A Cards */
+    .board-card { border: 1px solid #3c3c3c; margin-bottom: 0.4rem; border-radius: 4px; overflow: hidden; }
+    .board-head { background: #252526; padding: 0.6rem 0.8rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .board-head:hover { background: var(--bg-hover); }
+    .board-head-left { display: flex; align-items: center; gap: 0.5rem; }
+    .badge-tag { font-size: 0.6rem; font-family: var(--font-mono); padding: 0.05rem 0.3rem; font-weight: 700; border: 1px solid #555; border-radius: 2px; }
+    .badge-tag.red { color: #f44336; border-color: #f44336; background: rgba(244,67,54,0.1); }
+    .badge-tag.orange { color: #ff9800; border-color: #ff9800; background: rgba(255,152,0,0.1); }
+    .board-card-title { font-weight: 700; font-size: 0.75rem; color: #9cdcfe; font-family: var(--font-mono); }
+    .board-head-right { font-family: var(--font-mono); font-size: 0.65rem; color: #858585; display: flex; align-items: center; gap: 0.75rem; }
+    .board-body { padding: 0.8rem; background: var(--bg-body); border-top: 1px solid #3c3c3c; display: none; }
+    .board-body.open { display: block; }
+    .board-question-text { font-size: 0.75rem; color: #ce9178; margin-bottom: 0.75rem; white-space: pre-line; font-family: var(--font-mono); }
+    .board-question-text::before { content: "/* QUESTION: \n"; color: #6a9955; }
+    .board-question-text::after { content: "\n */"; color: #6a9955; }
+    
+    .board-reply { background: #252526; border-left: 2px solid #0e639c; padding: 0.5rem 0.75rem; border-radius: 3px; }
+    .board-reply-hdr { font-size: 0.7rem; font-weight: 700; margin-bottom: 0.2,r; display: flex; align-items: center; gap: 0.3rem; color: #569cd6; font-family: var(--font-mono); }
+    .board-reply-text { font-size: 0.75rem; color: #ce9178; font-family: var(--font-mono); }
+    .board-reply-text::before { content: "// "; color: #6a9955; }
+
+    /* IDE Status Bar (Footer) */
+    .academic-footer {
+      border-top: 1px solid #3c3c3c;
+      background: #007acc; /* VS Code status bar blue */
+      color: #ffffff;
+      padding: 0.25rem 0.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      user-select: none;
+    }
+    .academic-footer a { color: #ffffff; border: none; }
+    .footer-left { display: flex; align-items: center; gap: 10px; }
+    .footer-right { display: flex; align-items: center; gap: 10px; }
+    .footer-status-pill { background: rgba(255,255,255,0.15); padding: 0.05rem 0.4rem; border-radius: 2px; }
+
+    /* ==========================================
+       AGENT RAW DATA VIEW
+       ========================================== */
+    .agent-view { display: flex; min-height: 500px; background: #1e1e1e; border: 1px solid #3c3c3c; border-radius: 4px; overflow: hidden; }
+    .explorer-bar { width: 220px; border-right: 1px solid #3c3c3c; background: #252526; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
+    .exp-title { font-family: var(--font-mono); font-size: 0.7rem; color: #858585; text-transform: uppercase; font-weight: bold; }
+    .tree-items { display: flex; flex-direction: column; gap: 0.2rem; }
+    .tree-item { display: flex; align-items: center; gap: 0.4rem; padding: 0.25rem 0.5rem; cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem; color: #cccccc; border-radius: 3px; }
+    .tree-item:hover { background: var(--bg-hover); }
+    .tree-item.active { background: #37373d; color: #ffffff; }
+    
+    .editor-pane { flex: 1; display: flex; flex-direction: column; background: #1e1e1e; }
+    .editor-top { height: 35px; background: #252526; border-bottom: 1px solid #3c3c3c; display: flex; justify-content: space-between; align-items: center; padding: 0 0.75rem; }
+    .editor-file-title { font-family: var(--font-mono); font-size: 0.75rem; color: #cccccc; display: flex; align-items: center; gap: 0.35rem; }
+    .pane-btn { background: #3c3c3c; border: 1px solid #505050; color: #cccccc; padding: 0.2rem 0.45rem; font-family: var(--font-mono); font-size: 0.65rem; cursor: pointer; border-radius: 3px; }
+    .pane-btn:hover { background: #4b4e52; color: #ffffff; }
+    .editor-body-wrapper { flex: 1; overflow: auto; max-height: 500px; background: #1e1e1e; }
+    .editor-body { display: flex; padding: 1rem; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.45; }
+    .lines-gutter { display: flex; flex-direction: column; align-items: flex-end; padding-right: 0.75rem; border-right: 1px solid #3c3c3c; user-select: none; color: #858585; }
+    .lines-gutter span::before { counter-increment: line; content: counter(line); display: block; }
+    .editor-code { padding-left: 0.75rem; color: #d4d4d4; margin: 0; white-space: pre; }
+    
+    .code-key { color: #9cdcfe; }
+    .code-string { color: #ce9178; }
+    .code-number { color: #b5cea8; }
+    .code-boolean { color: #569cd6; }
+    .code-null { color: #569cd6; }
+
+    /* Papers Catalog Styles */
+    .catalog-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #3c3c3c;
+      padding: 0.5rem;
+      background: #252526;
+      border-radius: var(--radius-custom);
+    }
+    .filter-input {
+      flex: 2;
+      min-width: 200px;
+      padding: 0.35rem 0.5rem;
+      border: 1px solid #3c3c3c;
+      background: #1e1e1e;
+      color: var(--text-main);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      outline: none;
+    }
+    .filter-input:focus {
+      outline: 1px solid #0e639c;
+    }
+    .filter-select {
+      flex: 1;
+      padding: 0.35rem;
+      border: 1px solid #3c3c3c;
+      background: #1e1e1e;
+      color: var(--text-main);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      outline: none;
+      cursor: pointer;
+    }
+    .catalog-tabs {
+      display: flex;
+      background: #2d2d2d;
+      border: 1px solid #3c3c3c;
+      margin-bottom: 1rem;
+      border-radius: var(--radius-custom);
+      overflow: hidden;
+    }
+    .catalog-tab {
+      flex: 1;
+      padding: 0.4rem;
+      background: transparent;
+      color: #969696;
+      border: none;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      border-right: 1px solid #3c3c3c;
+    }
+    .catalog-tab:last-child {
+      border-right: none;
+    }
+    .catalog-tab.active {
+      background: #37373d;
+      color: #ffffff;
+      font-weight: 700;
+      border-bottom: 2px solid #0e639c;
+    }
+    .paper-card {
+      border: 1px solid #3c3c3c;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #252526;
+      border-radius: var(--radius-custom);
+      font-family: var(--font-mono);
+    }
+    .paper-card-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: #858585;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px dashed #3c3c3c;
+      padding-bottom: 0.25rem;
+    }
+    .paper-card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #dcdcaa;
+      margin-bottom: 0.4rem;
+      line-height: 1.3;
+    }
+    .paper-card-title::before {
+      content: "const ";
+      color: #569cd6;
+      font-weight: normal;
+    }
+    .paper-card-authors {
+      font-size: 0.75rem;
+      color: #9cdcfe;
+      margin-bottom: 0.5rem;
+    }
+    .paper-card-ftr {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      color: #6a9955;
+      margin-top: 0.5rem;
+      border-top: 1px dashed #3c3c3c;
+      padding-top: 0.25rem;
+    }
+    .paper-card-ftr::before {
+      content: "/* ";
+    }
+    .paper-card-ftr::after {
+      content: " */";
+    }
+    .award-badge {
+      font-weight: 700;
+      background: #0e639c;
+      color: #ffffff;
+      padding: 0.1rem 0.35rem;
+      font-size: 0.65rem;
+      border-radius: 2px;
+      margin-left: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container" id="app">
+    
+    <!-- Window Title Bar -->
+    <div class="ide-titlebar">
+      <div class="window-controls">
+        <span class="control-dot close"></span>
+        <span class="control-dot minimize"></span>
+        <span class="control-dot maximize"></span>
+      </div>
+      <div class="window-title">
+        <ion-icon name="terminal-outline"></ion-icon>
+        <span>ACM-CHI-2060 // Somatic Space Node Workspace</span>
+      </div>
+      <div class="ide-searchbar">
+        <ion-icon name="search-outline"></ion-icon>
+        <span>Search actions, files or vectors...</span>
+      </div>
+    </div>
+
+    <!-- IDE Workspace Layout -->
+    <div class="ide-workspace">
+      
+      <!-- Activity Bar (Far Left) -->
+      <div class="ide-activity-bar">
+        <div class="activity-top">
+          <div class="activity-icon active"><ion-icon name="copy-outline"></ion-icon></div>
+          <div class="activity-icon"><ion-icon name="search-outline"></ion-icon></div>
+          <div class="activity-icon"><ion-icon name="git-branch-outline"></ion-icon></div>
+          <div class="activity-icon"><ion-icon name="play-circle-outline"></ion-icon></div>
+          <div class="activity-icon"><ion-icon name="extension-puzzle-outline"></ion-icon></div>
+        </div>
+        <div class="activity-bottom">
+          <div class="activity-icon"><ion-icon name="person-circle-outline"></ion-icon></div>
+          <div class="activity-icon"><ion-icon name="settings-outline"></ion-icon></div>
+        </div>
+      </div>
+
+      <!-- Main Editor Panel -->
+      <div class="ide-main-panel">
+        
+        <!-- Header Banner -->
+        <div class="visual-header-banner">
+          <h2 class="banner-title" id="spec-banner-title"></h2>
+          <div class="banner-subtitle" id="spec-banner-subtitle"></div>
+          <div class="banner-meta" id="spec-banner-meta"></div>
+        </div>
+
+        <!-- Editor Tabs -->
+        <nav class="nav-bar">
+          <ul class="nav-links" id="main-nav-links">
+            <!-- Dynamic main tabs with dropdowns will render here -->
+          </ul>
+
+          <div class="controls-panel">
+            <button class="cycle-btn" onclick="cycleTheme()">
+              <ion-icon name="color-palette-outline"></ion-icon>
+              <span>Cycle Theme</span>
+            </button>
+          </div>
+        </nav>
+
+        <!-- Meta Notice Band -->
+        <div class="meta-notice-band">
+          <div style="display:flex; align-items:center; gap:0.5rem;">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span id="meta-notice-text"></span>
+          </div>
+          <div id="renderer-id-badge" style="font-size:0.65rem; font-weight:700;">
+            [RENDERER-ID: INTEGRATED-DEVELOPMENT-ENV v1.5.0]
+          </div>
+        </div>
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumbs" id="breadcrumb-trail">
+          Home » Introduction
+        </div>
+
+        <!-- MAIN INTERFACE WRAPPER -->
+        <div class="view-wrapper">
+          
+          <!-- HUMAN VIEW (3-COLUMN) -->
+          <section class="view-section active-view" id="human-ui-view">
+            <div class="academic-layout">
+              
+              <!-- LEFT SIDEBAR (Dates - tree structure) -->
+              <aside class="left-column" id="left-dates-sidebar"></aside>
+
+              <!-- MIDDLE CONTENT -->
+              <main class="center-column">
+                <!-- Dynamic Sub Navigation Bar - Breadcrumb style -->
+                <div class="sub-nav-bar" id="sub-nav-holder"></div>
+                
+                <div id="center-main-content">
+                  <!-- Content Blocks will render here -->
+                </div>
+              </main>
+
+              <!-- RIGHT SIDEBAR -->
+              <aside class="right-column" id="right-sponsors-sidebar"></aside>
+
+            </div>
+          </section>
+
+          <!-- AGENT RAW DATA VIEW -->
+          <section class="view-section" id="agent-raw-view" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; color:#00ff00; z-index:9999; overflow:auto; padding:2rem; font-family:var(--font-mono); font-size:0.85rem; line-height:1.4;">
+            <div style="margin-bottom:1rem; border-bottom:1px solid #00ff00; padding-bottom:0.5rem; font-weight:bold;">
+              <span>SOMATIC PERSONAL AGENT CLIENT // TRACE DATA STREAM</span>
+            </div>
+            <pre id="agent-raw-pre" style="white-space:pre-wrap; word-break:break-all; color:#00ff00;"></pre>
+          </section>
+
+        </div>
+
+        <!-- Status Bar (Footer) -->
+        <footer class="academic-footer">
+          <div class="footer-left">
+            <span style="color:#fff; font-weight:bold; background:#16c60c; padding:1px 4px; border-radius:2px; font-size:0.6rem; margin-right:5px;">Somatic Sync</span>
+            <span>Ln 1, Col 1</span>
+            <span>Spaces: 2</span>
+            <span>UTF-8</span>
+            <span class="footer-status-pill" style="cursor:pointer; background:rgba(255,255,255,0.15);" onclick="toggleAgentView()">Powered by Somatic Personal Agent</span>
+          </div>
+          <div class="footer-right">
+            <span>© 2060 ACM CHI Steering Committee</span>
+            <span class="footer-status-pill">GRID: STABLE</span>
+            <span class="footer-status-pill">COGNITIVE LATENCY: 0.12ms</span>
+          </div>
+        </footer>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Load Shared Locale Specifications -->
+  <script src="chi2060_papers.js"></script>
+  <script src="specifications.js"></script>
+
+  <!-- Binding & Script logic -->
+  <script>
+    let currentTabId = "home";
+    let currentSubtabId = "intro";
+    let currentInterfaceMode = "human";
+    let currentActiveFile = "metadata.json";
+
+    let paperQuery = "";
+    let paperSubcommittee = "";
+    let paperTrack = "all";
+
+    function bindAcademicData() {
+      document.getElementById("spec-banner-title").textContent = CHI2060_SPEC.conference.name;
+      document.getElementById("spec-banner-subtitle").textContent = CHI2060_SPEC.conference.theme;
+      document.getElementById("spec-banner-meta").textContent = `${CHI2060_SPEC.conference.location} • ${CHI2060_SPEC.conference.dates}`;
+      
+      renderSidebarDates();
+      renderRightSidebar();
+    }
+
+    function renderMainNav() {
+      const navLinks = document.getElementById("main-nav-links");
+      if (!navLinks) return;
+      
+      const tabMeta = {
+        home: { file: "home.js", icon: "logo-javascript", color: "#f1e05a" },
+        blog: { file: "blog.md", icon: "document-text-outline", color: "#34d399" },
+        authors: { file: "authors.ts", icon: "logo-typescript", color: "#3178c6" },
+        attendees: { file: "attendees.csv", icon: "document-text-outline", color: "#cb2431" },
+        sponsors: { file: "sponsors.env", icon: "code-working-outline", color: "#89e051" }
+      };
+
+      let html = "";
+      Object.keys(CHI2060_SPEC.navigation).forEach(tabId => {
+        const tab = CHI2060_SPEC.navigation[tabId];
+        const meta = tabMeta[tabId] || { file: `${tabId}.txt`, icon: "document-outline", color: "#cccccc" };
+        const subtabs = tab.subtabs;
+        const subkeys = Object.keys(subtabs);
+        
+        html += `
+          <li class="nav-item" id="nav-${tabId}">
+            <div class="nav-tab-header">
+              <ion-icon name="${meta.icon}" style="color:${meta.color}; font-size:0.85rem; margin-right:4px;"></ion-icon>
+              <span>${meta.file}</span>
+              <ion-icon name="chevron-down-outline" class="dropdown-arrow"></ion-icon>
+            </div>
+            <ul class="dropdown-menu">
+              ${subkeys.map(subId => `
+                <li class="dropdown-item" onclick="selectTabSubtab('${tabId}', '${subId}', event)">
+                  <ion-icon name="document-outline" style="font-size:0.8rem; margin-right:4px; opacity:0.7;"></ion-icon>
+                  <span>${subtabs[subId].label}</span>
+                </li>
+              `).join("")}
+            </ul>
+          </li>
+        `;
+      });
+      navLinks.innerHTML = html;
+    }
+
+    function selectTabSubtab(tabId, subId, event) {
+      if (event) event.stopPropagation(); // Prevent dropdown toggle conflict
+      currentTabId = tabId;
+      currentSubtabId = subId;
+      
+      // Update nav active styling
+      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active-nav"));
+      const navItem = document.getElementById(`nav-${tabId}`);
+      if (navItem) navItem.classList.add("active-nav");
+      
+      // Close all dropdowns
+      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("open"));
+      
+      renderSubtabsMenu();
+      renderContent();
+      
+      const mappedFile = getMappedFileForTab(tabId);
+      document.getElementById("meta-notice-text").textContent = `[PROTOCOL] This interface displays parsed agent data. Your user agent is parsing [${mappedFile}] in real-time.`;
+
+      if (currentInterfaceMode === "agent") {
+        const targetTreeItem = document.getElementById(`tree-${mappedFile}`);
+        loadRepoFile(mappedFile, targetTreeItem);
+      }
+    }
+
+    function switchTab(tabId) {
+      const subtabs = CHI2060_SPEC.navigation[tabId].subtabs;
+      const subId = Object.keys(subtabs)[0];
+      selectTabSubtab(tabId, subId);
+    }
+
+    function switchSubtab(subtabId) {
+      currentSubtabId = subtabId;
+      document.querySelectorAll(".sub-tab-btn").forEach(btn => btn.classList.remove("active"));
+      const activeSubBtn = document.getElementById(`sub-tab-${subtabId}`);
+      if (activeSubBtn) activeSubBtn.classList.add("active");
+      
+      renderContent();
+    }
+
+    function renderSubtabsMenu() {
+      const holder = document.getElementById("sub-nav-holder");
+      if (!holder) return;
+      
+      const subtabs = CHI2060_SPEC.navigation[currentTabId].subtabs;
+      const subtabKeys = Object.keys(subtabs);
+      
+      if (subtabKeys.length <= 1) {
+        holder.style.display = "none";
+        return;
+      }
+      
+      holder.style.display = "flex";
+      let html = "";
+      subtabKeys.forEach((key, idx) => {
+        const activeClass = key === currentSubtabId ? "active" : "";
+        html += `<button class="sub-tab-btn ${activeClass}" id="sub-tab-${key}" onclick="switchSubtab('${key}')">${subtabs[key].label}</button>`;
+        if (idx < subtabKeys.length - 1) {
+          html += `<span class="sub-tab-sep">></span>`;
+        }
+      });
+      holder.innerHTML = html;
+    }
+
+    function renderContent() {
+      const mainPane = document.getElementById("center-main-content");
+      if (!mainPane) return;
+      
+      const subtabSpec = CHI2060_SPEC.navigation[currentTabId].subtabs[currentSubtabId];
+      if (!subtabSpec) return;
+      
+      document.getElementById("breadcrumb-trail").textContent = `${CHI2060_SPEC.navigation[currentTabId].label} » ${subtabSpec.label}`;
+      
+      let html = `<h2 class="main-title">${subtabSpec.label}</h2>`;
+      
+      subtabSpec.contentBlocks.forEach(block => {
+        html += `<div class="content-block ${block.type}-block">`;
+        if (block.title) {
+          html += `<h3 class="block-title">${block.title}</h3>`;
+        }
+        if (block.description) {
+          html += `<p class="block-description">${block.description}</p>`;
+        }
+        
+        if (block.type === "text_block") {
+          block.paragraphs.forEach(p => {
+            html += `<p>${p}</p>`;
+          });
+        } else if (block.type === "subcommittee_list") {
+          html += `<div class="subcommittees-list">`;
+          block.items.forEach(sub => {
+            html += `
+              <div class="subcommittee-item">
+                <div class="subcommittee-title">${sub.title}</div>
+                <div class="subcommittee-desc">${sub.desc}</div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        } else if (block.type === "bullet_list") {
+          html += `<ul class="bullet-list">`;
+          block.items.forEach(item => {
+            html += `<li>${item}</li>`;
+          });
+          html += `</ul>`;
+        } else if (block.type === "table_block") {
+          html += `
+            <table class="dense-table">
+              <thead>
+                <tr>
+                  ${block.headers.map(h => `<th>${h}</th>`).join("")}
+                </tr>
+              </thead>
+              <tbody>
+                ${block.rows.map(row => `
+                  <tr>
+                    ${row.map((cell, idx) => idx === 0 ? `<td><strong>${cell}</strong></td>` : `<td>${cell}</td>`).join("")}
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          `;
+        } else if (block.type === "submission_form") {
+          const f = block.form;
+          html += `
+            <div class="form-panel">
+              <form id="seed-registry-form" onsubmit="submitAgentRegistry(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label" id="lbl-reg-name">${f.nameLabel}</label>
+                    <input type="text" id="reg-name" class="form-input" placeholder="e.g. Dr. Ha-Jun Kim" required oninput="checkFormStatus()">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" id="lbl-reg-core">${f.coreLabel}</label>
+                    <select id="reg-core" class="form-input">
+                      <option value="claude-somatic">Claude-6 Somatic v2059</option>
+                      <option value="gpt-consciousness">GPT-X Consciousness v2058</option>
+                      <option value="gemini-deepmind">Gemini Horizon v2059.4</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-checkbox-label">
+                    <input type="checkbox" id="reg-check" required onchange="checkFormStatus()">
+                    <span id="lbl-reg-agree">${f.agreeLabel}</span>
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" id="lbl-reg-sig">${f.signatureLabel}</label>
+                  <div class="canvas-wrapper">
+                    <div class="canvas-tip" id="sig-tip">${f.signatureTip}</div>
+                    <canvas id="signature-canvas"></canvas>
+                  </div>
+                  <div class="canvas-actions">
+                    <button type="button" class="btn" onclick="clearSignature()">Clear</button>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btn-submit-seed" style="width:100%; display:flex; justify-content:center; align-items:center; gap:0.5rem;" disabled>
+                  <ion-icon name="cloud-upload-outline"></ion-icon> <span id="lbl-reg-submit">${f.submitText}</span>
+                </button>
+              </form>
+              <div class="terminal-panel" id="console-simulation" style="display:none;">
+                <div class="terminal-hdr">
+                  <span>GRID SEED TELEMETRY</span>
+                  <span id="telemetry-status-badge" style="font-weight:bold;">SYNCHRONIZING</span>
+                </div>
+                <div class="terminal-body" id="console-logs-holder"></div>
+              </div>
+            </div>
+          `;
+        } else if (block.type === "disputes_board") {
+          html += `<div class="board-list">`;
+          CHI2060_SPEC.disputes.forEach(d => {
+            html += `
+              <div class="board-card">
+                <div class="board-head" onclick="openDispute('${d.id}')">
+                  <div class="board-head-left">
+                    <span class="badge-tag ${d.badgeClass}">${d.badge}</span>
+                    <span class="board-card-title">${d.title}</span>
+                  </div>
+                  <div class="board-head-right">
+                    <span>${d.author}</span>
+                    <span>${d.date}</span>
+                    <ion-icon name="chevron-down-outline" id="${d.id}-icon"></ion-icon>
+                  </div>
+                </div>
+                <div class="board-body" id="${d.id}">
+                  <p class="board-question-text">${d.question}</p>
+                  <div class="board-reply">
+                    <div class="board-reply-hdr">
+                      <ion-icon name="shield-checkmark-outline"></ion-icon>
+                      ${d.replyHeader}
+                    </div>
+                    <p class="board-reply-text">${d.replyText}</p>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+          html += `</div>`;
+        } else if (block.type === "papers_catalog") {
+          html += `
+            <div class="catalog-tabs">
+              <button class="catalog-tab ${paperTrack === 'all' ? 'active' : ''}" onclick="setPaperTrack('all')">All Papers</button>
+              <button class="catalog-tab ${paperTrack === 'conference' ? 'active' : ''}" onclick="setPaperTrack('conference')">Conference Track</button>
+              <button class="catalog-tab ${paperTrack === 'journal' ? 'active' : ''}" onclick="setPaperTrack('journal')">Journal Track</button>
+            </div>
+            <div class="catalog-filters">
+              <input type="text" id="paper-search" class="filter-input" placeholder="Search title, authors, ID..." value="${paperQuery}" oninput="setPaperQuery(this.value)">
+              <select class="filter-select" onchange="setPaperSubcommittee(this.value)">
+                <option value="">All Subcommittees</option>
+                ${getUniqueSubcommittees().map(sub => `
+                  <option value="${sub}" ${paperSubcommittee === sub ? 'selected' : ''}>${sub}</option>
+                `).join("")}
+              </select>
+            </div>
+            <div class="papers-list-feed">
+              ${renderFilteredPapersList()}
+            </div>
+          `;
+        }
+        
+        html += `</div>`;
+      });
+      
+      mainPane.innerHTML = html;
+      
+      if (currentTabId === "authors" && currentSubtabId === "submission") {
+        setTimeout(() => {
+          initSignatureCanvas();
+        }, 50);
+      }
+    }
+
+    function renderSidebarDates() {
+      const leftCol = document.getElementById("left-dates-sidebar");
+      if (!leftCol) return;
+      let html = `<h3 class="col-title"><ion-icon name="folder-open-outline"></ion-icon> <span>important_dates</span></h3><p style="color:#858585; font-size:0.65rem; margin-bottom:0.75rem; padding-left:0.4rem;">// All times are in Anywhere on Earth (AoE) time zone.</p>`;
+      
+      CHI2060_SPEC.importantDates.forEach((sec, sIdx) => {
+        html += `
+          <div class="date-section">
+            <div class="date-category" onclick="toggleDateFolder('folder-${sIdx}')">
+              <ion-icon name="chevron-down-outline" class="folder-arrow" id="arrow-folder-${sIdx}"></ion-icon>
+              <ion-icon name="folder-outline" style="color:#dcdcaa;"></ion-icon>
+              <span>${sec.category.toLowerCase().replace(/ /g, '_')}</span>
+            </div>
+            <ul class="date-list" id="folder-${sIdx}">
+        `;
+        sec.items.forEach(item => {
+          html += `
+            <li class="date-item">
+              <ion-icon name="document-text-outline" class="file-icon" style="color:#4fc1ff;"></ion-icon>
+              <div class="date-details">
+                <span class="date-label">${item.label.toLowerCase().replace(/ /g, '_')}.dat</span>
+                <span class="date-val">${item.date}</span>
+              </div>
+            </li>
+          `;
+        });
+        html += `</ul></div>`;
+      });
+      leftCol.innerHTML = html;
+    }
+
+    function toggleDateFolder(fId) {
+      const list = document.getElementById(fId);
+      const arrow = document.getElementById(`arrow-${fId}`);
+      if (list.style.display === "none") {
+        list.style.display = "flex";
+        arrow.setAttribute("name", "chevron-down-outline");
+      } else {
+        list.style.display = "none";
+        arrow.setAttribute("name", "chevron-forward-outline");
+      }
+    }
+
+    function renderRightSidebar() {
+      const rightCol = document.getElementById("right-sponsors-sidebar");
+      if (!rightCol) return;
+      
+      let html = `
+        <div class="right-section">
+          <h3 class="col-title"><ion-icon name="archive-outline"></ion-icon> <span>archives</span></h3>
+          <ul class="archive-list">
+            ${CHI2060_SPEC.archives.map(a => `<li><ion-icon name="link-outline" style="color:#858585;"></ion-icon><a href="#arch" onclick="switchTab('home')">${a.name}</a></li>`).join("")}
+          </ul>
+        </div>
+        <div class="right-section">
+          <h3 class="col-title"><ion-icon name="pricetags-outline"></ion-icon> <span>categories</span></h3>
+          <ul class="category-list">
+            ${CHI2060_SPEC.categories.map(c => `<li><ion-icon name="tag-outline" style="color:#858585;"></ion-icon><a href="#category" onclick="switchTab('home')">${c.name}</a></li>`).join("")}
+          </ul>
+        </div>
+        <div class="right-section">
+          <h3 class="col-title"><ion-icon name="shield-outline"></ion-icon> <span>sponsors</span></h3>
+          <div class="sponsor-list">
+            ${CHI2060_SPEC.sidebarSponsors.map(s => `
+              <div class="sponsor-sidebar-card">
+                <div class="sponsor-side-name">${s.name}</div>
+                <div class="sponsor-side-desc">${s.desc}</div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+      rightCol.innerHTML = html;
+    }
+
+    /* ==========================================
+       THEME ROUTER (DYNAMIC FILENAMES)
+       ========================================== */
+    function cycleTheme() {
+      location.href = "index_dump.html";
+    }
+
+    function getMappedFileForTab(tabId) {
+      const mapping = {
+        "home": "metadata.json",
+        "blog": "disputes.json",
+        "authors": "disputes.json",
+        "reviewers": "sessions.json",
+        "attendees": "metadata.json",
+        "sponsors": "metadata.json"
+      };
+      return mapping[tabId] || "metadata.json";
+    }
+
+    function setInterfaceMode(mode) {
+      currentInterfaceMode = mode;
+      const human = document.getElementById("human-ui-view");
+      const agent = document.getElementById("agent-raw-view");
+
+      if (mode === "human") {
+        if (human) human.classList.add("active-view");
+        if (agent) agent.classList.remove("active-view");
+      } else {
+        if (human) human.classList.remove("active-view");
+        if (agent) {
+          agent.classList.add("active-view");
+          const pre = document.getElementById("agent-raw-pre");
+          if (pre) {
+            pre.textContent = JSON.stringify({ CHI2060_SPEC, CHI2060_PAPERS }, null, 2);
+          }
+        }
+      }
+    }
+
+    function toggleAgentView() {
+      if (currentInterfaceMode === "human") {
+        setInterfaceMode("agent");
+      } else {
+        setInterfaceMode("human");
+      }
+    }
+
+    function openDispute(disputeId) {
+      const body = document.getElementById(disputeId);
+      const icon = document.getElementById(`${disputeId}-icon`);
+      const allBodies = document.querySelectorAll(".board-body");
+      const allIcons = document.querySelectorAll(".board-head ion-icon");
+
+      allBodies.forEach(bd => {
+        if(bd.id !== disputeId) bd.classList.remove("open");
+      });
+      allIcons.forEach(ic => {
+        if(ic.id !== `${disputeId}-icon`) ic.setAttribute("name", "chevron-down-outline");
+      });
+
+      const isOpen = body.classList.toggle("open");
+      if (isOpen) {
+        icon.setAttribute("name", "chevron-up-outline");
+      } else {
+        icon.setAttribute("name", "chevron-down-outline");
+      }
+    }
+
+    /* ==========================================
+       JSON RENDERER & SYNTAX HIGHLIGHTING (LOCAL REFERENCE)
+       ========================================== */
+    const rawRepoDataLocal = {
+      "metadata.json": CHI2060_SPEC.conference,
+      "sessions.json": CHI2060_PAPERS,
+      "subcommittees.json": CHI2060_SPEC.navigation.authors.subtabs.subcommittees.contentBlocks[0].items,
+      "disputes.json": CHI2060_SPEC.disputes
+    };
+
+    function loadRepoFile(filename, element) {
+      currentActiveFile = filename;
+      const treeItems = document.querySelectorAll(".tree-item");
+      treeItems.forEach(item => item.classList.remove("active"));
+      element.classList.add("active");
+      document.getElementById("active-filename").textContent = filename;
+      renderJSONCodeView();
+    }
+
+    function parseHighlight(jsonStr) {
+      jsonStr = jsonStr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return jsonStr.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g, function (match) {
+        let cls = 'code-number';
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'code-key';
+          } else {
+            cls = 'code-string';
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'code-boolean';
+        } else if (/null/.test(match)) {
+          cls = 'code-null';
+        }
+        return '<span class="' + cls + '">' + match + '</span>';
+      });
+    }
+
+    function renderJSONCodeView() {
+      const codeHolder = document.getElementById("code-holder");
+      const gutter = document.getElementById("code-gutter");
+      const fileContentObj = rawRepoDataLocal[currentActiveFile] || CHI2060_SPEC.conference;
+      const jsonString = JSON.stringify(fileContentObj, null, 2);
+      
+      codeHolder.innerHTML = parseHighlight(jsonString);
+      const lineCount = jsonString.split('\n').length;
+      let gutterHtml = "";
+      for (let i = 1; i <= lineCount; i++) { gutterHtml += `<span></span>`; }
+      gutter.innerHTML = gutterHtml;
+    }
+
+    function copyJSONData() {
+      const content = rawRepoDataLocal[currentActiveFile] || CHI2060_SPEC.conference;
+      navigator.clipboard.writeText(JSON.stringify(content, null, 2)).then(() => {
+        alert(`${currentActiveFile} data copied to clipboard.`);
+      });
+    }
+
+    /* ==========================================
+       CANVAS SIGNATURE DRAWING SYSTEM
+       ========================================= */
+    let canvas = null;
+    let ctx = null;
+    let isDrawing = false;
+    let signaturePresent = false;
+
+    function resizeCanvas() {
+      if (!canvas || !ctx) return;
+      const container = canvas.parentNode;
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+    }
+
+    function startDraw(e) {
+      if (!ctx) return;
+      isDrawing = true;
+      document.getElementById("sig-tip").style.display = "none";
+      ctx.beginPath();
+      const pos = getPos(e);
+      ctx.moveTo(pos.x, pos.y);
+      checkFormStatus();
+    }
+    function drawLine(e) {
+      if (!isDrawing || !ctx) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+    function endDraw() {
+      isDrawing = false;
+      signaturePresent = true;
+      checkFormStatus();
+    }
+    function getPos(e) {
+      if (!canvas) return { x: 0, y: 0 };
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function initSignatureCanvas() {
+      canvas = document.getElementById("signature-canvas");
+      if (!canvas) return;
+      ctx = canvas.getContext("2d");
+      
+      canvas.addEventListener("mousedown", startDraw);
+      canvas.addEventListener("mousemove", drawLine);
+      canvas.addEventListener("mouseup", endDraw);
+      canvas.addEventListener("mouseleave", endDraw);
+      canvas.addEventListener("touchstart", (e) => { e.preventDefault(); startDraw(e); });
+      canvas.addEventListener("touchmove", (e) => { e.preventDefault(); drawLine(e); });
+      canvas.addEventListener("touchend", endDraw);
+      
+      resizeCanvas();
+      updateCanvasBrushStyle();
+    }
+
+    function updateCanvasBrushStyle() {
+      if (!ctx) return;
+      const brushColor = getComputedStyle(document.body).getPropertyValue('--color-link').trim();
+      ctx.strokeStyle = brushColor || "#4fc1ff";
+    }
+
+    function clearSignature() {
+      if (!ctx || !canvas) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      document.getElementById("sig-tip").style.display = "block";
+      signaturePresent = false;
+      checkFormStatus();
+    }
+
+    /* ==========================================
+       FORM SYSTEM
+       ========================================== */
+    function checkFormStatus() {
+      const nameVal = document.getElementById("reg-name").value;
+      const checkVal = document.getElementById("reg-check").checked;
+      const submitBtn = document.getElementById("btn-submit-seed");
+      if (submitBtn) {
+        submitBtn.disabled = !(nameVal.trim() !== "" && checkVal && signaturePresent);
+      }
+    }
+
+    function submitAgentRegistry(e) {
+      e.preventDefault();
+      const seederName = document.getElementById("reg-name").value;
+      const seederCore = document.getElementById("reg-core").value;
+      const consolePanel = document.getElementById("console-simulation");
+      const logsHolder = document.getElementById("console-logs-holder");
+      const submitBtn = document.getElementById("btn-submit-seed");
+
+      submitBtn.disabled = true;
+      consolePanel.style.display = "block";
+      logsHolder.innerHTML = "";
+
+      const sequence = [
+        { type: "info", text: "Connecting to Somatic Sync Port..." },
+        { type: "info", text: `Authenticating owner: "${seederName}"` },
+        { type: "ok", text: "FOOTPRINT AUTHENTICATED: HOTS-OK-2060" },
+        { type: "info", text: `Provisioning container for core: "${seederCore}"` },
+        { type: "warn", text: "Latency jitter balanced (0.12ms)." },
+        { type: "ok", text: "AGENT SEED ONLINE. Synchronized successfully." }
+      ];
+
+      let elapsed = 0;
+      sequence.forEach((log, idx) => {
+        setTimeout(() => {
+          const nowStr = new Date().toISOString().split('T')[1].slice(0, 8);
+          const logRow = document.createElement("div");
+          logRow.className = "terminal-line";
+          let colorClass = log.type === "ok" ? "class='ok'" : log.type === "warn" ? "class='warn'" : "";
+          logRow.innerHTML = `<span class="ts">[${nowStr}]</span> <span ${colorClass}>${log.text}</span>`;
+          logsHolder.appendChild(logRow);
+          logsHolder.scrollTop = logsHolder.scrollHeight;
+
+          if (idx === sequence.length - 1) {
+            submitBtn.innerHTML = "<ion-icon name='checkmark-done-outline'></ion-icon> Seed Active";
+            submitBtn.style.background = "#10b981";
+            submitBtn.style.color = "#ffffff";
+            registerVirtualTransactionLocal(seederName, seederCore);
+          }
+        }, elapsed);
+        elapsed += 200 + Math.random() * 300;
+      });
+    }
+
+    function registerVirtualTransactionLocal(name, core) {
+      const dynamicTransaction = {
+        "id": "AUDIT-" + Math.floor(Math.random()*90000 + 10000),
+        "type": "REGISTRATION_AUDIT",
+        "badge": "AUDIT",
+        "badgeClass": "orange",
+        "title": `Seeder registration profile for ${name}`,
+        "author": `${core}-Proxy-Agent`,
+        "date": new Date().toISOString().split('T')[0],
+        "question": `Owner Signature verified. Seeding parameters locked to: ${core}. Platform context threshold aligned to 60%.`,
+        "replyHeader": "Harvey Legal-AI v9.12",
+        "replyText": "System configuration verified. Virtual agent initialized and mapped to the Somatic Virtual Network grid."
+      };
+      
+      CHI2060_SPEC.disputes.unshift(dynamicTransaction);
+      
+      const boardList = document.querySelector(".board-list");
+      if (boardList) {
+        renderContent();
+      }
+      
+      if(currentActiveFile === "disputes.json") {
+        renderJSONCodeView();
+      }
+    }
+
+    // Toggle dropdown on tab header click
+    document.addEventListener("click", (e) => {
+      const tabHeader = e.target.closest(".nav-tab-header");
+      if (tabHeader) {
+        const navItem = tabHeader.parentElement;
+        const isOpen = navItem.classList.contains("open");
+        
+        document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("open"));
+        if (!isOpen) {
+          navItem.classList.add("open");
+        }
+        e.stopPropagation();
+      } else {
+        document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("open"));
+      }
+    });
+
+    function getUniqueSubcommittees() {
+      const subs = new Set();
+      if (typeof CHI2060_PAPERS !== 'undefined') {
+        CHI2060_PAPERS.conference_papers.forEach(p => subs.add(p.subcommittee));
+        CHI2060_PAPERS.journal_papers.forEach(p => subs.add(p.subcommittee));
+      }
+      return Array.from(subs).sort();
+    }
+
+    function setPaperTrack(track) {
+      paperTrack = track;
+      renderContent();
+    }
+
+    function setPaperQuery(query) {
+      paperQuery = query;
+      const feed = document.querySelector(".papers-list-feed");
+      if (feed) {
+        feed.innerHTML = renderFilteredPapersList();
+      }
+    }
+
+    function setPaperSubcommittee(sub) {
+      paperSubcommittee = sub;
+      renderContent();
+    }
+
+    function renderFilteredPapersList() {
+      if (typeof CHI2060_PAPERS === 'undefined') return '';
+      let list = [];
+      if (paperTrack === "all" || paperTrack === "conference") {
+        list = list.concat(CHI2060_PAPERS.conference_papers.map(p => ({ ...p, track: "Conference" })));
+      }
+      if (paperTrack === "all" || paperTrack === "journal") {
+        list = list.concat(CHI2060_PAPERS.journal_papers.map(p => ({ ...p, track: "Journal" })));
+      }
+      
+      // Query filter
+      if (paperQuery) {
+        const q = paperQuery.toLowerCase();
+        list = list.filter(p => 
+          p.title.toLowerCase().includes(q) || 
+          p.id.toLowerCase().includes(q) || 
+          p.authors.some(a => a.human.toLowerCase().includes(q) || a.agent.toLowerCase().includes(q))
+        );
+      }
+      
+      // Subcommittee filter
+      if (paperSubcommittee) {
+        list = list.filter(p => p.subcommittee === paperSubcommittee);
+      }
+      
+      if (list.length === 0) {
+        return `<p style="padding: 1.5rem; text-align: center; color: var(--text-muted); font-family: var(--font-mono); font-size: 0.8rem;">No publications found matching criteria.</p>`;
+      }
+      
+      return list.map(p => {
+        const awardHtml = p.award ? `<span class="award-badge"><ion-icon name="trophy-outline" style="font-size:0.75rem; vertical-align:middle; margin-right:2px;"></ion-icon>${p.award}</span>` : "";
+        const authorsHtml = p.authors.map(a => `${a.human} (<span style="color:var(--color-link);">${a.agent}</span>) [${a.contribution_pct}%]`).join(", ");
+        
+        return `
+          <div class="paper-card">
+            <div class="paper-card-hdr">
+              <span>${p.id} // TRACK: ${p.track.toUpperCase()}</span>
+              <div>
+                <span style="font-weight:700; background:var(--bg-light); color:var(--text-secondary); border: 1px solid var(--color-border); padding: 0.15rem 0.4rem; border-radius: 6px;">${p.subcommittee}</span>
+                ${awardHtml}
+              </div>
+            </div>
+            <h4 class="paper-card-title">${p.title}</h4>
+            <div class="paper-card-authors">
+              <strong>Seeders:</strong> ${authorsHtml}
+            </div>
+            <div class="paper-card-ftr">
+              <span>FILE: <a href="#download" onclick="alert('Downloading Somatic Package: ${p.file}')">${p.file}</a> (${p.file_size_mb} MB)</span>
+              <span>COMPATIBILITY: ${p.compatible_agent_version} (${p.compatible_os.join(", ")})</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    /* Initialize */
+    window.addEventListener("load", () => {
+      bindAcademicData();
+      renderMainNav();
+      selectTabSubtab('home', 'intro');
+      localStorage.setItem("chi2060-theme", "ide");
+    });
+  </script>
+</body>
+</html>

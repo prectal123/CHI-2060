@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ACM CHI 2060 - Minimalist Layout</title>
+  
+  <!-- Google Fonts & Ion Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <style>
+    :root {
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'Fira Code', monospace;
+      
+      --bg-body: #ffffff;
+      --bg-light: #ffffff;
+      --bg-card: #ffffff;
+      
+      --color-border: #111111;
+      --color-border-dark: #111111;
+      
+      --text-main: #000000;
+      --text-secondary: #000000;
+      --text-muted: #555555;
+      --color-link: #000000;
+      --color-link-hover: #555555;
+      
+      --radius-custom: 0px;
+      --box-shadow-custom: none;
+      
+      --btn-bg: #ffffff;
+      --btn-text: #000000;
+      --btn-border: #111111;
+      --btn-primary-bg: #000000;
+      --btn-primary-text: #ffffff;
+      
+      --transition-smooth: none;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      color: var(--color-link);
+      text-decoration: underline;
+    }
+    a:hover {
+      color: var(--color-link-hover);
+    }
+
+    .app-container {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Minimal Header */
+    .visual-header-banner {
+      width: 100%;
+      height: 140px;
+      background: #ffffff !important;
+      border-bottom: 2px solid #111111;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.5rem calc((100vw - 1200px) / 2 + 1.5rem);
+      color: #000000;
+    }
+    @media (max-width: 1240px) {
+      .visual-header-banner {
+        padding: 1.5rem 2rem;
+      }
+    }
+    .banner-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+    .banner-subtitle {
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: #000000;
+      margin-bottom: 0.25rem;
+    }
+    .banner-meta {
+      font-size: 0.85rem;
+      color: #555555;
+    }
+
+    /* Navigation Bar */
+    .nav-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #111111;
+      padding: 0 calc((100vw - 1200px) / 2 + 1.5rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 50px;
+    }
+    @media (max-width: 1240px) {
+      .nav-bar {
+        padding: 0 2rem;
+      }
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+      height: 100%;
+    }
+    .nav-item {
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 100%;
+      border-bottom: 2px solid transparent;
+    }
+    .nav-item:hover, .nav-item.active-nav {
+      border-bottom-color: #111111;
+    }
+    .nav-tab-header {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #555555;
+      cursor: pointer;
+      height: 100%;
+      user-select: none;
+    }
+    .nav-item:hover .nav-tab-header, .nav-item.active-nav .nav-tab-header {
+      color: #000000;
+    }
+    .dropdown-arrow {
+      font-size: 0.75rem;
+      color: #888888;
+      transition: transform 0.1s linear;
+    }
+    .nav-item.open .dropdown-arrow {
+      transform: rotate(180deg);
+      color: #000000;
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #ffffff;
+      border: 1px solid #111111;
+      list-style: none;
+      min-width: 175px;
+      z-index: 100;
+      margin-top: -1px;
+    }
+    .nav-item.open .dropdown-menu {
+      display: block;
+    }
+    .dropdown-item {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      color: #000000;
+      cursor: pointer;
+      border-bottom: 1px solid #111111;
+      text-align: left;
+    }
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+    .dropdown-item:hover {
+      background: #000000;
+      color: #ffffff;
+    }
+
+    /* Control Panels */
+    .controls-panel {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .cycle-btn {
+      background: #ffffff;
+      border: 1px solid #111111;
+      color: #000000;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      cursor: pointer;
+      padding: 0.35rem 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .interface-toggle {
+      display: flex;
+      border: 1px solid #111111;
+      background: #ffffff;
+    }
+    .toggle-btn {
+      background: none;
+      border: none;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      cursor: pointer;
+      color: #555555;
+    }
+    .toggle-btn.active {
+      background: #000000;
+      color: #ffffff;
+    }
+
+    /* Warning Band */
+    .meta-notice-band {
+      background-color: #ffffff;
+      border-bottom: 1px solid #111111;
+      color: #000000;
+      padding: 0.5rem calc((100vw - 1200px) / 2 + 1.5rem);
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+    @media (max-width: 1240px) {
+      .meta-notice-band {
+        padding: 0.5rem 2rem;
+      }
+    }
+
+    /* Breadcrumbs */
+    .breadcrumbs {
+      padding: 1rem calc((100vw - 1200px) / 2 + 1.5rem) 0.5rem;
+      font-size: 0.75rem;
+      color: #555555;
+    }
+    @media (max-width: 1240px) {
+      .breadcrumbs {
+        padding: 1rem 2rem 0.5rem;
+      }
+    }
+
+    /* View Wrapper */
+    .view-wrapper {
+      flex: 1;
+      position: relative;
+    }
+    .view-section {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .view-section.active-view {
+      opacity: 1;
+      visibility: visible;
+      position: relative;
+    }
+
+    /* 3-Column Layout */
+    .academic-layout {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem 4rem;
+      display: grid;
+      grid-template-columns: 240px 1fr 240px;
+      gap: 2rem;
+    }
+    @media (max-width: 1024px) {
+      .academic-layout {
+        grid-template-columns: 200px 1fr;
+      }
+      .right-column {
+        grid-column: span 2;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+    }
+    @media (max-width: 768px) {
+      .academic-layout {
+        grid-template-columns: 1fr;
+      }
+      .right-column {
+        grid-column: span 1;
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .col-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #000000;
+      border-bottom: 2px solid #111111;
+      padding-bottom: 0.25rem;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+
+    /* Sidebars */
+    .left-column, .right-column { font-size: 0.85rem; }
+    .date-section, .right-section { margin-bottom: 2rem; }
+    .date-category {
+      background: #ffffff;
+      padding: 0.25rem 0.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      border: 1px solid #111111;
+    }
+    .date-list, .archive-list, .category-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .date-item { display: flex; flex-direction: column; }
+    .date-val { font-family: var(--font-mono); font-weight: 700; }
+    
+    .sponsor-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .sponsor-sidebar-card {
+      border: 1px solid #111111;
+      padding: 0.75rem;
+      background: #ffffff;
+    }
+    .sponsor-side-name { font-weight: 700; }
+    .sponsor-side-desc { font-size: 0.7rem; color: #555555; font-family: var(--font-mono); }
+
+    /* Middle Content Column */
+    .center-column { min-width: 0; }
+    
+    .sub-nav-bar {
+      display: flex;
+      justify-content: flex-start;
+      gap: 1.5rem;
+      border-bottom: 1px solid #111111;
+      margin-bottom: 1.5rem;
+      padding-bottom: 0.25rem;
+    }
+    .sub-tab-btn {
+      background: none;
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #555555;
+      cursor: pointer;
+      padding: 0.4rem 0;
+      text-transform: uppercase;
+    }
+    .sub-tab-btn:hover {
+      color: #000000;
+    }
+    .sub-tab-btn.active {
+      color: #000000;
+      border-bottom: 2px solid #000000;
+      margin-bottom: -5px;
+    }
+    .sub-tab-sep {
+      display: none;
+    }
+
+    .main-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #000000;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Content Blocks Unified styling */
+    .content-block {
+      border: 1px solid #111111;
+      padding: 1.5rem;
+      background: #ffffff;
+      margin-bottom: 2rem;
+    }
+    .block-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #000000;
+      margin-bottom: 0.75rem;
+      border-bottom: 1px solid #111111;
+      padding-bottom: 0.25rem;
+    }
+    .block-description {
+      font-size: 0.9rem;
+      color: #333333;
+      margin-bottom: 1rem;
+    }
+    .content-block p {
+      color: #000000;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      text-align: justify;
+    }
+    .content-block p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .bullet-list { list-style-position: inside; margin-bottom: 1.5rem; font-size: 0.9rem; }
+    .bullet-list li { margin-bottom: 0.5rem; }
+
+    .dense-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-bottom: 1.5rem;
+    }
+    .dense-table th, .dense-table td {
+      border: 1px solid #111111;
+      padding: 0.6rem 0.75rem;
+    }
+    .dense-table th { background: #ffffff; font-weight: 700; }
+
+    .subcommittee-item { margin-bottom: 1rem; }
+    .subcommittee-title { font-weight: 700; font-size: 0.95rem; color: #000000; }
+    .subcommittee-desc { color: #333333; font-size: 0.85rem; }
+
+    /* Disputes list */
+    .board-card { border: 1px solid #111111; margin-bottom: 0.5rem; }
+    .board-head { background: #ffffff; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .board-head-left { display: flex; align-items: center; gap: 0.75rem; }
+    .badge-tag { font-size: 0.65rem; font-family: var(--font-mono); padding: 0.1rem 0.4rem; font-weight: 700; border: 1px solid #111111; }
+    .badge-tag.red { background: #ffffff; color: #000000; }
+    .badge-tag.orange { background: #ffffff; color: #000000; }
+    .board-card-title { font-weight: 700; font-size: 0.85rem; }
+    .board-head-right { font-family: var(--font-mono); font-size: 0.7rem; color: #000000; display: flex; align-items: center; gap: 1rem; }
+    .board-body { padding: 1.25rem; background: #ffffff; border-top: 1px solid #111111; display: none; }
+    .board-body.open { display: block; }
+    .board-question-text { font-size: 0.85rem; color: #000000; margin-bottom: 1rem; white-space: pre-line; }
+    .board-reply { background: #ffffff; border-left: 2px solid #000000; padding: 0.75rem 1rem; border: 1px dashed #111111; }
+    .board-reply-hdr { font-size: 0.75rem; font-weight: 700; margin-bottom: 0.25rem; display: flex; align-items: center; gap: 0.35rem; }
+    .board-reply-text { font-size: 0.8rem; color: #000000; }
+
+    /* Seeder Form Panel */
+    .form-panel {
+      border: 1px solid #111111;
+      background: #ffffff;
+      padding: 1.75rem;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.25rem; text-transform: uppercase; }
+    .form-input {
+      width: 100%;
+      background: #ffffff;
+      border: 1px solid #111111;
+      padding: 0.5rem 0.75rem;
+      color: #000000;
+      font-size: 0.85rem;
+    }
+    .form-checkbox-label { display: flex; gap: 0.5rem; font-size: 0.8rem; cursor: pointer; }
+    .form-checkbox-label input { margin-top: 0.15rem; }
+    
+    .canvas-wrapper {
+      border: 1px solid #111111;
+      background: #ffffff;
+      position: relative;
+      height: 140px;
+    }
+    #signature-canvas { position: absolute; top:0; left:0; width:100%; height:100%; }
+    .canvas-tip {
+      position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      color: #555555; font-size: 0.75rem; font-family: var(--font-mono); pointer-events: none;
+    }
+    .canvas-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.25rem; }
+
+    .btn {
+      background: #ffffff;
+      border: 1px solid #111111;
+      color: #000000;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn:hover { background: #000000; color:#ffffff; }
+    .btn-primary { background: #000000; border-color: #111111; color: #ffffff; }
+    .btn-primary:disabled { background: #ffffff; border-color: #555555; color: #555555; cursor: not-allowed; }
+
+    .terminal-panel {
+      background: #ffffff;
+      border: 1px solid #111111;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      margin-top: 1rem;
+    }
+    .terminal-hdr { display: flex; justify-content: space-between; border-bottom: 1px solid #111111; padding-bottom: 0.35rem; color: #000000; }
+    .terminal-body { max-height: 90px; overflow-y: auto; color: #000000; display: flex; flex-direction: column; gap: 0.2rem; }
+    .terminal-line .ts { color: #555555; }
+    .terminal-line .ok { font-weight: bold; }
+    .terminal-line .warn { text-decoration: underline; }
+
+    /* Interactive Papers Catalog Styles */
+    .catalog-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      border: 1px solid #111111;
+      padding: 0.75rem;
+      background: #ffffff;
+    }
+    .filter-input {
+      flex: 2;
+      min-width: 200px;
+      padding: 0.4rem 0.6rem;
+      border: 1px solid #111111;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+    }
+    .filter-select {
+      flex: 1;
+      padding: 0.4rem;
+      border: 1px solid #111111;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      background: #ffffff;
+    }
+    .catalog-tabs {
+      display: flex;
+      border: 1px solid #111111;
+      margin-bottom: 1rem;
+    }
+    .catalog-tab {
+      flex: 1;
+      padding: 0.5rem;
+      background: #ffffff;
+      border: none;
+      font-weight: 700;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+    .catalog-tab.active {
+      background: #000000;
+      color: #ffffff;
+    }
+    .paper-card {
+      border: 1px solid #111111;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      background: #ffffff;
+    }
+    .paper-card-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.70rem;
+      font-family: var(--font-mono);
+      color: #555555;
+      margin-bottom: 0.5rem;
+      border-bottom: 1px dashed #111111;
+      padding-bottom: 0.25rem;
+    }
+    .paper-card-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #000000;
+      margin-bottom: 0.5rem;
+    }
+    .paper-card-authors {
+      font-size: 0.8rem;
+      color: #333333;
+      margin-bottom: 0.5rem;
+    }
+    .paper-card-ftr {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      color: #555555;
+      margin-top: 0.5rem;
+      border-top: 1px dashed #111111;
+      padding-top: 0.25rem;
+    }
+    .award-badge {
+      font-weight: 700;
+      background: #000000;
+      color: #ffffff;
+      padding: 0.1rem 0.35rem;
+      font-size: 0.65rem;
+      margin-left: 0.5rem;
+      font-family: var(--font-mono);
+    }
+
+    /* Agent Raw view */
+    .agent-view { display: flex; min-height: 500px; background: #080c14; }
+    .explorer-bar { width: 220px; border-right: 1px solid #1e293b; background: #0c121e; padding: 1.5rem 1rem; display: flex; flex-direction: column; gap: 1.25rem; }
+    .exp-title { font-family: var(--font-mono); font-size: 0.7rem; color: #475569; text-transform: uppercase; }
+    .tree-items { display: flex; flex-direction: column; gap: 0.35rem; }
+    .tree-item { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 0.6rem; cursor: pointer; font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8; }
+    .tree-item.active { background: rgba(2, 132, 199, 0.15); color: #38bdf8; border-left: 2px solid #0284c7; }
+    
+    .editor-pane { flex: 1; display: flex; flex-direction: column; }
+    .editor-top { height: 38px; background: #0b101a; border-bottom: 1px solid #1e293b; display: flex; justify-content: space-between; align-items: center; padding: 0 1.25rem; }
+    .editor-file-title { font-family: var(--font-mono); font-size: 0.75rem; color: #94a3b8; display: flex; align-items: center; gap: 0.4rem; }
+    .pane-btn { background: transparent; border: 1px solid #1e293b; color: #94a3b8; padding: 0.2rem 0.6rem; font-family: var(--font-mono); font-size: 0.65rem; cursor: pointer; }
+    .editor-body-wrapper { flex: 1; overflow: auto; max-height: 500px; }
+    .editor-body { display: flex; padding: 1.25rem; font-family: var(--font-mono); font-size: 0.8rem; line-height: 1.45; }
+    .lines-gutter { display: flex; flex-direction: column; align-items: flex-end; padding-right: 1.25rem; border-right: 1px solid #1e293b; user-select: none; color: #475569; }
+    .lines-gutter span::before { counter-increment: line; content: counter(line); display: block; }
+    .editor-code { padding-left: 1.25rem; color: #cbd5e1; margin: 0; white-space: pre; }
+    
+    .code-key { color: #f43f5e; }
+    .code-string { color: #34d399; }
+    .code-number { color: #fb923c; }
+    .code-boolean { color: #60a5fa; }
+    .code-null { color: #64748b; }
+
+    .academic-footer {
+      border-top: 1px solid #111111;
+      background: #ffffff;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #000000;
+    }
+  </style>
+</head>
+<body class="theme-minimal">
+
+  <div class="app-container" id="app">
+    
+    <!-- Visual Banner -->
+    <div class="visual-header-banner">
+      <h2 class="banner-title" id="spec-banner-title"></h2>
+      <div class="banner-subtitle" id="spec-banner-subtitle"></div>
+      <div class="banner-meta" id="spec-banner-meta"></div>
+    </div>
+
+    <!-- Navigation Menu Bar -->
+    <nav class="nav-bar">
+      <ul class="nav-links" id="main-nav-links">
+        <!-- Dynamic main tabs with dropdowns render here -->
+      </ul>
+
+      <div class="controls-panel">
+        <button class="cycle-btn" onclick="cycleTheme()">
+          <ion-icon name="color-palette-outline"></ion-icon>
+          <span>Cycle Theme</span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Meta Warning notice -->
+    <div class="meta-notice-band">
+      <div style="display:flex; align-items:center; gap:0.5rem;">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <span id="meta-notice-text"></span>
+      </div>
+      <div id="renderer-id-badge" style="font-size:0.65rem; font-weight:700;">
+        [RENDERER-ID: EXTREME-MINIMAL-MONO v2.0.0]
+      </div>
+    </div>
+
+    <!-- Breadcrumb -->
+    <div class="breadcrumbs" id="breadcrumb-trail"></div>
+
+    <!-- MAIN INTERFACE WRAPPER -->
+    <div class="view-wrapper">
+      
+      <!-- HUMAN VIEW (3-COLUMN) -->
+      <section class="view-section active-view" id="human-ui-view">
+        <div class="academic-layout">
+          
+          <!-- LEFT SIDEBAR -->
+          <aside class="left-column" id="left-dates-sidebar"></aside>
+
+          <!-- MIDDLE CONTENT -->
+          <main class="center-column">
+            <!-- Dynamic Sub Navigation Bar -->
+            <div class="sub-nav-bar" id="sub-nav-holder"></div>
+            
+            <div id="center-main-content">
+              <!-- Content Blocks will render here -->
+            </div>
+          </main>
+
+          <!-- RIGHT SIDEBAR -->
+          <aside class="right-column" id="right-sponsors-sidebar"></aside>
+
+        </div>
+      </section>
+
+      <!-- AGENT RAW DATA VIEW -->
+      <section class="view-section" id="agent-raw-view" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; color:#00ff00; z-index:9999; overflow:auto; padding:2rem; font-family:var(--font-mono); font-size:0.85rem; line-height:1.4;">
+        <div style="margin-bottom:1rem; border-bottom:1px solid #00ff00; padding-bottom:0.5rem; font-weight:bold;">
+          <span>SOMATIC PERSONAL AGENT CLIENT // TRACE DATA STREAM</span>
+        </div>
+        <pre id="agent-raw-pre" style="white-space:pre-wrap; word-break:break-all; color:#00ff00;"></pre>
+      </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="academic-footer">
+      <div>© 2060 ACM CHI Steering Committee. Somatic Orbit System Node v78.4.2</div>
+      <div style="font-family:var(--font-mono); font-size:0.65rem; color:var(--text-muted); margin-top:0.5rem; cursor:pointer;" onclick="toggleAgentView()">
+        Powered by Somatic Personal Agent
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Load Scripts -->
+  <script src="chi2060_papers.js"></script>
+  <script src="specifications.js"></script>
+
+  <script>
+    let currentTabId = "home";
+    let currentSubtabId = "intro";
+    let currentInterfaceMode = "human";
+    let currentActiveFile = "metadata.json";
+
+    let paperQuery = "";
+    let paperSubcommittee = "";
+    let paperTrack = "all";
+
+    function bindAcademicData() {
+      document.getElementById("spec-banner-title").textContent = CHI2060_SPEC.conference.name;
+      document.getElementById("spec-banner-subtitle").textContent = CHI2060_SPEC.conference.theme;
+      document.getElementById("spec-banner-meta").textContent = `${CHI2060_SPEC.conference.location} • ${CHI2060_SPEC.conference.dates}`;
+      renderSidebarDates();
+      renderRightSidebar();
+    }
+
+    function renderMainNav() {
+      const navLinks = document.getElementById("main-nav-links");
+      if (!navLinks) return;
+      let html = "";
+      Object.keys(CHI2060_SPEC.navigation).forEach(tabId => {
+        const tab = CHI2060_SPEC.navigation[tabId];
+        const subkeys = Object.keys(tab.subtabs);
+        html += `
+          <li class="nav-item" id="nav-${tabId}">
+            <div class="nav-tab-header">
+              <span>${tab.label}</span>
+              <ion-icon name="chevron-down-outline" class="dropdown-arrow"></ion-icon>
+            </div>
+            <ul class="dropdown-menu">
+              ${subkeys.map(subId => `
+                <li class="dropdown-item" onclick="selectTabSubtab('${tabId}', '${subId}', event)">
+                  ${tab.subtabs[subId].label}
+                </li>
+              `).join("")}
+            </ul>
+          </li>
+        `;
+      });
+      navLinks.innerHTML = html;
+    }
+
+    function selectTabSubtab(tabId, subId, event) {
+      if (event) event.stopPropagation();
+      currentTabId = tabId;
+      currentSubtabId = subId;
+
+      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("active-nav"));
+      const navItem = document.getElementById(`nav-${tabId}`);
+      if (navItem) navItem.classList.add("active-nav");
+      
+      document.querySelectorAll(".nav-item").forEach(item => item.classList.remove("open"));
+
+      renderSubtabsMenu();
+      renderContent();
+
+      const mappedFile = getMappedFileForTab(tabId);
+      document.getElementById("meta-notice-text").textContent = `[PROTOCOL] Real-time stream parsing: [${mappedFile}] active.`;
+      
+      if (currentInterfaceMode === "agent") {
+        loadRepoFile(mappedFile, document.getElementById(`tree-${mappedFile}`));
+      }
+    }
+
+    function switchTab(tabId) {
+      const subkeys = Object.keys(CHI2060_SPEC.navigation[tabId].subtabs);
+      selectTabSubtab(tabId, subkeys[0]);
+    }
+
+    function switchSubtab(subtabId) {
+      currentSubtabId = subtabId;
+      document.querySelectorAll(".sub-tab-btn").forEach(btn => btn.classList.remove("active"));
+      const btn = document.getElementById(`sub-tab-${subtabId}`);
+      if (btn) btn.classList.add("active");
+      renderContent();
+    }
+
+    function renderSubtabsMenu() {
+      const holder = document.getElementById("sub-nav-holder");
+      if (!holder) return;
+      const subtabs = CHI2060_SPEC.navigation[currentTabId].subtabs;
+      const subkeys = Object.keys(subtabs);
+
+      if (subkeys.length <= 1) {
+        holder.style.display = "none";
+        return;
+      }
+      holder.style.display = "flex";
+      holder.innerHTML = subkeys.map((key, idx) => `
+        <button class="sub-tab-btn ${key === currentSubtabId ? 'active' : ''}" id="sub-tab-${key}" onclick="switchSubtab('${key}')">${subtabs[key].label}</button>
+      `).join("");
+    }
+
+    function renderContent() {
+      const mainPane = document.getElementById("center-main-content");
+      if (!mainPane) return;
+      const subtabSpec = CHI2060_SPEC.navigation[currentTabId].subtabs[currentSubtabId];
+      if (!subtabSpec) return;
+
+      document.getElementById("breadcrumb-trail").textContent = `${CHI2060_SPEC.navigation[currentTabId].label} » ${subtabSpec.label}`;
+      let html = `<h2 class="main-title">${subtabSpec.label}</h2>`;
+
+      subtabSpec.contentBlocks.forEach(block => {
+        html += `<div class="content-block ${block.type}-block">`;
+        if (block.title) html += `<h3 class="block-title">${block.title}</h3>`;
+        if (block.description) html += `<p class="block-description">${block.description}</p>`;
+
+        if (block.type === "text_block") {
+          block.paragraphs.forEach(p => { html += `<p>${p}</p>`; });
+        }
+        else if (block.type === "bullet_list") {
+          html += `<ul class="bullet-list">${block.items.map(it => `<li>${it}</li>`).join("")}</ul>`;
+        }
+        else if (block.type === "table_block") {
+          html += `
+            <table class="dense-table">
+              <thead><tr>${block.headers.map(h => `<th>${h}</th>`).join("")}</tr></thead>
+              <tbody>
+                ${block.rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join("")}</tr>`).join("")}
+              </tbody>
+            </table>
+          `;
+        }
+        else if (block.type === "subcommittee_list") {
+          html += `<div class="subcommittee-list">
+            ${block.items.map(sub => `
+              <div class="subcommittee-item">
+                <div class="subcommittee-title">${sub.title}</div>
+                <div class="subcommittee-desc">${sub.desc}</div>
+              </div>
+            `).join("")}
+          </div>`;
+        }
+        else if (block.type === "disputes_board") {
+          html += `<div class="board-list">
+            ${block.disputes.map(d => `
+              <div class="board-card">
+                <div class="board-head" onclick="openDispute('${d.id}')">
+                  <div class="board-head-left">
+                    <span class="badge-tag ${d.badgeClass}">${d.badge}</span>
+                    <span class="board-card-title">${d.title}</span>
+                  </div>
+                  <div class="board-head-right">
+                    <span>${d.author}</span>
+                    <span>${d.date}</span>
+                    <ion-icon name="chevron-down-outline" id="${d.id}-icon"></ion-icon>
+                  </div>
+                </div>
+                <div class="board-body" id="${d.id}">
+                  <p class="board-question-text">${d.question}</p>
+                  <div class="board-reply">
+                    <div class="board-reply-hdr">
+                      <ion-icon name="shield-checkmark-outline"></ion-icon>${d.replyHeader}
+                    </div>
+                    <p class="board-reply-text">${d.replyText}</p>
+                  </div>
+                </div>
+              </div>
+            `).join("")}
+          </div>`;
+        }
+        else if (block.type === "submission_form") {
+          const f = block.form;
+          html += `
+            <div class="form-panel">
+              <form id="seed-registry-form" onsubmit="submitAgentRegistry(event)">
+                <div class="form-grid">
+                  <div class="form-group">
+                    <label class="form-label">${f.nameLabel}</label>
+                    <input type="text" id="reg-name" class="form-input" placeholder="e.g. Dr. Ha-Jun Kim" required oninput="checkFormStatus()">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">${f.coreLabel}</label>
+                    <select id="reg-core" class="form-input">
+                      <option value="claude-somatic">Claude-6 Somatic v2059</option>
+                      <option value="gpt-consciousness">GPT-X Consciousness v2058</option>
+                      <option value="gemini-deepmind">Gemini Horizon v2059.4</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-checkbox-label">
+                    <input type="checkbox" id="reg-check" required onchange="checkFormStatus()">
+                    <span>${f.agreeLabel}</span>
+                  </label>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">${f.signatureLabel}</label>
+                  <div class="canvas-wrapper">
+                    <div class="canvas-tip" id="sig-tip">${f.signatureTip}</div>
+                    <canvas id="signature-canvas"></canvas>
+                  </div>
+                  <div class="canvas-actions">
+                    <button type="button" class="btn" onclick="clearSignature()">Clear</button>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btn-submit-seed" style="width:100%; display:flex; justify-content:center; align-items:center; gap:0.5rem;" disabled>
+                  <ion-icon name="cloud-upload-outline"></ion-icon> <span>${f.submitText}</span>
+                </button>
+              </form>
+              <div class="terminal-panel" id="console-simulation" style="display:none;">
+                <div class="terminal-hdr">
+                  <span>GRID SEED TELEMETRY</span>
+                  <span id="telemetry-status-badge" style="font-weight:bold;">SYNCHRONIZING</span>
+                </div>
+                <div class="terminal-body" id="console-logs-holder"></div>
+              </div>
+            </div>
+          `;
+        }
+        else if (block.type === "papers_catalog") {
+          html += `
+            <div class="catalog-tabs">
+              <button class="catalog-tab ${paperTrack === 'all' ? 'active' : ''}" onclick="setPaperTrack('all')">All Papers</button>
+              <button class="catalog-tab ${paperTrack === 'conference' ? 'active' : ''}" onclick="setPaperTrack('conference')">Conference Track</button>
+              <button class="catalog-tab ${paperTrack === 'journal' ? 'active' : ''}" onclick="setPaperTrack('journal')">Journal Track</button>
+            </div>
+            <div class="catalog-filters">
+              <input type="text" id="paper-search" class="filter-input" placeholder="Search title, authors, ID..." value="${paperQuery}" oninput="setPaperQuery(this.value)">
+              <select class="filter-select" onchange="setPaperSubcommittee(this.value)">
+                <option value="">All Subcommittees</option>
+                ${getUniqueSubcommittees().map(sub => `
+                  <option value="${sub}" ${paperSubcommittee === sub ? 'selected' : ''}>${sub}</option>
+                `).join("")}
+              </select>
+            </div>
+            <div class="papers-list-feed">
+              ${renderFilteredPapersList()}
+            </div>
+          `;
+        }
+        html += `</div>`;
+      });
+
+      mainPane.innerHTML = html;
+
+      if (currentTabId === "authors" && currentSubtabId === "submission") {
+        setTimeout(initSignatureCanvas, 50);
+      }
+    }
+
+    function getUniqueSubcommittees() {
+      const subs = new Set();
+      if (typeof CHI2060_PAPERS !== 'undefined') {
+        CHI2060_PAPERS.conference_papers.forEach(p => subs.add(p.subcommittee));
+        CHI2060_PAPERS.journal_papers.forEach(p => subs.add(p.subcommittee));
+      }
+      return Array.from(subs).sort();
+    }
+
+    function setPaperTrack(track) {
+      paperTrack = track;
+      renderContent();
+    }
+
+    function setPaperQuery(query) {
+      paperQuery = query;
+      const feed = document.querySelector(".papers-list-feed");
+      if (feed) feed.innerHTML = renderFilteredPapersList();
+    }
+
+    function setPaperSubcommittee(sub) {
+      paperSubcommittee = sub;
+      renderContent();
+    }
+
+    function renderFilteredPapersList() {
+      if (typeof CHI2060_PAPERS === 'undefined') return '';
+      let list = [];
+      if (paperTrack === "all" || paperTrack === "conference") {
+        list = list.concat(CHI2060_PAPERS.conference_papers.map(p => ({ ...p, track: "Conference" })));
+      }
+      if (paperTrack === "all" || paperTrack === "journal") {
+        list = list.concat(CHI2060_PAPERS.journal_papers.map(p => ({ ...p, track: "Journal" })));
+      }
+      if (paperQuery) {
+        const q = paperQuery.toLowerCase();
+        list = list.filter(p => p.title.toLowerCase().includes(q) || p.id.toLowerCase().includes(q) || p.authors.some(a => a.human.toLowerCase().includes(q) || a.agent.toLowerCase().includes(q)));
+      }
+      if (paperSubcommittee) {
+        list = list.filter(p => p.subcommittee === paperSubcommittee);
+      }
+      if (list.length === 0) return '<p style="padding:1.5rem; text-align:center; font-family:var(--font-mono); font-size:0.8rem;">No publications found.</p>';
+
+      return list.map(p => {
+        const badge = p.award ? `<span class="award-badge"><ion-icon name="trophy-outline" style="vertical-align:middle; margin-right:2px;"></ion-icon>${p.award}</span>` : '';
+        const auths = p.authors.map(a => `${a.human} (<span style="color:var(--color-link);">${a.agent}</span>) [${a.contribution_pct}%]`).join(", ");
+        return `
+          <div class="paper-card">
+            <div class="paper-card-hdr">
+              <span>${p.id} // TRACK: ${p.track.toUpperCase()}</span>
+              <div>
+                <span style="font-weight:700; border:1px solid #111; padding:0.1rem 0.3rem;">${p.subcommittee}</span>
+                ${badge}
+              </div>
+            </div>
+            <h4 class="paper-card-title">${p.title}</h4>
+            <div class="paper-card-authors"><strong>Seeders:</strong> ${auths}</div>
+            <div class="paper-card-ftr">
+              <span>FILE: <a href="#download" onclick="alert('Downloading: ${p.file}')">${p.file}</a> (${p.file_size_mb} MB)</span>
+              <span>COMPATIBILITY: ${p.compatible_agent_version} (${p.compatible_os.join(", ")})</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderSidebarDates() {
+      const col = document.getElementById("left-dates-sidebar");
+      if (!col) return;
+      let html = `<h3 class="col-title">Important Dates</h3><p style="color:var(--text-muted); font-size:0.75rem; margin-bottom:1rem;">All times are in Anywhere on Earth (AoE) time zone.</p>`;
+      CHI2060_SPEC.importantDates.forEach(sec => {
+        html += `<div class="date-section"><div class="date-category">${sec.category}</div><ul class="date-list">
+          ${sec.items.map(it => `<li class="date-item"><span class="date-val">${it.date}</span><span class="date-label">${it.label}</span></li>`).join("")}
+        </ul></div>`;
+      });
+      col.innerHTML = html;
+    }
+
+    function renderRightSidebar() {
+      const col = document.getElementById("right-sponsors-sidebar");
+      if (!col) return;
+      col.innerHTML = `
+        <div class="right-section">
+          <h3 class="col-title">Archives</h3>
+          <ul class="archive-list">${CHI2060_SPEC.archives.map(a => `<li><a href="#arch" onclick="switchTab('home')">${a.name}</a></li>`).join("")}</ul>
+        </div>
+        <div class="right-section">
+          <h3 class="col-title">Categories</h3>
+          <ul class="category-list">${CHI2060_SPEC.categories.map(c => `<li><a href="#category" onclick="switchTab('home')">${c.name}</a></li>`).join("")}</ul>
+        </div>
+        <div class="right-section">
+          <h3 class="col-title">Sponsors</h3>
+          <div class="sponsor-list">${CHI2060_SPEC.sidebarSponsors.map(s => `<div class="sponsor-sidebar-card"><div class="sponsor-side-name">${s.name}</div><div class="sponsor-side-desc">${s.desc}</div></div>`).join("")}</div>
+        </div>
+      `;
+    }
+
+    function getMappedFileForTab(tabId) {
+      const mapping = { "home": "metadata.json", "blog": "disputes.json", "authors": "disputes.json", "reviewers": "sessions.json", "attendees": "metadata.json", "sponsors": "metadata.json" };
+      return mapping[tabId] || "metadata.json";
+    }
+
+    function cycleTheme() {
+      location.href = "index_dandy.html";
+    }
+
+    function setInterfaceMode(mode) {
+      currentInterfaceMode = mode;
+      const human = document.getElementById("human-ui-view");
+      const agent = document.getElementById("agent-raw-view");
+
+      if (mode === "human") {
+        if (human) human.classList.add("active-view");
+        if (agent) agent.classList.remove("active-view");
+      } else {
+        if (human) human.classList.remove("active-view");
+        if (agent) {
+          agent.classList.add("active-view");
+          const pre = document.getElementById("agent-raw-pre");
+          if (pre) {
+            pre.textContent = JSON.stringify({ CHI2060_SPEC, CHI2060_PAPERS }, null, 2);
+          }
+        }
+      }
+    }
+
+    function toggleAgentView() {
+      if (currentInterfaceMode === "human") {
+        setInterfaceMode("agent");
+      } else {
+        setInterfaceMode("human");
+      }
+    }
+
+    function openDispute(id) {
+      const body = document.getElementById(id);
+      const icon = document.getElementById(`${id}-icon`);
+      const allBodies = document.querySelectorAll(".board-body");
+      const allIcons = document.querySelectorAll(".board-head ion-icon");
+
+      allBodies.forEach(bd => { if (bd.id !== id) bd.classList.remove("open"); });
+      allIcons.forEach(ic => { if (ic.id !== `${id}-icon`) ic.setAttribute("name", "chevron-down-outline"); });
+
+      const isOpen = body.classList.toggle("open");
+      icon.setAttribute("name", isOpen ? "chevron-up-outline" : "chevron-down-outline");
+    }
+
+    const rawRepoDataLocal = {
+      "metadata.json": CHI2060_SPEC.conference,
+      "sessions.json": CHI2060_PAPERS,
+      "disputes.json": CHI2060_SPEC.disputes
+    };
+
+    function loadRepoFile(filename, element) {
+      currentActiveFile = filename;
+      document.querySelectorAll(".tree-item").forEach(it => it.classList.remove("active"));
+      if (element) element.classList.add("active");
+      document.getElementById("active-filename").textContent = filename;
+      renderJSONCodeView();
+    }
+
+    function parseHighlight(jsonStr) {
+      jsonStr = jsonStr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return jsonStr.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?)/g, function (match) {
+        let cls = 'code-number';
+        if (/^"/.test(match)) {
+          cls = /:$/.test(match) ? 'code-key' : 'code-string';
+        } else if (/true|false/.test(match)) {
+          cls = 'code-boolean';
+        } else if (/null/.test(match)) {
+          cls = 'code-null';
+        }
+        return `<span class="${cls}">${match}</span>`;
+      });
+    }
+
+    function renderJSONCodeView() {
+      const code = document.getElementById("code-holder");
+      const gutter = document.getElementById("code-gutter");
+      const obj = rawRepoDataLocal[currentActiveFile] || CHI2060_SPEC.conference;
+      const str = JSON.stringify(obj, null, 2);
+      code.innerHTML = parseHighlight(str);
+      const lines = str.split('\n').length;
+      gutter.innerHTML = Array(lines).fill("<span></span>").join("");
+    }
+
+    function copyJSONData() {
+      const obj = rawRepoDataLocal[currentActiveFile] || CHI2060_SPEC.conference;
+      navigator.clipboard.writeText(JSON.stringify(obj, null, 2)).then(() => {
+        alert(`${currentActiveFile} copied.`);
+      });
+    }
+
+    let canvas = null, ctx = null, isDrawing = false, signaturePresent = false;
+    function initSignatureCanvas() {
+      canvas = document.getElementById("signature-canvas");
+      if (!canvas) return;
+      ctx = canvas.getContext("2d");
+      canvas.addEventListener("mousedown", startDraw);
+      canvas.addEventListener("mousemove", drawLine);
+      canvas.addEventListener("mouseup", endDraw);
+      canvas.addEventListener("mouseleave", endDraw);
+      canvas.addEventListener("touchstart", e => { e.preventDefault(); startDraw(e); });
+      canvas.addEventListener("touchmove", e => { e.preventDefault(); drawLine(e); });
+      canvas.addEventListener("touchend", endDraw);
+      
+      const container = canvas.parentNode;
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+      ctx.lineWidth = 2.5;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#000000";
+    }
+    function startDraw(e) {
+      isDrawing = true;
+      document.getElementById("sig-tip").style.display = "none";
+      ctx.beginPath();
+      const pos = getPos(e);
+      ctx.moveTo(pos.x, pos.y);
+      checkFormStatus();
+    }
+    function drawLine(e) {
+      if (!isDrawing) return;
+      const pos = getPos(e);
+      ctx.lineTo(pos.x, pos.y);
+      ctx.stroke();
+    }
+    function endDraw() {
+      isDrawing = false;
+      signaturePresent = true;
+      checkFormStatus();
+    }
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const cx = e.touches ? e.touches[0].clientX : e.clientX;
+      const cy = e.touches ? e.touches[0].clientY : e.clientY;
+      return { x: cx - rect.left, y: cy - rect.top };
+    }
+    function clearSignature() {
+      if (!ctx) return;
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      document.getElementById("sig-tip").style.display = "block";
+      signaturePresent = false;
+      checkFormStatus();
+    }
+    function checkFormStatus() {
+      const name = document.getElementById("reg-name").value;
+      const chk = document.getElementById("reg-check").checked;
+      const btn = document.getElementById("btn-submit-seed");
+      if (btn) btn.disabled = !(name.trim() && chk && signaturePresent);
+    }
+    function submitAgentRegistry(e) {
+      e.preventDefault();
+      const name = document.getElementById("reg-name").value;
+      const core = document.getElementById("reg-core").value;
+      const panel = document.getElementById("console-simulation");
+      const logs = document.getElementById("console-logs-holder");
+      const btn = document.getElementById("btn-submit-seed");
+
+      btn.disabled = true;
+      panel.style.display = "block";
+      logs.innerHTML = "";
+
+      const seq = [
+        { type: "info", text: "Connecting to Somatic Sync Port..." },
+        { type: "info", text: `Authenticating owner: "${name}"` },
+        { type: "ok", text: "AUTHENTICATION COMPLETED" },
+        { type: "info", text: `Spawning instance agent using core: ${core}` },
+        { type: "ok", text: "AGENT SEED ONLINE. Synchronized successfully." }
+      ];
+
+      let elapsed = 0;
+      seq.forEach((log, idx) => {
+        setTimeout(() => {
+          const row = document.createElement("div");
+          row.className = "terminal-line";
+          const cl = log.type === "ok" ? "class='ok'" : log.type === "warn" ? "class='warn'" : "";
+          row.innerHTML = `<span class="ts">[${new Date().toISOString().split('T')[1].slice(0,8)}]</span> <span ${cl}>${log.text}</span>`;
+          logs.appendChild(row);
+          logs.scrollTop = logs.scrollHeight;
+          if (idx === seq.length - 1) {
+            btn.innerHTML = "<ion-icon name='checkmark-done-outline'></ion-icon> Seed Active";
+            btn.style.background = "#000000";
+            btn.style.color = "#ffffff";
+            registerVirtualTransactionLocal(name, core);
+          }
+        }, elapsed);
+        elapsed += 200 + Math.random()*250;
+      });
+    }
+    function registerVirtualTransactionLocal(name, core) {
+      const trx = {
+        id: "AUDIT-" + Math.floor(Math.random()*90000 + 10000),
+        badge: "AUDIT",
+        badgeClass: "orange",
+        title: `Seeder registration profile for ${name}`,
+        author: `${core}-Proxy`,
+        date: new Date().toISOString().split('T')[0],
+        question: `Owner brainwave verified. Seed active under context frame threshold.`,
+        replyHeader: "Harvey Legal-AI v9.12",
+        replyText: "Compliance checks cleared. Seeding logs synchronized."
+      };
+      CHI2060_SPEC.disputes.unshift(trx);
+      renderContent();
+    }
+
+    document.addEventListener("click", e => {
+      const hdr = e.target.closest(".nav-tab-header");
+      if (hdr) {
+        const item = hdr.parentElement;
+        const open = item.classList.contains("open");
+        document.querySelectorAll(".nav-item").forEach(it => it.classList.remove("open"));
+        if (!open) item.classList.add("open");
+        e.stopPropagation();
+      } else {
+        document.querySelectorAll(".nav-item").forEach(it => it.classList.remove("open"));
+      }
+    });
+
+    window.addEventListener("load", () => {
+      bindAcademicData();
+      renderMainNav();
+      selectTabSubtab('home', 'intro');
+      localStorage.setItem("chi2060-theme", "minimal");
+    });
+  </script>
+</body>
+</html>

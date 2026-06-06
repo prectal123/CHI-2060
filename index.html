@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ACM CHI 2060 Gateway</title>
+  <script>
+    const themes = ["dandy", "minimal", "ide", "dump"];
+    
+    // Pick a random visual style on gateway entry, avoiding the last visited style to ensure variation on refresh
+    const lastThemeId = localStorage.getItem("chi2060-theme");
+    let filteredThemes = themes;
+    
+    if (lastThemeId && themes.length > 1) {
+      filteredThemes = themes.filter(t => t !== lastThemeId);
+    }
+    
+    const randomTheme = filteredThemes[Math.floor(Math.random() * filteredThemes.length)];
+    
+    // Redirect to target theme HTML
+    location.replace("index_" + randomTheme + ".html");
+  </script>
+</head>
+<body style="background:#000; color:#fff; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
+  <div>
+    <h2 style="letter-spacing: 0.05em;">PARSING CONSCIOUSNESS PROTOCOL...</h2>
+    <p style="opacity:0.5; font-size:0.8rem; text-align:center;">Redirecting user agent to Somatic Interface Node</p>
+  </div>
+</body>
+</html>
