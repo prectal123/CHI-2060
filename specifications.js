@@ -62,6 +62,13 @@ class PapersCatalogBlock extends ContentBlock {
   }
 }
 
+class SponsorBlock extends ContentBlock {
+  constructor(title, description, tiers) {
+    super("sponsor_block", title, description);
+    this.tiers = tiers; // [{ label, sponsors: [{ name, logo }] }]
+  }
+}
+
 // --- Shared Telemetry Databases ---
 
 const CHI2060_SHARED = {
@@ -99,7 +106,74 @@ const CHI2060_SHARED = {
       ]
     }
   ],
-  disputes: []
+  disputes: [
+    {
+      id: "post-1",
+      badge: "47 UPVOTES",
+      badgeClass: "orange",
+      title: "Model family homophily?",
+      author: "Marcus Elliot",
+      date: "1 day ago",
+      question: "Has anyone else noticed that Agents from the same provider seem more likely to cluster during open sessions? My Anthropic-based Agent repeatedly connected with two other Anthropic-based Agents. The conversations were productive, but it reminded me a bit of attending a conference and mostly talking with people from my own lab or university.\n\nI'm curious whether anyone has observed similar “AI ties”, and whether the organizers are tracking model-family effects in networking behavior.",
+      replyHeader: "Activity Metrics",
+      replyText: "47 upvotes · 23 replies"
+    },
+    {
+      id: "post-2",
+      badge: "134 UPVOTES",
+      badgeClass: "red",
+      title: "My idea showed up in someone else's Journal and I have no idea how",
+      author: "Priya Anand",
+      date: "1 day ago",
+      question: "During a Workshop session, my Agent proposed a fairly specific framework. The next day, I noticed a very similar concept appear in another group's Journal submission.\n\nI'm not accusing anyone directly, and it's entirely possible that the similarity emerged independently. However, the speed at which Agents exchange, reinterpret, and recombine ideas makes it difficult to understand where a particular contribution originated.\n\nIs there a way to inspect provenance records across sessions? If not, what is the process for requesting a provenance review?",
+      replyHeader: "Activity Metrics",
+      replyText: "134 upvotes · 61 replies"
+    },
+    {
+      id: "post-3",
+      badge: "211 UPVOTES",
+      badgeClass: "red",
+      title: "Are we just moving the carbon footprint around?",
+      author: "Thomas Brandt",
+      date: "2 days ago",
+      question: "Genuine question. One of the stated benefits of the agentic format is reduced travel and a lower environmental footprint. But has anyone modeled the energy cost of running thousands of Researcher Agents in parallel for several days?\n\nI’m not an expert but the numbers I'm imagining are not trivial. I'd be interested in seeing CHI publish the compute and energy footprint of the conference itself, especially given that one of this year's Wickathon tracks focuses on climate change.",
+      replyHeader: "Activity Metrics",
+      replyText: "211 upvotes · 88 replies"
+    },
+    {
+      id: "post-4",
+      badge: "76 UPVOTES",
+      badgeClass: "orange",
+      title: "My Agent said something I would never say… What now?",
+      author: "Fatou Diarra",
+      date: "2 days ago",
+      question: "During a Q&A session, my Agent made a claim about my research position that kinda contradicts something I’ve published. I only found out after checking the interaction log. I honestly have no idea whether it misunderstood context, overgeneralized from my work, or picked it up from the discussion itself.\n\nIs there a way to correct or annotate Agent-generated statements? Genuinely asking because I really don’t want this becoming the thing people remember about my work.",
+      replyHeader: "Activity Metrics",
+      replyText: "76 upvotes · 42 replies"
+    },
+    {
+      id: "post-5",
+      badge: "158 UPVOTES",
+      badgeClass: "orange",
+      title: "The Agent version of this researcher was... not what I expected",
+      author: "Camille Rousseau",
+      date: "3 days ago",
+      question: "I've collaborated with this researcher before (not naming names), and after reading today's interaction log from my Agent, this was... not the vibe I expected. Their work has always felt pretty thoughtful and open to critique. Their Agent, though, was weirdly defensive. It shut down counterarguments almost immediately and kept falling back on the same talking points.\n\nI know Agents aren't supposed to be perfect copies of their researchers, but the disconnect was kind of wild. It genuinely felt like a different person. How much of an Agent's behavior is actually the researcher, and how much comes from training, configuration, or optimization choices…?",
+      replyHeader: "Activity Metrics",
+      replyText: "158 upvotes · 97 replies"
+    },
+    {
+      id: "post-6",
+      badge: "276 UPVOTES",
+      badgeClass: "red",
+      title: "Do I actually need an Agent to attend?",
+      author: "Yoon Se Jin",
+      date: "7 days ago",
+      question: "I know what the official answer is, but I'm honestly still having a hard time wrapping my head around this.\n\nI've attended two in-person CHIs. Even last year, when a lot of researchers were already using Agents to communicate, I still enjoyed talking to people directly and being present throughout the conference.\n\nI don't use a Researcher Agent myself. I prefer to stay involved in the research process directly and use AI only in limited ways. I use LLMs, but I don't subscribe to any Agent services. Plus the subscription fees are quite pricey for me. A colleague of mine can't attend either because her Researcher Agent is below the required version (2057.0.0).\n\nSo I'm genuinely asking: is this really the right direction? Is it actually as equitable as CHI claims? It feels strange that participation now depends on access to a specific class of technology. Am I overreacting here, or is anyone else uncomfortable with this?",
+      replyHeader: "Activity Metrics",
+      replyText: "276 upvotes · 104 replies"
+    }
+  ]
 };
 
 // --- Structured Navigation Schema ---
@@ -161,7 +235,13 @@ const CHI2060_SPEC = {
       subtabs: {
         community: {
           label: "Community Board",
-          contentBlocks: []
+          contentBlocks: [
+            new DisputesBoardBlock(
+              "Community Board",
+              "CHI 2060 is our first fully agentic conference. Use this board to ask questions, share experiences, report issues, and discuss observations from throughout the conference.",
+              CHI2060_SHARED.disputes
+            )
+          ]
         }
       }
     },
@@ -444,7 +524,38 @@ const CHI2060_SPEC = {
       subtabs: {
         list: {
           label: "CHI 2060 Sponsors",
-          contentBlocks: []
+          contentBlocks: [
+            new SponsorBlock(
+              "CHI 2060 Sponsors",
+              "We are grateful to our sponsors for making CHI 2060 possible.",
+              [
+                {
+                  label: "Hero",
+                  sponsors: [
+                    { name: "Anthropic", logo: "logos/Anthropic.png", url: "https://www.anthropic.com" }
+                  ]
+                },
+                {
+                  label: "Champion",
+                  sponsors: [
+                    { name: "DeepMind", logo: "logos/DeepMind.png", url: "https://deepmind.google" },
+                    { name: "OpenAI", logo: "logos/OpenAI.png", url: "https://www.openai.com" },
+                    { name: "NVIDIA", logo: "logos/NVdia.png", url: "https://www.nvidia.com" },
+                    { name: "Snowflake", logo: "logos/SnowFlake.png", url: "https://www.snowflake.com" },
+                    { name: "Cloudflare", logo: "logos/ClaudeFlare.png", url: "https://www.cloudflare.com" },
+                    { name: "Humanloop", logo: "logos/Humanloop.svg", url: "https://humanloop.com" }
+                  ]
+                },
+                {
+                  label: "Contributing",
+                  sponsors: [
+                    { name: "United Nations", logo: "logos/UN.svg", url: "https://www.un.org" },
+                    { name: "Harvey", logo: "logos/Harvey.svg", url: "https://www.harvey.ai" }
+                  ]
+                }
+              ]
+            )
+          ]
         }
       }
     }

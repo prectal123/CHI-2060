@@ -578,6 +578,16 @@
     }
     
     .sponsor-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .sponsor-tiers { display: flex; flex-direction: column; gap: 2rem; }
+    .sponsor-tier-label { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #858585; border-bottom: 1px solid #3c3c3c; padding-bottom: 0.35rem; margin-bottom: 1rem; font-family: var(--font-mono); }
+    .sponsor-logo-grid { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem 1.75rem; }
+    .sponsor-tier-hero .sponsor-logo-img { max-height: 52px; }
+    .sponsor-tier-champion .sponsor-logo-img { max-height: 34px; }
+    .sponsor-tier-contributing .sponsor-logo-img { max-height: 26px; }
+    .sponsor-logo-item { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
+    .sponsor-logo-img { max-width: 140px; object-fit: contain; transition: opacity 0.2s; }
+    .sponsor-logo-img:hover { opacity: 0.7; }
+    .sponsor-logo-link { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; text-decoration: none; }
     .sponsor-sidebar-card {
       border: 1px solid #3c3c3c;
       padding: 0.5rem;
@@ -822,17 +832,18 @@
     .board-card { border: 1px solid #3c3c3c; margin-bottom: 0.4rem; border-radius: 4px; overflow: hidden; }
     .board-head { background: #252526; padding: 0.6rem 0.8rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
     .board-head:hover { background: var(--bg-hover); }
-    .board-head-left { display: flex; align-items: center; gap: 0.5rem; }
-    .badge-tag { font-size: 0.6rem; font-family: var(--font-mono); padding: 0.05rem 0.3rem; font-weight: 700; border: 1px solid #555; border-radius: 2px; }
+    .board-head-left { display: flex; align-items: center; gap: 0.5rem; min-width: 0; flex: 1; margin-right: 1.5rem; }
+    .badge-tag { font-size: 0.6rem; font-family: var(--font-mono); padding: 0.05rem 0.3rem; font-weight: 700; border: 1px solid #555; border-radius: 2px; white-space: nowrap; flex-shrink: 0; }
     .badge-tag.red { color: #f44336; border-color: #f44336; background: rgba(244,67,54,0.1); }
     .badge-tag.orange { color: #ff9800; border-color: #ff9800; background: rgba(255,152,0,0.1); }
     .board-card-title { font-weight: 700; font-size: 0.75rem; color: #9cdcfe; font-family: var(--font-mono); }
-    .board-head-right { font-family: var(--font-mono); font-size: 0.65rem; color: #858585; display: flex; align-items: center; gap: 0.75rem; }
+    .board-head-right { font-family: var(--font-mono); font-size: 0.65rem; color: #858585; display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; white-space: nowrap; }
     .board-body { padding: 0.8rem; background: var(--bg-body); border-top: 1px solid #3c3c3c; display: none; }
     .board-body.open { display: block; }
     .board-question-text { font-size: 0.75rem; color: #ce9178; margin-bottom: 0.75rem; white-space: pre-line; font-family: var(--font-mono); }
-    .board-question-text::before { content: "/* QUESTION: \n"; color: #6a9955; }
-    .board-question-text::after { content: "\n */"; color: #6a9955; }
+    .board-question-text::before { content: "/* QUESTION: \A"; color: #6a9955; }
+    .board-question-text::after { content: "\A */"; color: #6a9955; }
+    .board-post-title { font-size: 0.95rem; font-weight: 800; color: #9cdcfe; margin-bottom: 0.5rem; line-height: 1.3; font-family: var(--font-mono); }
     
     .board-reply { background: #252526; border-left: 2px solid #0e639c; padding: 0.5rem 0.75rem; border-radius: 3px; }
     .board-reply-hdr { font-size: 0.7rem; font-weight: 700; margin-bottom: 0.2,r; display: flex; align-items: center; gap: 0.3rem; color: #569cd6; font-family: var(--font-mono); }
@@ -1397,6 +1408,7 @@
                   </div>
                 </div>
                 <div class="board-body" id="${d.id}">
+                  <p class="board-post-title">${d.title}</p>
                   <p class="board-question-text">${d.question}</p>
                   <div class="board-reply">
                     <div class="board-reply-hdr">
@@ -1430,6 +1442,25 @@
               ${renderFilteredPapersList()}
             </div>
           `;
+        } else if (block.type === "sponsor_block") {
+          html += `<div class="sponsor-tiers">`;
+          block.tiers.forEach(tier => {
+            html += `
+              <div class="sponsor-tier">
+                <div class="sponsor-tier-label">${tier.label}</div>
+                <div class="sponsor-logo-grid sponsor-tier-${tier.label.toLowerCase()}">
+                  ${tier.sponsors.map(s => `
+                    <div class="sponsor-logo-item">
+                      <a href="${s.url}" target="_blank" rel="noopener" class="sponsor-logo-link">
+                        <img src="${s.logo}" alt="${s.name}" title="${s.name}" class="sponsor-logo-img">
+                      </a>
+                    </div>
+                  `).join("")}
+                </div>
+              </div>
+            `;
+          });
+          html += `</div>`;
         }
         
         html += `</div>`;
