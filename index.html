@@ -2,28 +2,55 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>ACM CHI 2060 Gateway</title>
-  <script>
-    const themes = ["dandy", "minimal", "ide", "dump"];
-    
-    // Pick a random visual style on gateway entry, avoiding the last visited style to ensure variation on refresh
-    const lastThemeId = localStorage.getItem("chi2060-theme");
-    let filteredThemes = themes;
-    
-    if (lastThemeId && themes.length > 1) {
-      filteredThemes = themes.filter(t => t !== lastThemeId);
+  <title>ACM CHI 2060</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000000;
     }
-    
-    const randomTheme = filteredThemes[Math.floor(Math.random() * filteredThemes.length)];
-    
-    // Redirect to target theme HTML
-    location.replace("index_" + randomTheme + ".html");
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+  <script>
+    const themes = ["minimal", "dandy", "ide", "dump"];
+    let currentTheme = "";
+
+    function loadTheme(themeName) {
+      currentTheme = themeName;
+      localStorage.setItem("chi2060-theme", themeName);
+      document.getElementById("theme-frame").src = "index_" + themeName + ".html";
+    }
+
+    function cycleTheme() {
+      const idx = themes.indexOf(currentTheme);
+      const nextIdx = (idx + 1) % themes.length;
+      loadTheme(themes[nextIdx]);
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      const lastThemeId = localStorage.getItem("chi2060-theme");
+      let filteredThemes = themes;
+      
+      if (lastThemeId && themes.length > 1) {
+        filteredThemes = themes.filter(t => t !== lastThemeId);
+      }
+      
+      const randomTheme = filteredThemes[Math.floor(Math.random() * filteredThemes.length)];
+      loadTheme(randomTheme);
+    });
   </script>
 </head>
-<body style="background:#000; color:#fff; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh; margin:0;">
-  <div>
-    <h2 style="letter-spacing: 0.05em;">PARSING CONSCIOUSNESS PROTOCOL...</h2>
-    <p style="opacity:0.5; font-size:0.8rem; text-align:center;">Redirecting user agent to Somatic Interface Node</p>
-  </div>
+<body>
+  <iframe id="theme-frame" src=""></iframe>
 </body>
 </html>

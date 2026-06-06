@@ -947,7 +947,11 @@
     }
 
     function cycleTheme() {
-      location.href = "index_minimal.html";
+      if (window.parent && window.parent !== window && typeof window.parent.cycleTheme === "function") {
+        window.parent.cycleTheme();
+      } else {
+        location.href = "index_minimal.html";
+      }
     }
 
     /* Initialize */

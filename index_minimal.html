@@ -1080,7 +1080,11 @@
     }
 
     function cycleTheme() {
-      location.href = "index_dandy.html";
+      if (window.parent && window.parent !== window && typeof window.parent.cycleTheme === "function") {
+        window.parent.cycleTheme();
+      } else {
+        location.href = "index_dandy.html";
+      }
     }
 
     function setInterfaceMode(mode) {

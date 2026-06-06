@@ -1117,7 +1117,11 @@
     }
 
     function cycleTheme() {
-      location.href = "index_ide.html";
+      if (window.parent && window.parent !== window && typeof window.parent.cycleTheme === "function") {
+        window.parent.cycleTheme();
+      } else {
+        location.href = "index_ide.html";
+      }
     }
 
     function setInterfaceMode(mode) {
