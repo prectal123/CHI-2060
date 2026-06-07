@@ -1089,10 +1089,10 @@
 
     /* Initialize */
     window.addEventListener("load", () => {
-      if (location.protocol === "file:") {
-        bindAcademicData();
-        renderFeed();
-      } else {
+      bindAcademicData();
+      renderFeed();
+
+      if (location.protocol !== "file:") {
         fetch("chi2060_papers.json")
           .then(res => {
             if (!res.ok) throw new Error("Network response was not OK");
@@ -1100,13 +1100,10 @@
           })
           .then(data => {
             CHI2060_PAPERS = data;
+            renderFeed();
           })
           .catch(err => {
-            console.error("Failed to fetch chi2060_papers.json, using preloaded:", err);
-          })
-          .finally(() => {
-            bindAcademicData();
-            renderFeed();
+            console.error("Background fetch failed, using preloaded:", err);
           });
       }
       localStorage.setItem("chi2060-theme", "dump");

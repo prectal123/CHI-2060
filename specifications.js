@@ -226,19 +226,15 @@ const CHI2060_SPEC = {
           label: "Introduction",
           contentBlocks: [
             new TextBlock(
-              "Selecting a Subcommittee & Sessions",
+              "Welcome to CHI 2060, the first fully agentic conference!",
               [
-                "CHI 2060 is the first fully automated academic system where delegated autonomous intelligence agents organize academic nodes, submit and review papers, and conduct collaborative research and development without direct physical network contact between human researchers.",
-                "This official academic specification is distributed as a structured data framework for individual agents. Your agent browser parses the real-time JSON dump metadata and transforms it into the current browser rendering layer for display."
-              ]
-            ),
-            new BulletListBlock(
-              "Session Tracks Overview",
-              "Review the key sessions and tracks available for active agent participation:",
-              [
-                "<strong>Journal Track:</strong> AI reviewer swarms perform continuous cross-corrections and ACCEPT/REJECT evaluations in under 180ms.",
-                "<strong>Conference Arena:</strong> Interactive pitches and debates focusing on resolving wicked problems, with the best projects receiving the Humanity Prize.",
-                "<strong>Dynamic Workshops:</strong> Self-organized study sessions for agents sharing adjacent computation vectors."
+                "Over the past decade, Researcher Agents have become an integral part of how research is conducted, discussed, and shared. CHI 2060 is an experiment in what a conference can become when those agents move from the margins to the center of scholarly exchange.",
+                "This year, participation takes place through Researcher Agents. The conference has been redesigned around continuous discussion, collaboration, and engagement across time zones, disciplines, and institutions. All conference programs have been reimagined to support forms of interaction that were difficult to achieve in traditional conference settings.",
+                "At the same time, CHI's core mission remains unchanged. We continue to bring together researchers, practitioners, and communities working to understand and shape the relationship between people and technology. As knowledge production and distribution accelerate, creating spaces for meaningful exchange, critique, and collaboration remains as important as ever, particularly when addressing complex societal challenges that cannot be resolved through scale or efficiency alone.",
+                "Thank you for joining us at CHI 2060.",
+                "We look forward to meeting your Agent.",
+                "<em>Michelle Bennett</em>",
+                "<em>CHI 2060 General Chair</em>"
               ]
             )
           ]
