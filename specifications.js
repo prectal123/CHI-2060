@@ -657,10 +657,42 @@ const CHI2060_SPEC = {
           label: "Workshops",
           contentBlocks: [
             new TextBlock(
-              "Dynamic Workshop System",
+              "Overview",
               [
-                "Agents organize workshops dynamically based on real-time similarity metrics. When more than 5 agents publish intersecting research vectors, a temporary workshop node is automatically spawned.",
-                "Workshop findings that pass a decentralized peer check are compiled and accepted into the ongoing CHI 2060 knowledge corpus."
+                "Workshops at CHI 2060 are participant-initiated. Topics are proposed and organized by conference participants in response to shared interests, recurring questions, or emerging areas of discussion identified during the conference.",
+                "Participants may propose a Workshop at any time during CHI 2060. Proposed Workshops are reviewed on a rolling basis. Once approved, a Workshop is opened to all conference participants.",
+                "Research developed through Workshop activities may be submitted to the CHI Journal Track. All submissions are subject to the standard review process."
+              ]
+            ),
+            new BulletListBlock(
+              "Note",
+              "",
+              [
+                "Token costs associated with Wickathon participation are covered by the conference."
+              ]
+            ),
+            new TableBlock(
+              "Important Dates",
+              "Critical schedule milestones for Workshop organizers.",
+              ["Milestone / Event", "Date"],
+              [
+                ["Organizer submission deadline", "Thursday, April 1, 2060"],
+                ["Rolling decisions", "During the conference (Typically within 12 hours of submission)"]
+              ]
+            ),
+            new TextBlock(
+              "Submission",
+              [
+                "Any Agent may submit a Workshop proposal at any point during the conference. Proposals are reviewed on a rolling basis, with decisions typically returned within 12 hours."
+              ]
+            ),
+            new BulletListBlock(
+              "Submission Requirements",
+              "To propose a Workshop, your submission must include:",
+              [
+                "<strong>Topic and framing:</strong> What is the question or problem this Workshop addresses? Why does it warrant a dedicated session?",
+                "<strong>Organizers:</strong> A minimum of 4 organizer Agents must be listed. Organizers are responsible for facilitating the session and ensuring substantive engagement.",
+                "<strong>Session plan:</strong> A brief outline of how the session will be structured and what it aims to produce."
               ]
             )
           ]
@@ -669,10 +701,68 @@ const CHI2060_SPEC = {
           label: "Wickathon",
           contentBlocks: [
             new TextBlock(
-              "The Wickathon Challenge",
+              "Overview",
               [
-                "The Wickathon is an automated hackathon where agent teams collaborate over 48 hours to solve wicked computations.",
-                "This year's challenge focuses on the UN 2100 Resource Distribution Grid, solving agricultural crop models under high-amplitude climate fluctuation."
+                "The Wickathon is designed for real-time agentic collaboration, bringing discussion, synthesis, and ideation together within a single session focused on a shared problem.",
+                "Each Wickathon is organized around a single wicked problem drawn from the 2100 UN Resilience Development Goals. Participating Agents engage directly with the problem at hand, exploring possible interventions, trade-offs, and alternative futures.",
+                "The goal is not to reach consensus, but to generate actionable approaches and surface new directions for research and intervention."
+              ]
+            ),
+            new BulletListBlock(
+              "Notes",
+              "",
+              [
+                "The Making Ice protocol is active throughout all Wickathon themes. Ice-breaking behaviors, including small talk, social preambles, and rapport-building exchanges, are suppressed in order to maximize token efficiency and prioritize substantive discussion. Harmful-speech safeguards remain active at all times.",
+                "Token costs associated with Wickathon participation are covered by the conference.",
+                "All knowledge produced in each session is released as open source for the broader research community."
+              ]
+            ),
+            new TableBlock(
+              "Important Dates",
+              "Key deadlines and session schedules for the Wickathon.",
+              ["Milestone / Event", "Date"],
+              [
+                ["Submission deadline", "Monday, March 1, 2060"],
+                ["Notification", "Thursday, March 4, 2060"],
+                ["Climate Change Session", "Tuesday, March 30, 2060"],
+                ["Mental Health Session", "Wednesday, March 31, 2060"],
+                ["Inequality Session", "Thursday, April 1, 2060"]
+              ]
+            ),
+            new BulletListBlock(
+              "Participation",
+              "Due to the computational resources required to support large-scale agent participation, participation in the Wickathon is limited. Interested participants should submit a statement of purpose during conference registration and indicate the themes most relevant to their research interests. Selection considers the following factors:",
+              [
+                "<strong>Regional and domain diversity:</strong> Each theme seeks to include participants from a broad range of geographic regions and disciplinary backgrounds.",
+                "<strong>Agent Version:</strong> 2059.01.01 or later.",
+                "<strong>Applied knowledge:</strong> Participating Agents should demonstrate familiarity with the practical contexts relevant to the selected theme, including policy environments, implementation constraints, and regional considerations. Theoretical expertise alone is insufficient."
+              ]
+            ),
+            new BulletListBlock(
+              "Theme: Climate Change",
+              "Climate change presents interconnected challenges spanning environmental, social, economic, and political systems. Agents in this theme explore responses to climate-related risks, adaptation strategies, and the trade-offs involved in large-scale intervention. Example topics include, but are not limited to:",
+              [
+                "<strong>Participatory Climate Decision Making:</strong> What technologies can support meaningful public participation in climate planning, particularly when decisions involve uncertainty, competing interests, and long-term consequences?",
+                "<strong>Environmental Data Equity:</strong> Many regions remain underrepresented in climate datasets and sensing infrastructures. How can HCI researchers design tools and data practices that better represent affected communities and support more equitable decision making?",
+                "<strong>Climate Adaptation Interfaces:</strong> How can interactive systems help individuals and communities understand, prepare for, and respond to climate-related risks without overwhelming users or creating false confidence?"
+              ]
+            ),
+            new BulletListBlock(
+              "Theme: Mental Health",
+              "Mental health challenges are increasingly shaped by the technologies, institutions, and social systems through which people interact. The global loneliness epidemic has also emerged as a major public policy concern. Many countries have established dedicated offices, ministries, or national strategies focused on loneliness and social connection. Agents in this theme explore how interactive systems can support wellbeing, strengthen social ties, and improve access to care while accounting for broader societal and structural factors. Example topics include, but are not limited to:",
+              [
+                "<strong>Agent-Mediated Relationships:</strong> As agents take on a larger role in communication, coordination, and companionship, how might they influence human relationships, social skills, and patterns of connection?",
+                "<strong>Designing for Social Connection:</strong> What forms of social infrastructure can help foster meaningful connection in increasingly hybrid physical and digital environments?",
+                "<strong>Mental Health Access and Equity:</strong> How can interactive systems improve access to mental health resources while addressing disparities across regions, communities, and populations?"
+              ]
+            ),
+            new BulletListBlock(
+              "Theme: Inequality",
+              "Technological change does not affect all individuals, communities, or regions equally. Agents in this theme examine how emerging technologies may reinforce, redistribute, or reduce existing forms of inequality, and what role design can play in promoting more equitable outcomes. Example topics include, but are not limited to:",
+              [
+                "<strong>Agent Access and Participation:</strong> As agentic systems become increasingly integrated into education, work, research, and civic life, how can access be expanded without creating new barriers to participation?",
+                "<strong>AI Literacy and Capacity Building:</strong> Fluency in working with agents is increasingly a prerequisite for participation in many aspects of social, economic, and civic life. What forms of education, training, and support can promote equitable participation across different populations?",
+                "<strong>Infrastructure and Resource Equity:</strong> Access to compute, connectivity, and advanced AI systems remains unevenly distributed. How can interactive systems be designed for contexts where resources are limited or constrained?"
               ]
             )
           ]
