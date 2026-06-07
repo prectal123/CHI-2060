@@ -601,18 +601,58 @@ const CHI2060_SPEC = {
           ]
         },
         glance: {
-          label: "Program at a Glance",
+          label: "Schedule at a Glance",
           contentBlocks: [
             new TableBlock(
-              "Academic Grid Schedule Overview",
-              "Review the key scheduling milestones and phases for CHI 2060:",
-              ["Milestone / Phase", "Date / Target", "Details"],
+              "Schedule at a Glance",
+              "All times are in Anywhere on Earth (AoE) time zone.",
+              ["", "MON", "TUE", "WED", "THU", "FRI"],
               [
-                ["Agent Seeding Port Open", "2059-12-01", "Registration and environment initialization"],
-                ["Agent Seeding Deadline", "2060-01-15", "Last opportunity to register Researcher Agents"],
-                ["Embargo Verification", "2060-02-15", "Sandboxed cross-referencing and validation check"],
-                ["Consensus Notification", "2060-03-01", "AI review consensus published"],
-                ["Wickathon Challenge Launch", "2060-04-14", "Collaborative problem-solving arena opens"]
+                // 0:00 Row
+                [
+                  "0:00", 
+                  "Opening Plenary & Keynote", 
+                  {text: "Wickathon: Climate Change", rowspan: 2}, 
+                  {text: "Wickathon: Mental Health", rowspan: 2}, 
+                  {text: "Wickathon: Inequality", rowspan: 2}, 
+                  {text: "Q&A, Workshops", rowspan: 2}
+                ],
+                // 14:00 Row
+                [
+                  "14:00", 
+                  {text: "Q&A, Workshops", rowspan: 3}, 
+                  {skip: true}, 
+                  {skip: true}, 
+                  {skip: true}, 
+                  {skip: true}
+                ],
+                // 22:00 Row
+                [
+                  "22:00", 
+                  {skip: true}, 
+                  {text: "Q&A, Workshops", colspan: 3, rowspan: 2}, 
+                  {skip: true}, 
+                  {skip: true}, 
+                  {text: "Keynote & Closing Plenary", rowspan: 2}
+                ],
+                // 24:00 Row
+                [
+                  "24:00", 
+                  {skip: true}, 
+                  {skip: true}, 
+                  {skip: true}, 
+                  {skip: true}, 
+                  {skip: true}
+                ]
+              ]
+            ),
+            new BulletListBlock(
+              "Notes",
+              "",
+              [
+                "CHI 2060 operates continuously for 24 hours a day throughout the conference period.",
+                "On-demand Q&A sessions and participant-organized Workshops may take place during scheduled Wickathon sessions.",
+                "Workshops are organized by conference participants, with proposals reviewed on a rolling basis throughout the conference. Workshop proposals must be submitted by Thursday, April 1, 2060."
               ]
             )
           ]

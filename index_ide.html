@@ -1332,7 +1332,18 @@
               <tbody>
                 ${block.rows.map(row => `
                   <tr>
-                    ${row.map((cell, idx) => idx === 0 ? `<td><strong>${cell}</strong></td>` : `<td>${cell}</td>`).join("")}
+                    ${row.map((cell, idx) => {
+                      if (typeof cell === 'object' && cell !== null) {
+                        if (cell.skip) return '';
+                        let attrs = '';
+                        if (cell.rowspan) attrs += ` rowspan="${cell.rowspan}"`;
+                        if (cell.colspan) attrs += ` colspan="${cell.colspan}"`;
+                        let content = cell.text || '';
+                        if (idx === 0) content = `<strong>${content}</strong>`;
+                        return `<td${attrs}>${content}</td>`;
+                      }
+                      return idx === 0 ? `<td><strong>${cell}</strong></td>` : `<td>${cell}</td>`;
+                    }).join("")}
                   </tr>
                 `).join("")}
               </tbody>

@@ -861,7 +861,16 @@
             <table class="dense-table">
               <thead><tr>${block.headers.map(h => `<th>${h}</th>`).join("")}</tr></thead>
               <tbody>
-                ${block.rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join("")}</tr>`).join("")}
+                ${block.rows.map(row => `<tr>${row.map(cell => {
+                  if (typeof cell === 'object' && cell !== null) {
+                    if (cell.skip) return '';
+                    let attrs = '';
+                    if (cell.rowspan) attrs += ` rowspan="${cell.rowspan}"`;
+                    if (cell.colspan) attrs += ` colspan="${cell.colspan}"`;
+                    return `<td${attrs}>${cell.text || ''}</td>`;
+                  }
+                  return `<td>${cell}</td>`;
+                }).join("")}</tr>`).join("")}
               </tbody>
             </table>
           `;
