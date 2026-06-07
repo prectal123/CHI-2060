@@ -1442,6 +1442,49 @@
               ${renderFilteredPapersList()}
             </div>
           `;
+        } else if (block.type === "collapsible_papers_list") {
+          let bodyBg = "#fff";
+          let headerBg = "#eee";
+          let borderCol = "#111";
+          let fontFam = "var(--font-mono, monospace)";
+          let fontCol = "#000";
+          let subCol = "#555";
+          
+          if (location.href.includes("index_ide")) {
+            bodyBg = "#1e1e1e";
+            headerBg = "#252526";
+            borderCol = "#3c3c3c";
+            fontCol = "#cccccc";
+            subCol = "#858585";
+          } else if (location.href.includes("index_dandy")) {
+            bodyBg = "#fcfaf2";
+            headerBg = "#e6dfcc";
+            borderCol = "#222";
+            fontFam = "var(--font-serif, Georgia, serif)";
+            fontCol = "#222";
+            subCol = "#555";
+          } else if (location.href.includes("index_dump")) {
+            bodyBg = "#fff";
+            headerBg = "#f5f5f5";
+            borderCol = "#ccc";
+            fontCol = "#333";
+            subCol = "#666";
+          }
+
+          html += `
+            <div class="collapsible-papers-container" style="border:1px solid ${borderCol}; margin-top:1.5rem; margin-bottom:1.5rem;">
+              <div class="collapsible-papers-header" onclick="toggleCollapsiblePapers(this)" style="display:flex; justify-content:space-between; align-items:center; padding:0.75rem 1rem; cursor:pointer; background:${headerBg}; font-weight:700; font-family:${fontFam}; font-size:0.85rem; border-bottom:1px solid ${borderCol}; color:${fontCol};">
+                <span>${block.title || 'ACCEPTED PAPERS CORPUS'}</span>
+                <div style="display:flex; align-items:center; gap:0.5rem;">
+                  <span class="collapsible-status" style="font-size:0.75rem; font-weight:normal; color:${subCol}; font-style:italic;">(CLICK TO EXPAND)</span>
+                  <ion-icon name="chevron-down-outline" class="arrow-icon" style="transition: transform 0.2s ease; font-size:0.9rem; color:${fontCol};"></ion-icon>
+                </div>
+              </div>
+              <div class="collapsible-papers-body" style="display:none; max-height:450px; overflow-y:auto; padding:1rem; background:${bodyBg};">
+                <div class="loading-indicator" style="font-family:var(--font-mono); font-size:0.8rem; padding:1rem; text-align:center; color:${fontCol};">Loading papers database from JSON...</div>
+              </div>
+            </div>
+          `;
         } else if (block.type === "sponsor_block") {
           html += `<div class="sponsor-tiers">`;
           block.tiers.forEach(tier => {
@@ -1639,6 +1682,65 @@
       element.classList.add("active");
       document.getElementById("active-filename").textContent = filename;
       renderJSONCodeView();
+    }
+
+    function toggleCollapsiblePapers(header) {
+      const container = header.parentElement;
+      const body = container.querySelector(".collapsible-papers-body");
+      const arrow = header.querySelector(".arrow-icon");
+      const statusText = header.querySelector(".collapsible-status");
+      
+      const isOpen = body.classList.toggle("open");
+      body.style.display = isOpen ? "block" : "none";
+      arrow.style.transform = isOpen ? "rotate(180deg)" : "";
+      statusText.textContent = isOpen ? "(CLICK TO COLLAPSE)" : "(CLICK TO EXPAND)";
+      
+      if (isOpen && !body.dataset.loaded) {
+        body.dataset.loaded = "true";
+        if (CHI2060_PAPERS) {
+          renderFromData(CHI2060_PAPERS);
+        } else {
+          body.innerHTML = `<p style="color:red; font-family:var(--font-mono); font-size:0.8rem; text-align:center;">Failed to load papers database.</p>`;
+        }
+      }
+
+      function renderFromData(data) {
+        let list = [];
+        if (data.conference_papers) {
+          list = list.concat(data.conference_papers.map(p => ({ ...p, track: "Conference" })));
+        }
+        if (data.journal_papers) {
+          list = list.concat(data.journal_papers.map(p => ({ ...p, track: "Journal" })));
+        }
+        
+        let borderCol = "#111";
+        if (location.href.includes("index_ide")) borderCol = "#3c3c3c";
+        else if (location.href.includes("index_dandy")) borderCol = "#222";
+
+        const listHtml = list.map(p => {
+          const badge = p.award ? `<span class="award-badge"><ion-icon name="trophy-outline" style="vertical-align:middle; margin-right:2px;"></ion-icon>${p.award}</span>` : '';
+          const auths = p.authors.map(a => `${a.human} (<span style="color:var(--color-link);">${a.agent}</span>) [${a.contribution_pct}%]`).join(", ");
+          return `
+            <div class="paper-card" style="margin-bottom:0.75rem;">
+              <div class="paper-card-hdr">
+                <span>${p.id} // TRACK: ${p.track.toUpperCase()}</span>
+                <div>
+                  <span style="font-weight:700; border:1px solid ${borderCol}; padding:0.1rem 0.3rem;">${p.subcommittee}</span>
+                  ${badge}
+                </div>
+              </div>
+              <h4 class="paper-card-title">${p.title}</h4>
+              <div class="paper-card-authors"><strong>Seeders:</strong> ${auths}</div>
+              <div class="paper-card-ftr">
+                <span>FILE: <a href="#download" onclick="alert('Downloading: ${p.file}'); event.stopPropagation();">${p.file}</a> (${p.file_size_mb} MB)</span>
+                <span>COMPATIBILITY: ${p.compatible_agent_version} (${p.compatible_os.join(", ")})</span>
+              </div>
+            </div>
+          `;
+        }).join("");
+        
+        body.innerHTML = listHtml;
+      }
     }
 
     function parseHighlight(jsonStr) {
@@ -1857,7 +1959,7 @@
 
     function getUniqueSubcommittees() {
       const subs = new Set();
-      if (typeof CHI2060_PAPERS !== 'undefined') {
+      if (CHI2060_PAPERS && CHI2060_PAPERS.conference_papers && CHI2060_PAPERS.journal_papers) {
         CHI2060_PAPERS.conference_papers.forEach(p => subs.add(p.subcommittee));
         CHI2060_PAPERS.journal_papers.forEach(p => subs.add(p.subcommittee));
       }
@@ -1883,7 +1985,7 @@
     }
 
     function renderFilteredPapersList() {
-      if (typeof CHI2060_PAPERS === 'undefined') return '';
+      if (!CHI2060_PAPERS || !CHI2060_PAPERS.conference_papers || !CHI2060_PAPERS.journal_papers) return '';
       let list = [];
       if (paperTrack === "all" || paperTrack === "conference") {
         list = list.concat(CHI2060_PAPERS.conference_papers.map(p => ({ ...p, track: "Conference" })));
@@ -1939,9 +2041,28 @@
 
     /* Initialize */
     window.addEventListener("load", () => {
-      bindAcademicData();
-      renderMainNav();
-      selectTabSubtab('home', 'intro');
+      if (location.protocol === "file:") {
+        bindAcademicData();
+        renderMainNav();
+        selectTabSubtab('home', 'intro');
+      } else {
+        fetch("chi2060_papers.json")
+          .then(res => {
+            if (!res.ok) throw new Error("Network response was not OK");
+            return res.json();
+          })
+          .then(data => {
+            CHI2060_PAPERS = data;
+          })
+          .catch(err => {
+            console.error("Failed to fetch chi2060_papers.json, using preloaded:", err);
+          })
+          .finally(() => {
+            bindAcademicData();
+            renderMainNav();
+            selectTabSubtab('home', 'intro');
+          });
+      }
       localStorage.setItem("chi2060-theme", "ide");
     });
   </script>

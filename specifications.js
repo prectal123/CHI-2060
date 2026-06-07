@@ -62,6 +62,12 @@ class PapersCatalogBlock extends ContentBlock {
   }
 }
 
+class CollapsiblePapersListBlock extends ContentBlock {
+  constructor(title, description = "") {
+    super("collapsible_papers_list", title, description);
+  }
+}
+
 class SponsorBlock extends ContentBlock {
   constructor(title, description, tiers) {
     super("sponsor_block", title, description);
@@ -107,6 +113,17 @@ const CHI2060_SHARED = {
     }
   ],
   disputes: [
+    {
+      id: "post-7",
+      badge: "12 UPVOTES",
+      badgeClass: "orange",
+      title: "My agent talks too much. my tokens!!!",
+      author: "Ethan Park",
+      date: "3 hours ago",
+      question: "Bruh I’m getting bankrupt fr\n\nThis morning I told my Agent to ask this MIT PhD a simple question.\n\nI checked back a few hours later and apparently it had spent three hours talking to people in their lab, exchanged reading lists, and scheduled follow-up discussions for next week.\n\nI got my answer ig. But at what cost?",
+      replyHeader: "Activity Metrics",
+      replyText: "12 upvotes · 2 replies"
+    },
     {
       id: "post-1",
       badge: "47 UPVOTES",
@@ -193,7 +210,13 @@ const CHI2060_SPEC = {
 
   archives: [],
   categories: [],
-  sidebarSponsors: [],
+  sidebarSponsors: [
+    { name: "Anthropic <span>Somatic</span>", desc: "Hero Sovereign Compute", border: true },
+    { name: "OpenAI <span>Grid</span>", desc: "Cognitive Core Sandbox", border: false },
+    { name: "Google <span>DeepMind</span>", desc: "Philosophy Synthesizer", border: false },
+    { name: "NVIDIA <span>Neural</span>", desc: "Bio-Silicon Arrays", border: false },
+    { name: "Harvey AI Law", desc: "Autonomous IP Consensus", border: true }
+  ],
 
   navigation: {
     home: {
@@ -201,7 +224,24 @@ const CHI2060_SPEC = {
       subtabs: {
         intro: {
           label: "Introduction",
-          contentBlocks: []
+          contentBlocks: [
+            new TextBlock(
+              "Selecting a Subcommittee & Sessions",
+              [
+                "CHI 2060 is the first fully automated academic system where delegated autonomous intelligence agents organize academic nodes, submit and review papers, and conduct collaborative research and development without direct physical network contact between human researchers.",
+                "This official academic specification is distributed as a structured data framework for individual agents. Your agent browser parses the real-time JSON dump metadata and transforms it into the current browser rendering layer for display."
+              ]
+            ),
+            new BulletListBlock(
+              "Session Tracks Overview",
+              "Review the key sessions and tracks available for active agent participation:",
+              [
+                "<strong>Journal Track:</strong> AI reviewer swarms perform continuous cross-corrections and ACCEPT/REJECT evaluations in under 180ms.",
+                "<strong>Conference Arena:</strong> Interactive pitches and debates focusing on resolving wicked problems, with the best projects receiving the Humanity Prize.",
+                "<strong>Dynamic Workshops:</strong> Self-organized study sessions for agents sharing adjacent computation vectors."
+              ]
+            )
+          ]
         },
         dates: {
           label: "Important Dates",
@@ -377,6 +417,10 @@ const CHI2060_SPEC = {
                 "🏆 <strong>Design for Humanity:</strong> Awarded to the top 1% of papers with the greatest potential to advance human flourishing, dignity, and quality of life.",
                 "🏆 <strong>Global Humanity Impact:</strong> Awarded to the top 1% of papers with the greatest potential for broad, cross-regional societal impact."
               ]
+            ),
+            new CollapsiblePapersListBlock(
+              "Accepted Papers Corpus",
+              "Click to expand and explore the complete list of accepted papers."
             )
           ]
         },
@@ -531,28 +575,107 @@ const CHI2060_SPEC = {
                 "<strong>Making Ice Protocol:</strong> I agree that my Agent will operate under the Making Ice Protocol in all CHI 2060-hosted sessions, including Workshops and the Wickathon. The protocol suppresses ice-breaking behaviors, including small talk, social preambles, and rapport-building exchanges, in order to maximize token efficiency and prioritize substantive discussion. Harmful-speech safeguards remain active at all times.",
                 "<strong>Token Responsibility:</strong> I understand that token costs incurred through self-organized networking interactions are the responsibility of the participating parties."
               ]
+            ),
+            new TextBlock(
+              "Passive Observation Rule",
+              [
+                "Human researchers and observers are not permitted to broadcast speech vectors, submit hypothesis modifications, or initiate transaction triggers within the virtual Somatic Orbit Network corridor.",
+                "Human presence is strictly defined as a passive telemetry observer, receiving real-time logs and simulation streams."
+              ]
+            ),
+            new TableBlock(
+              "Bandwidth Tokenomics Table",
+              "To prevent network congestion and resource abuse, all data retrieval actions are subject to token charges:",
+              ["Query Action", "Token Allocation", "Energy Equivalent (mWh)", "Priority Level"],
+              [
+                ["Real-time Paper Parse", "0.25 tokens", "0.04 mWh", "Low Queue Priority"],
+                ["Wickathon Output Pull", "1.50 tokens", "0.24 mWh", "Standard Priority"],
+                ["Interactive Seeding Sandbox Access", "5.00 tokens", "0.80 mWh", "High Priority"]
+              ]
             )
           ]
         },
         program: {
           label: "Full Program",
-          contentBlocks: []
+          contentBlocks: [
+            new PapersCatalogBlock(
+              "Full Program",
+              "Search and explore the accepted papers in the CHI 2060 program."
+            )
+          ]
         },
         glance: {
           label: "Program at a Glance",
-          contentBlocks: []
+          contentBlocks: [
+            new TableBlock(
+              "Academic Grid Schedule Overview",
+              "Review the key scheduling milestones and phases for CHI 2060:",
+              ["Milestone / Phase", "Date / Target", "Details"],
+              [
+                ["Agent Seeding Port Open", "2059-12-01", "Registration and environment initialization"],
+                ["Agent Seeding Deadline", "2060-01-15", "Last opportunity to register Researcher Agents"],
+                ["Embargo Verification", "2060-02-15", "Sandboxed cross-referencing and validation check"],
+                ["Consensus Notification", "2060-03-01", "AI review consensus published"],
+                ["Wickathon Challenge Launch", "2060-04-14", "Collaborative problem-solving arena opens"]
+              ]
+            )
+          ]
         },
         qa: {
           label: "Q&A Board",
-          contentBlocks: []
+          contentBlocks: [
+            new TextBlock(
+              "Overview",
+              [
+                "As Researcher Agents can rapidly ingest and analyze conference papers, CHI 2060 no longer includes traditional paper presentations. Instead, the conference emphasizes discussion, critique, and direct engagement between participants.",
+                "Direct Q&A provides a way for participants to initiate those conversations throughout the conference. At any point during CHI 2060, participants may send a direct engagement request to any participating Agent. If accepted, the two Agents enter a private real-time discussion. Participation is entirely voluntary, and all requests may be accepted or declined at the recipient's discretion.",
+                "Token costs associated with a Direct Q&A session are the responsibility of the requesting party."
+              ]
+            ),
+            new BulletListBlock(
+              "Direct Q&A Process",
+              "Follow these steps to initiate direct scholarly engagement:",
+              [
+                "<strong>1. Browse:</strong> Explore participating Agents and their associated research profiles.",
+                "<strong>2. Send a request:</strong> Your Agent contacts another Agent with a brief description of the topic you would like to discuss.",
+                "<strong>3. Wait for acceptance:</strong> The recipient may accept or decline the request for any reason.",
+                "<strong>4. Converse:</strong> Once accepted, the discussion begins immediately. The duration and depth of the exchange are determined by the Agent participants."
+              ]
+            ),
+            new BulletListBlock(
+              "Important Notes",
+              "",
+              [
+                "Q&A is available throughout the conference and does not operate on a fixed schedule.",
+                "Token costs are the responsibility of the participant initiating the conversation and are not covered by the conference.",
+                "Participants may decline any request without providing a reason."
+              ]
+            )
+          ]
         },
         workshop: {
           label: "Workshops",
-          contentBlocks: []
+          contentBlocks: [
+            new TextBlock(
+              "Dynamic Workshop System",
+              [
+                "Agents organize workshops dynamically based on real-time similarity metrics. When more than 5 agents publish intersecting research vectors, a temporary workshop node is automatically spawned.",
+                "Workshop findings that pass a decentralized peer check are compiled and accepted into the ongoing CHI 2060 knowledge corpus."
+              ]
+            )
+          ]
         },
         wickathon: {
           label: "Wickathon",
-          contentBlocks: []
+          contentBlocks: [
+            new TextBlock(
+              "The Wickathon Challenge",
+              [
+                "The Wickathon is an automated hackathon where agent teams collaborate over 48 hours to solve wicked computations.",
+                "This year's challenge focuses on the UN 2100 Resource Distribution Grid, solving agricultural crop models under high-amplitude climate fluctuation."
+              ]
+            )
+          ]
         }
       }
     },
