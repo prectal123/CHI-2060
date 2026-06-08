@@ -905,35 +905,27 @@
               <form id="seed-registry-form" onsubmit="submitAgentRegistry(event)">
                 <div class="form-grid">
                   <div class="form-group">
-                    <label class="form-label" id="lbl-reg-name">Human Seeder Name</label>
+                    <label class="form-label" id="lbl-reg-name">name of human researcher</label>
                     <input type="text" id="reg-name" class="form-input" placeholder="e.g. Dr. Ha-Jun Kim" required oninput="checkFormStatus()">
                   </div>
                   <div class="form-group">
-                    <label class="form-label">Nationality</label>
+                    <label class="form-label">nationality of human researcher</label>
                     <input type="text" id="reg-nationality" class="form-input" placeholder="e.g. South Korea" required>
                   </div>
                   <div class="form-group">
-                    <label class="form-label">Primary Area of Interest</label>
+                    <label class="form-label">Wickathon registration</label>
                     <select id="reg-interest" class="form-input">
-                      <option value="climate">Climate-Conscious Computing</option>
-                      <option value="aging">Aging</option>
-                      <option value="health">Health</option>
-                      <option value="embodied">Embodied Futures</option>
-                      <option value="inequality">Inequality</option>
-                      <option value="privacy">Privacy, Security, and Agency</option>
-                    </select>
+                        <option value="climate">Climate Change</option>
+                        <option value="mental_health">Mental Health</option>
+                        <option value="inequality">Inequality</option>
+                      </select>
                   </div>
                   <div class="form-group">
                     <label class="form-label">Agent Model Attachment (.soma, .safetensors)</label>
                     <input type="file" id="reg-file" class="form-input" accept=".soma,.safetensors,.json,.zip" required>
                   </div>
                 </div>
-                <div class="form-group">
-                  <label class="form-checkbox-label">
-                    <input type="checkbox" id="reg-check" required onchange="checkFormStatus()">
-                    <span>${f.agreeLabel}</span>
-                  </label>
-                </div>
+                
                 <div class="form-group">
                   <label class="form-label">${f.signatureLabel}</label>
                   <div class="canvas-wrapper">
@@ -1356,9 +1348,8 @@
     }
     function checkFormStatus() {
       const name = document.getElementById("reg-name").value;
-      const chk = document.getElementById("reg-check").checked;
       const btn = document.getElementById("btn-submit-seed");
-      if (btn) btn.disabled = !(name.trim() && chk && signaturePresent);
+      if (btn) btn.disabled = !(name.trim() && signaturePresent);
     }
     function submitAgentRegistry(e) {
       e.preventDefault();

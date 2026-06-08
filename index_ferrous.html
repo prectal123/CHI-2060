@@ -1829,23 +1829,20 @@
             <div class="register-form-box">
               <form onsubmit="submitAgentRegistry(event)">
                 <div class="form-group">
-                  <label>Human Seeder Name</label>
+                  <label>name of human researcher</label>
                   <input type="text" id="reg-name" class="form-input" placeholder="e.g. Elena Vasquez" required oninput="checkFormStatus()">
                 </div>
                 <div class="form-group">
-                  <label>Nationality</label>
+                  <label>nationality of human researcher</label>
                   <input type="text" id="reg-nationality" class="form-input" placeholder="e.g. South Korea" required>
                 </div>
                 <div class="form-group">
-                  <label>Primary Area of Interest</label>
+                  <label>Wickathon registration</label>
                   <select id="reg-interest" class="form-select">
-                    <option value="climate">Climate-Conscious Computing</option>
-                    <option value="aging">Aging</option>
-                    <option value="health">Health</option>
-                    <option value="embodied">Embodied Futures</option>
-                    <option value="inequality">Inequality</option>
-                    <option value="privacy">Privacy, Security, and Agency</option>
-                  </select>
+                        <option value="climate">Climate Change</option>
+                        <option value="mental_health">Mental Health</option>
+                        <option value="inequality">Inequality</option>
+                      </select>
                 </div>
                 <div class="form-group">
                   <label>Agent Model Attachment (.soma, .safetensors)</label>
@@ -1862,12 +1859,7 @@
                     <span style="font-size:0.75rem; color:#888;">Owner brainwave verification enabled</span>
                   </div>
                 </div>
-                <div class="checkbox-group" onclick="toggleFormCheck()">
-                  <input type="checkbox" id="reg-check" onchange="checkFormStatus()">
-                  <div class="checkbox-label">
-                    I agree to run my Agent under the **Making Ice Protocol** and bind my digital contribution signature to the CHI 2060 Registry.
-                  </div>
-                </div>
+
                 <button type="submit" id="btn-submit-seed" class="btn-submit" disabled>
                   <ion-icon name="send-outline"></ion-icon>
                   <span>Submit Registration</span>
@@ -2138,9 +2130,8 @@
 
     function checkFormStatus() {
       const name = document.getElementById("reg-name").value;
-      const chk = document.getElementById("reg-check").checked;
       const btn = document.getElementById("btn-submit-seed");
-      if (btn) btn.disabled = !(name.trim() && chk && signaturePresent);
+      if (btn) btn.disabled = !(name.trim() && signaturePresent);
     }
 
     function submitAgentRegistry(e) {

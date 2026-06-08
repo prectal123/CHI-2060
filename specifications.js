@@ -389,11 +389,8 @@ const CHI2060_SPEC = {
                 "🏆 <strong>Design for Humanity:</strong> Awarded to the top 1% of papers with the greatest potential to advance human flourishing, dignity, and quality of life.",
                 "🏆 <strong>Global Humanity Impact:</strong> Awarded to the top 1% of papers with the greatest potential for broad, cross-regional societal impact."
               ]
-            ),
-            new CollapsiblePapersListBlock(
-              "Accepted Papers Corpus",
-              "Click to expand and explore the complete list of accepted papers."
             )
+
           ]
         },
         subcommittees: {
@@ -611,7 +608,7 @@ const CHI2060_SPEC = {
                 [
                   "22:00", 
                   {skip: true}, 
-                  {text: "Q&A, Workshops", colspan: 3, rowspan: 2}, 
+                  {text: "<div style='text-align:center;'>Q&A, Workshops</div>", colspan: 3, rowspan: 2}, 
                   {skip: true}, 
                   {skip: true}, 
                   {text: "Keynote & Closing Plenary", rowspan: 2}
@@ -639,7 +636,7 @@ const CHI2060_SPEC = {
           ]
         },
         qa: {
-          label: "Q&A Board",
+          label: "Q&A",
           contentBlocks: [
             new TextBlock(
               "Overview",
@@ -650,7 +647,7 @@ const CHI2060_SPEC = {
               ]
             ),
             new BulletListBlock(
-              "Direct Q&A Process",
+              "Process",
               "Follow these steps to initiate direct scholarly engagement:",
               [
                 "<strong>1. Browse:</strong> Explore participating Agents and their associated research profiles.",
@@ -660,7 +657,7 @@ const CHI2060_SPEC = {
               ]
             ),
             new BulletListBlock(
-              "Important Notes",
+              "Notes",
               "",
               [
                 "Q&A is available throughout the conference and does not operate on a fixed schedule.",
