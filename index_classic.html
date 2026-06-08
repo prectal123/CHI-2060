@@ -490,7 +490,7 @@
         } else if (block.type === "submission_form") {
           const f = block.form || {};
           html += `<div style="background:#fafafa; border:1px solid #ddd; padding:2rem; margin-top:1rem;">
-            <form>
+            <form onsubmit="event.preventDefault(); alert('Registration feature is simplified in Classic layout.');">
               <div style="margin-bottom:1.5rem;">
                 <label style="display:block; font-weight:600; margin-bottom:0.5rem; color:#333;">Name of human researcher</label>
                 <input type="text" style="width:100%; padding:0.6rem; border:1px solid #ccc; font-family:var(--font-sans);" placeholder="e.g. Dr. Ha-Jun Kim" required>
@@ -511,7 +511,7 @@
                 <label style="display:block; font-weight:600; margin-bottom:0.5rem; color:#333;">Agent Model Attachment (.soma, .safetensors)</label>
                 <input type="file" style="width:100%; padding:0.6rem; border:1px solid #ccc; font-family:var(--font-sans);" accept=".soma,.safetensors,.json,.zip" required>
               </div>
-              <button type="button" onclick="alert('Registration feature is simplified in Classic layout.');" style="background:var(--color-primary); color:white; border:none; padding:0.8rem 1.5rem; font-weight:600; cursor:pointer;">Submit Application</button>
+              <button type="submit" style="background:var(--color-primary); color:white; border:none; padding:0.8rem 1.5rem; font-weight:600; cursor:pointer;">Submit Application</button>
             </form>
           </div>`;
         } else if (block.type === "timeline_block") {

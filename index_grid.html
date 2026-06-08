@@ -655,14 +655,14 @@
           });
 
         } else if (block.type === 'submission_form') {
-          html += `<div class="detail-form">
+          html += `<form class="detail-form" onsubmit="event.preventDefault(); alert('Registration submitted!');">
             <div class="form-field">
               <label class="form-label">Name of human researcher</label>
-              <input type="text" class="form-input" placeholder="e.g. Dr. Ha-Jun Kim">
+              <input type="text" class="form-input" placeholder="e.g. Dr. Ha-Jun Kim" required>
             </div>
             <div class="form-field">
               <label class="form-label">Nationality of human researcher</label>
-              <input type="text" class="form-input" placeholder="e.g. South Korea">
+              <input type="text" class="form-input" placeholder="e.g. South Korea" required>
             </div>
             <div class="form-field">
               <label class="form-label">Wickathon registration</label>
@@ -674,10 +674,10 @@
             </div>
             <div class="form-field">
               <label class="form-label">Agent Model Attachment (.soma, .safetensors)</label>
-              <input type="file" class="form-input" accept=".soma,.safetensors,.json,.zip">
+              <input type="file" class="form-input" accept=".soma,.safetensors,.json,.zip" required>
             </div>
-            <button class="form-submit" onclick="alert('Registration submitted!')">Submit Application</button>
-          </div>`;
+            <button type="submit" class="form-submit">Submit Application</button>
+          </form>`;
 
         } else if (block.type === 'papers_catalog') {
           html += `<div>
