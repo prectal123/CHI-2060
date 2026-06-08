@@ -12,7 +12,7 @@
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap');
     :root {
-      --bg: #f0f0f0;
+      --bg: #ffffff;
       --text: #111;
       --text-muted: #666;
       --font: 'Montserrat', sans-serif;
@@ -155,11 +155,12 @@
       right: 1.05rem;
       font-size: 1.3rem;
       opacity: 0.85;
-      transform: rotate(-45deg);
+      transform: rotate(45deg);
+      --ionicon-stroke-width: 56px;
       transition: transform var(--transition), opacity var(--transition);
     }
     .card:hover .card-arrow {
-      transform: rotate(-45deg) translate(2px, -2px);
+      transform: rotate(45deg) translate(2px, -2px);
       opacity: 1;
     }
     .card-label {
@@ -472,7 +473,7 @@
     function init() {
       const conf = CHI2060_SPEC.conference;
       document.getElementById('banner-name').textContent = conf.name;
-      document.getElementById('banner-slogan').textContent = conf.theme + ' • ' + conf.location + ', ' + conf.dates;
+      document.getElementById('banner-slogan').textContent = conf.theme + (conf.location ? ' • ' + conf.location : '') + ' • ' + conf.dates;
       renderGrid();
     }
 
