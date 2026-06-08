@@ -1141,7 +1141,7 @@
             <span class="footer-status-pill" style="cursor:pointer; background:rgba(255,255,255,0.15);" onclick="toggleAgentView()">Powered by Somatic Personal Agent</span>
           </div>
           <div class="footer-right">
-            <span>© 2060 ACM CHI Steering Committee</span>
+            <span>© 2060 • ACM SIGCHI</span>
             <span class="footer-status-pill">GRID: STABLE</span>
             <span class="footer-status-pill">COGNITIVE LATENCY: 0.12ms</span>
           </div>
@@ -1577,9 +1577,7 @@
         <div class="right-section">
           <h3 class="col-title"><ion-icon name="shield-outline"></ion-icon> <span>sponsors</span></h3>
           <div class="sponsor-list">
-            ${CHI2060_SPEC.sidebarSponsors.map(s => `
-              <div class="sponsor-sidebar-card" style="padding: 10px; text-align: center;"><img src="${s.logo}" alt="${s.name}" title="${s.name}" style="max-width:100%; max-height:40px; display:block; margin:0 auto; object-fit:contain;"></div>
-            `).join("")}
+            ${CHI2060_SPEC.sidebarSponsors.map(s => s.type === "divider" ? `<div style="text-transform:uppercase; font-size:0.75rem; font-weight:bold; color:var(--text-muted, #888); border-bottom:1px solid var(--color-border, #ccc); margin-top:1.5rem; margin-bottom:0.5rem; padding-bottom:0.25rem;">${s.label}</div>` : `<div class="sponsor-sidebar-card" style="padding: 10px; text-align: center;"><img src="${s.logo}" alt="${s.name}" title="${s.name}" style="max-width:100%; max-height:40px; display:block; margin:0 auto; object-fit:contain;"></div>`).join("")}
           </div>
         </div>
       `;

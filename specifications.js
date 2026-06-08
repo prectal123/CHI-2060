@@ -211,13 +211,15 @@ const CHI2060_SPEC = {
   archives: [],
   categories: [],
   sidebarSponsors: [
+    { type: "divider", label: "Hero" },
     { logo: "logos/Anthropic.png", name: "Anthropic", border: false },
-    { logo: "logos/OpenAI.png", name: "OpenAI", border: false },
+    { type: "divider", label: "Champion" },
     { logo: "logos/DeepMind.png", name: "Google DeepMind", border: false },
+    { logo: "logos/OpenAI.png", name: "OpenAI", border: false },
     { logo: "logos/NVdia.png", name: "NVIDIA", border: false },
     { logo: "logos/SnowFlake.png", name: "Snowflake", border: false },
     { logo: "logos/ClaudeFlare.png", name: "Cloudflare", border: false },
-    { logo: "logos/Humanloop.svg", name: "Humanloop", border: false },
+    { type: "divider", label: "Contributing" },
     { logo: "logos/UN.svg", name: "United Nations", border: false },
     { logo: "logos/Harvey.svg", name: "Harvey AI Law", border: false }
   ],
@@ -809,8 +811,7 @@ const CHI2060_SPEC = {
                     { name: "OpenAI", logo: "logos/OpenAI.png", url: "https://www.openai.com" },
                     { name: "NVIDIA", logo: "logos/NVdia.png", url: "https://www.nvidia.com" },
                     { name: "Snowflake", logo: "logos/SnowFlake.png", url: "https://www.snowflake.com" },
-                    { name: "Cloudflare", logo: "logos/ClaudeFlare.png", url: "https://www.cloudflare.com" },
-                    { name: "Humanloop", logo: "logos/Humanloop.svg", url: "https://humanloop.com" }
+                    { name: "Cloudflare", logo: "logos/ClaudeFlare.png", url: "https://www.cloudflare.com" }
                   ]
                 },
                 {
