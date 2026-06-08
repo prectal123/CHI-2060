@@ -677,16 +677,7 @@
 
     </nav>
 
-    <!-- Meta Warning notice -->
-    <div class="meta-notice-band">
-      <div style="display:flex; align-items:center; gap:0.5rem;">
-        <ion-icon name="information-circle-outline"></ion-icon>
-        <span id="meta-notice-text"></span>
-      </div>
-      <div id="renderer-id-badge" style="font-size:0.65rem; font-weight:700;">
-        [RENDERER-ID: EXTREME-MINIMAL-MONO v2.0.0]
-      </div>
-    </div>
+    <!-- Meta Warning notice removed by user request -->
 
     <!-- Breadcrumb -->
     <div class="breadcrumbs" id="breadcrumb-trail"></div>
@@ -800,7 +791,6 @@
       renderContent();
 
       const mappedFile = getMappedFileForTab(tabId);
-      document.getElementById("meta-notice-text").textContent = `[PROTOCOL] Real-time stream parsing: [${mappedFile}] active.`;
       
       if (currentInterfaceMode === "agent") {
         loadRepoFile(mappedFile, document.getElementById(`tree-${mappedFile}`));
@@ -1064,7 +1054,7 @@
 
       mainPane.innerHTML = html;
 
-      if (currentTabId === "authors" && currentSubtabId === "submission") {
+      if (currentTabId === "attendees" && currentSubtabId === "registration") {
         setTimeout(initSignatureCanvas, 50);
       }
     }
@@ -1151,14 +1141,6 @@
       const col = document.getElementById("right-sponsors-sidebar");
       if (!col) return;
       col.innerHTML = `
-        <div class="right-section">
-          <h3 class="col-title">Archives</h3>
-          <ul class="archive-list">${CHI2060_SPEC.archives.map(a => `<li><a href="#arch" onclick="switchTab('home')">${a.name}</a></li>`).join("")}</ul>
-        </div>
-        <div class="right-section">
-          <h3 class="col-title">Categories</h3>
-          <ul class="category-list">${CHI2060_SPEC.categories.map(c => `<li><a href="#category" onclick="switchTab('home')">${c.name}</a></li>`).join("")}</ul>
-        </div>
         <div class="right-section">
           <h3 class="col-title">Sponsors</h3>
           <div class="sponsor-list">${CHI2060_SPEC.sidebarSponsors.map(s => `<div class="sponsor-sidebar-card"><div class="sponsor-side-name">${s.name}</div><div class="sponsor-side-desc">${s.desc}</div></div>`).join("")}</div>

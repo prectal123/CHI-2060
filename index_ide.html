@@ -1528,7 +1528,7 @@
       
       mainPane.innerHTML = html;
       
-      if (currentTabId === "authors" && currentSubtabId === "submission") {
+      if (currentTabId === "attendees" && currentSubtabId === "registration") {
         setTimeout(() => {
           initSignatureCanvas();
         }, 50);
@@ -1583,18 +1583,6 @@
       if (!rightCol) return;
       
       let html = `
-        <div class="right-section">
-          <h3 class="col-title"><ion-icon name="archive-outline"></ion-icon> <span>archives</span></h3>
-          <ul class="archive-list">
-            ${CHI2060_SPEC.archives.map(a => `<li><ion-icon name="link-outline" style="color:#858585;"></ion-icon><a href="#arch" onclick="switchTab('home')">${a.name}</a></li>`).join("")}
-          </ul>
-        </div>
-        <div class="right-section">
-          <h3 class="col-title"><ion-icon name="pricetags-outline"></ion-icon> <span>categories</span></h3>
-          <ul class="category-list">
-            ${CHI2060_SPEC.categories.map(c => `<li><ion-icon name="tag-outline" style="color:#858585;"></ion-icon><a href="#category" onclick="switchTab('home')">${c.name}</a></li>`).join("")}
-          </ul>
-        </div>
         <div class="right-section">
           <h3 class="col-title"><ion-icon name="shield-outline"></ion-icon> <span>sponsors</span></h3>
           <div class="sponsor-list">

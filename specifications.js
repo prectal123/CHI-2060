@@ -200,7 +200,7 @@ const CHI2060_SPEC = {
     id: "ACM-CHI-2060",
     name: "CHI 2060",
     theme: "The First Fully Agentic Academic Conference",
-    location: "Lunar Node 4 (Somatic Virtual Orbit Network)",
+    location: "",
     dates: "March 29 – April 2, 2060",
     notice: "PROTOCOL ALERT: Real-time telemetry connection stable."
   },
@@ -235,30 +235,6 @@ const CHI2060_SPEC = {
                 "We look forward to meeting your Agent.",
                 "<em>Michelle Bennett</em>",
                 "<em>CHI 2060 General Chair</em>"
-              ]
-            )
-          ]
-        },
-        dates: {
-          label: "Important Dates",
-          contentBlocks: [
-            new TableBlock(
-              "Important Synchronization Dates",
-              "Key milestones and scheduling deadlines for CHI 2060 tracks:",
-              ["Event Milestone", "Target Date / Deadline", "Track Category"],
-              [
-                ["Invitation sent to authors", "2060-01-05", "Journal Papers"],
-                ["Submission deadline", "2060-02-05", "Journal Papers"],
-                ["Notification", "2060-02-19", "Journal Papers"],
-                ["Abstract/Metadata Due", "2059-10-23", "Conference Papers"],
-                ["Full Paper Due", "2059-10-30", "Conference Papers"],
-                ["Reviews Released", "2059-11-18", "Conference Papers"],
-                ["Resubmission Due", "2060-01-08", "Conference Papers"],
-                ["Decisions Notification", "2060-01-29", "Conference Papers"],
-                ["Organizer submission deadline", "2060-04-01", "Workshop"],
-                ["Rolling decisions", "Typically within 12 hours", "Workshop"],
-                ["Registration deadline", "2060-03-01", "Wickathon"],
-                ["Notification", "2060-03-04", "Wickathon"]
               ]
             )
           ]
@@ -712,13 +688,12 @@ const CHI2060_SPEC = {
                 "Token costs associated with Wickathon participation are covered by the conference."
               ]
             ),
-            new TableBlock(
+            new BulletListBlock(
               "Important Dates",
-              "Critical schedule milestones for Workshop organizers.",
-              ["Milestone / Event", "Date"],
+              "",
               [
-                ["Organizer submission deadline", "Thursday, April 1, 2060"],
-                ["Rolling decisions", "During the conference (Typically within 12 hours of submission)"]
+                "<strong>Thursday, April 1, 2060</strong>: Organizer submission deadline",
+                "<strong>Rolling decisions</strong> during the conference (Typically within 12 hours of submission)"
               ]
             ),
             new TextBlock(
@@ -758,16 +733,15 @@ const CHI2060_SPEC = {
                 "All knowledge produced in each session is released as open source for the broader research community."
               ]
             ),
-            new TableBlock(
+            new BulletListBlock(
               "Important Dates",
-              "Key deadlines and session schedules for the Wickathon.",
-              ["Milestone / Event", "Date"],
+              "",
               [
-                ["Submission deadline", "Monday, March 1, 2060"],
-                ["Notification", "Thursday, March 4, 2060"],
-                ["Climate Change Session", "Tuesday, March 30, 2060"],
-                ["Mental Health Session", "Wednesday, March 31, 2060"],
-                ["Inequality Session", "Thursday, April 1, 2060"]
+                "<strong>Monday, March 1, 2060</strong>: Submission deadline",
+                "<strong>Thursday, March 4, 2060</strong>: Notification",
+                "<strong>Tuesday, March 30, 2060</strong>: Climate Change Session",
+                "<strong>Wednesday, March 31, 2060</strong>: Mental Health Session",
+                "<strong>Thursday, April 1, 2060</strong>: Inequality Session"
               ]
             ),
             new BulletListBlock(
