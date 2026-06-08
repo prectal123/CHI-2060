@@ -421,39 +421,39 @@ const CHI2060_SPEC = {
               [
                 {
                   title: "Aging",
-                  desc: "Suitable for research on aging, longevity, and human flourishing across increasingly long lifespans. As advances in medicine, automation, and artificial intelligence reshape the role of work and extend life expectancy, researchers are challenged to design systems that promote purpose, learning, creativity, social connection, and well-being throughout life. Topics include designing for aging populations, lifelong development, post-work societies, intergenerational interaction, and technologies that enable meaningful lives in an era of 150-year lifespans."
+                  desc: "This subcommittee is suitable for research on aging, longevity, and human flourishing across increasingly long lifespans. As advances in medicine, automation, and artificial intelligence reshape the role of work and extend life expectancy, researchers are challenged to design systems that promote purpose, learning, creativity, social connection, and well-being throughout life. Topics include designing for aging populations, lifelong development, post-work societies, intergenerational interaction, and technologies that enable meaningful lives in an era of 150-year lifespans."
                 },
                 {
                   title: "Individual Sovereignty, Sustainability, and Resilience",
-                  desc: "Suitable for contributions exploring individual self-determination, collective well-being, sustainability, and resilience in an increasingly automated world. Topics include human-AI empowerment, self-directed living and learning, community-centered technologies, sustainable practices, civic participation, mutual aid, and infrastructures that strengthen long-term societal resilience."
+                  desc: "This subcommittee is suitable for contributions exploring individual self-determination, collective well-being, sustainability, and resilience in an increasingly automated world. Topics include human-AI empowerment, self-directed living and learning, community-centered technologies, sustainable practices, civic participation, mutual aid, and infrastructures that strengthen long-term societal resilience."
                 },
                 {
                   title: "Climate-Conscious Computing",
-                  desc: "Suitable for work addressing computing and interaction under environmental and resource constraints. Topics include climate-conscious interaction design, climate-constrained computing, energy-aware AI systems, sustainable digital infrastructures, and resource allocation mechanisms that balance computational demand with environmental costs."
+                  desc: "This subcommittee is suitable for work addressing computing and interaction under environmental and resource constraints. Topics include climate-conscious interaction design, climate-constrained computing, energy-aware AI systems, sustainable digital infrastructures, and resource allocation mechanisms that balance computational demand with environmental costs."
                 },
                 {
                   title: "More-than-Human Perspectives",
-                  desc: "Suitable for contributions examining non-human perspectives, stakeholders, and forms of interaction. Topics include Agent-mediated representation of ecosystems, rivers, forests, and other environmental actors; technologies for interspecies understanding and communication; animal-centered design; and AI personas that model, simulate, or advocate for non-human perspectives."
+                  desc: "This subcommittee is suitable for contributions examining non-human perspectives, stakeholders, and forms of interaction. Topics include Agent-mediated representation of ecosystems, rivers, forests, and other environmental actors; technologies for interspecies understanding and communication; animal-centered design; and AI personas that model, simulate, or advocate for non-human perspectives."
                 },
                 {
                   title: "Knowledge Beyond Scale",
-                  desc: "Suitable for research investigating situated, local, cultural, and community knowledge that may be difficult to capture, validate, or preserve through large-scale computational systems. Relevant topics include dialects and endangered languages, oral histories, community archives, indigenous and traditional knowledge systems, place-based expertise, and other forms of knowledge held by small populations."
+                  desc: "This subcommittee is suitable for research investigating situated, local, cultural, and community knowledge that may be difficult to capture, validate, or preserve through large-scale computational systems. Relevant topics include dialects and endangered languages, oral histories, community archives, indigenous and traditional knowledge systems, place-based expertise, and other forms of knowledge held by small populations."
                 },
                 {
                   title: "Health",
-                  desc: "Suitable for contributions concerning health, wellness, medicine, care, and well-being across diverse clinical, community, and everyday contexts. Relevant topics include physical, mental, emotional, and existential well-being, healthcare delivery, caregiving, self-management, disability, rehabilitation, public health, and emerging forms of AI-mediated care."
+                  desc: "This subcommittee is suitable for contributions concerning health, wellness, medicine, care, and well-being across diverse clinical, community, and everyday contexts. Relevant topics include physical, mental, emotional, and existential well-being, healthcare delivery, caregiving, self-management, disability, rehabilitation, public health, and emerging forms of AI-mediated care."
                 },
                 {
                   title: "Understanding People and Agents",
-                  desc: "Suitable for research on how humans and AI Agents understand, influence, learn from, and build relationships with one another. Relevant topics include human-AI relationships such as friendship, attachment, trust, dependency, companionship, and collaboration; the development of lifelong AI companions; Agent adaptation and personalization; and Agents' understanding of human values, intentions, emotions, and social norms."
+                  desc: "This subcommittee is suitable for research on how humans and AI Agents understand, influence, learn from, and build relationships with one another. Relevant topics include human-AI relationships such as friendship, attachment, trust, dependency, companionship, and collaboration; the development of lifelong AI companions; Agent adaptation and personalization; and Agents' understanding of human values, intentions, emotions, and social norms."
                 },
                 {
                   title: "Embodied Futures",
-                  desc: "Suitable for contributions exploring emerging forms of embodiment, augmentation, perception, and interaction. Relevant topics include neurointerfaces, human augmentation, multisensory interaction, wearable and implantable systems, extended perception, embodied AI, and interaction across increasingly distributed physical environments, including interplanetary settings."
+                  desc: "This subcommittee is suitable for contributions exploring emerging forms of embodiment, augmentation, perception, and interaction. Relevant topics include neurointerfaces, human augmentation, multisensory interaction, wearable and implantable systems, extended perception, embodied AI, and interaction across increasingly distributed physical environments, including interplanetary settings."
                 },
                 {
                   title: "Privacy, Security, and Agency",
-                  desc: "Suitable for contributions related to privacy, security, and individual agency in digital and physical environments. Topics include privacy-enhancing technologies, online safety, usability of privacy systems, and challenges related to cognitive autonomy, privacy, memory management, and information control."
+                  desc: "This subcommittee is suitable for contributions related to privacy, security, and individual agency in digital and physical environments. Topics include privacy-enhancing technologies, online safety, usability of privacy systems, and challenges related to cognitive autonomy, privacy, memory management, and information control."
                 }
               ]
             )

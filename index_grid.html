@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHI 2060 – Grid Overview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <style>
+    :root {
+      --bg: #f0f0f0;
+      --text: #111;
+      --text-muted: #666;
+      --font: 'Inter', sans-serif;
+      --banner-height: 140px;
+      --card-w: 220px;
+      --card-h: 140px;
+      --card-radius: 12px;
+      --transition: 0.28s cubic-bezier(.4,0,.2,1);
+
+      /* Section row palette – each tab gets its own hue family */
+      --pal-0: #6c9ecf; /* Home – steel blue */
+      --pal-1: #7db88a; /* Blog – sage green */
+      --pal-2: #c98b5e; /* Authors – warm amber */
+      --pal-3: #9b7dbf; /* Attendees – soft purple */
+      --pal-4: #c96b6b; /* Organisation – muted rose */
+      --pal-5: #5b9ea0; /* Other – cadet */
+      --pal-6: #a0956e; /* Fallback – khaki */
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── BANNER ─────────────────────────────── */
+    .banner {
+      width: 100%;
+      background: var(--bg);
+      color: #111;
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: flex-end;
+      gap: 2rem;
+      min-height: var(--banner-height);
+      border-bottom: 1px solid #d5d5d5;
+    }
+    .banner-text { }
+    .banner-name {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: #111;
+    }
+    .banner-slogan {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: #666;
+      margin-top: 0.35rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── MAIN CONTAINER ─────────────────────── */
+    .grid-view {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+
+    /* ── SECTION ROW ────────────────────────── */
+    .section-row {
+      margin-bottom: 2.5rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #333;
+    }
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: #bbb;
+    }
+
+    /* ── CARD STRIP (horizontal scroll) ─────── */
+    .card-strip {
+      display: flex;
+      gap: 1rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: thin;
+      scrollbar-color: #bbb transparent;
+    }
+    .card-strip::-webkit-scrollbar { height: 4px; }
+    .card-strip::-webkit-scrollbar-thumb { background: #bbb; border-radius: 2px; }
+
+    /* ── CARD ───────────────────────────────── */
+    .card {
+      flex: 0 0 var(--card-w);
+      height: var(--card-h);
+      border-radius: var(--card-radius);
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem 1.1rem;
+      color: #fff;
+      user-select: none;
+      transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background var(--transition);
+      border-radius: inherit;
+    }
+    .card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.2);
+    }
+    .card:hover::before {
+      background: rgba(255,255,255,0.08);
+    }
+    .card:active { transform: scale(0.97); }
+
+    .card-arrow {
+      position: absolute;
+      top: 0.85rem;
+      right: 0.9rem;
+      font-size: 1.1rem;
+      opacity: 0.85;
+      transform: rotate(-45deg);
+      transition: transform var(--transition), opacity var(--transition);
+    }
+    .card:hover .card-arrow {
+      transform: rotate(-45deg) translate(2px, -2px);
+      opacity: 1;
+    }
+    .card-label {
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.25;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    /* ── DETAIL VIEW ────────────────────────── */
+    .detail-view {
+      display: none;
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+    }
+    .detail-view.visible { display: block; }
+    .grid-view.hidden { display: none; }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #555;
+      cursor: pointer;
+      margin-bottom: 2rem;
+      padding: 0.5rem 1rem 0.5rem 0.6rem;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ddd;
+      transition: background var(--transition), color var(--transition);
+      user-select: none;
+    }
+    .back-btn:hover { background: #f5f5f5; color: #111; }
+    .back-btn ion-icon { font-size: 1.1rem; }
+
+    .detail-section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 0.3rem;
+    }
+    .detail-page-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    /* ── CONTENT BLOCK STYLES (detail) ─────── */
+    .content-block { margin-bottom: 2.5rem; }
+
+    .block-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+      color: #111;
+    }
+    .block-desc {
+      font-size: 0.95rem;
+      color: #666;
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .block-para {
+      font-size: 0.97rem;
+      line-height: 1.75;
+      color: #333;
+      margin-bottom: 0.9rem;
+    }
+    .block-ul {
+      padding-left: 1.4rem;
+      margin-bottom: 1rem;
+    }
+    .block-ul li {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: #333;
+      margin-bottom: 0.45rem;
+    }
+
+    /* Table */
+    .detail-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin: 0.5rem 0 1.5rem;
+    }
+    .detail-table th {
+      text-align: left;
+      padding: 0.6rem 0.8rem;
+      border-bottom: 2px solid #ccc;
+      font-weight: 600;
+      color: #222;
+    }
+    .detail-table td {
+      padding: 0.55rem 0.8rem;
+      border-bottom: 1px solid #eee;
+      color: #333;
+    }
+    .detail-table tr:hover td { background: #fafafa; }
+
+    /* Timeline */
+    .timeline { border-left: 2px solid #ddd; padding-left: 1.5rem; margin-left: 0.5rem; }
+    .timeline-item { position: relative; margin-bottom: 2rem; }
+    .timeline-dot {
+      position: absolute; left: -1.85rem; top: 0.35rem;
+      width: 12px; height: 12px;
+      background: #fff; border: 2px solid #777; border-radius: 50%;
+    }
+    .timeline-date { font-size: 0.8rem; font-weight: 600; color: #888; margin-bottom: 0.2rem; }
+    .timeline-title { font-weight: 700; color: #111; margin-bottom: 0.3rem; }
+    .timeline-body { font-size: 0.9rem; color: #444; }
+
+    /* Subcommittee list */
+    .subcomm-item {
+      padding: 1rem 0;
+      border-bottom: 1px solid #eee;
+    }
+    .subcomm-name { font-weight: 700; color: #111; margin-bottom: 0.25rem; }
+    .subcomm-desc { font-size: 0.9rem; color: #555; line-height: 1.65; }
+
+    /* Sponsor block */
+    .sponsor-tier-title {
+      font-size: 0.8rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #888;
+      border-bottom: 1px dashed #ddd; padding-bottom: 0.25rem;
+      margin: 1.5rem 0 0.75rem;
+    }
+    .sponsor-logos { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; }
+    .sponsor-logo-item { text-align: center; }
+    .sponsor-logo-item img { max-height: 50px; max-width: 160px; object-fit: contain; }
+    .sponsor-logo-name { font-size: 0.8rem; font-weight: 600; margin-top: 0.4rem; color: #444; }
+
+    /* Form */
+    .detail-form { background: #fafafa; border: 1px solid #e0e0e0; border-radius: 10px; padding: 2rem; }
+    .form-field { margin-bottom: 1.25rem; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.4rem; color: #333; }
+    .form-input {
+      width: 100%; padding: 0.6rem 0.8rem;
+      border: 1px solid #ccc; border-radius: 6px;
+      font-family: var(--font); font-size: 0.9rem;
+      background: #fff; color: #111;
+    }
+    .form-select {
+      width: 100%; padding: 0.6rem 0.8rem;
+      border: 1px solid #ccc; border-radius: 6px;
+      font-family: var(--font); font-size: 0.9rem; background: #fff;
+    }
+    .form-submit {
+      background: #333; color: #fff; border: none;
+      padding: 0.75rem 1.5rem; border-radius: 8px;
+      font-family: var(--font); font-size: 0.9rem; font-weight: 600;
+      cursor: pointer; margin-top: 0.5rem;
+      transition: background var(--transition);
+    }
+    .form-submit:hover { background: #111; }
+
+    /* Papers catalog */
+    .papers-filters {
+      display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;
+    }
+    .track-btn {
+      padding: 0.4rem 1rem; border: 1.5px solid #ccc; border-radius: 20px;
+      font-family: var(--font); font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; background: #fff; color: #555;
+      transition: all var(--transition);
+    }
+    .track-btn.active { background: #333; color: #fff; border-color: #333; }
+    .papers-search {
+      width: 100%; padding: 0.6rem 0.8rem;
+      border: 1px solid #ccc; border-radius: 6px;
+      font-family: var(--font); font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .paper-card {
+      background: #fff; border-radius: 8px;
+      border: 1px solid #eee; padding: 1.1rem 1.2rem;
+      margin-bottom: 0.75rem;
+      transition: box-shadow var(--transition);
+    }
+    .paper-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+    .paper-meta { font-size: 0.75rem; color: #888; display: flex; justify-content: space-between; margin-bottom: 0.4rem; }
+    .paper-title { font-size: 1rem; font-weight: 700; color: #111; margin-bottom: 0.35rem; }
+    .paper-authors { font-size: 0.85rem; color: #555; margin-bottom: 0.35rem; }
+    .paper-footer { font-size: 0.78rem; color: #999; display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    /* Blog / QA placeholder */
+    .placeholder-block {
+      background: #fff; border-radius: 8px; padding: 2rem;
+      text-align: center; color: #aaa; font-size: 0.9rem;
+      border: 1px dashed #ddd;
+    }
+
+    /* Board / Disputes */
+    .board-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .d-card { background: #fff; border-radius: 8px; border: 1px solid #eee; overflow: hidden; }
+    .d-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0.9rem 1.1rem; cursor: pointer;
+      transition: background var(--transition);
+    }
+    .d-head:hover { background: #f5f5f5; }
+    .d-title { font-weight: 600; font-size: 0.95rem; color: #111; }
+    .d-meta { display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: #888; }
+    .d-meta ion-icon { font-size: 1rem; }
+    .d-body {
+      display: none;
+      padding: 1rem 1.2rem 1.2rem;
+      border-top: 1px solid #f0f0f0;
+    }
+    .d-body.open { display: block; }
+    .d-question { font-size: 0.93rem; color: #333; line-height: 1.7; margin-bottom: 0.8rem; }
+    .d-reply { font-size: 0.88rem; color: #666; background: #f9f9f9; padding: 0.8rem 1rem; border-radius: 6px; border-left: 3px solid #ddd; }
+
+    /* ── FOOTER ─────────────────────────────── */
+    .academic-footer {
+      border-top: 1px solid #ccc;
+      background: var(--bg);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #555;
+    }
+
+    /* ── MOBILE ─────────────────────────────── */
+    @media (max-width: 600px) {
+      .banner { padding: 1.5rem; min-height: 100px; }
+      .banner-name { font-size: 1.5rem; }
+      .grid-view, .detail-view { padding: 1.5rem 1rem 3rem; }
+      :root { --card-w: 170px; --card-h: 115px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BANNER -->
+  <header class="banner">
+    <div class="banner-text">
+      <div class="banner-name" id="banner-name">ACM CHI 2060</div>
+      <div class="banner-slogan" id="banner-slogan">Intelligence at Scale. Humanity in Focus.</div>
+    </div>
+  </header>
+
+  <!-- GRID VIEW -->
+  <div class="grid-view" id="grid-view"></div>
+
+  <!-- DETAIL VIEW -->
+  <div class="detail-view" id="detail-view">
+    <div class="back-btn" id="back-btn" onclick="showGrid()">
+      <ion-icon name="arrow-back-outline"></ion-icon>
+      Back to Overview
+    </div>
+    <div class="detail-section-label" id="detail-section-label"></div>
+    <div class="detail-page-title" id="detail-page-title"></div>
+    <div id="detail-content"></div>
+  </div>
+
+  <script src="chi2060_papers.js"></script>
+  <script src="specifications.js"></script>
+  <script>
+    // ── palette per section index ─────────────
+    const PALETTES = [
+      // each section gets a pair: [base, shadow-highlight]
+      ['#5a87bb', '#3d6a9e'],  // home
+      ['#62a86f', '#4a8b57'],  // blog
+      ['#c07a3e', '#a05f28'],  // authors
+      ['#8b6db8', '#6e52a0'],  // attendees
+      ['#b85555', '#963c3c'],  // org
+      ['#488a8c', '#306e70'],  // any extra
+      ['#9a8a56', '#7c6d3c'],
+    ];
+
+    // per-subtab within a section, slightly lighter shade
+    function cardColor(palIdx, subtabIdx) {
+      const hueShifts = [
+        ['#6c9ecf','#7aad78','#d49c6a','#a68fd4','#d07070','#5aa0a2','#b0a06a'],
+        ['#5a87bb','#62a86f','#c07a3e','#8b6db8','#b85555','#488a8c','#9a8a56'],
+      ];
+      // alternate shades within same section
+      const base = PALETTES[palIdx % PALETTES.length][0];
+      // adjust lightness slightly per subtab
+      return adjustColor(base, subtabIdx);
+    }
+
+    function adjustColor(hex, idx) {
+      // Parse hex and lighten/darken based on idx
+      const r = parseInt(hex.slice(1,3),16);
+      const g = parseInt(hex.slice(3,5),16);
+      const b = parseInt(hex.slice(5,7),16);
+      const shifts = [0, 20, -15, 30, -25, 15, -10];
+      const shift = shifts[idx % shifts.length];
+      const clamp = v => Math.max(30, Math.min(220, v + shift));
+      return `rgb(${clamp(r)},${clamp(g)},${clamp(b)})`;
+    }
+
+    // ── State ────────────────────────────────
+    let paperTrack = 'all', paperQuery = '', paperSubcommittee = '';
+
+    // ── Init ─────────────────────────────────
+    function init() {
+      const conf = CHI2060_SPEC.conference;
+      document.getElementById('banner-name').textContent = conf.name;
+      document.getElementById('banner-slogan').textContent = conf.theme + ' • ' + conf.location + ', ' + conf.dates;
+      renderGrid();
+    }
+
+    // ── GRID ─────────────────────────────────
+    function renderGrid() {
+      const container = document.getElementById('grid-view');
+      const nav = CHI2060_SPEC.navigation;
+      let html = '';
+
+      Object.keys(nav).forEach((tabKey, tabIdx) => {
+        const tab = nav[tabKey];
+        const subtabs = tab.subtabs || {};
+        const subtabKeys = Object.keys(subtabs);
+
+        // Also include tabs with direct contentBlocks (no subtabs)
+        const items = subtabKeys.length > 0
+          ? subtabKeys.map(sk => ({ key: sk, label: subtabs[sk].label, tabKey, subtabKey: sk }))
+          : [{ key: tabKey, label: tab.label, tabKey, subtabKey: null }];
+
+        html += `<div class="section-row">
+          <div class="section-header">
+            <span class="section-title">${tab.label}</span>
+            <div class="section-line"></div>
+          </div>
+          <div class="card-strip">`;
+
+        items.forEach((item, subtabIdx) => {
+          const bg = adjustColor(PALETTES[tabIdx % PALETTES.length][0], subtabIdx);
+          html += `<div class="card" style="background:${bg};"
+              onclick="showDetail('${item.tabKey}', '${item.subtabKey}', '${tab.label}', '${escQ(item.label)}')">
+            <ion-icon class="card-arrow" name="arrow-up-outline"></ion-icon>
+            <span class="card-label">${item.label}</span>
+          </div>`;
+        });
+
+        // Append Important Dates card to the Home row
+        if (tabKey === 'home') {
+          const bgDates = adjustColor(PALETTES[tabIdx % PALETTES.length][0], items.length);
+          html += `<div class="card" style="background:${bgDates};"
+              onclick="showImportantDates()">
+            <ion-icon class="card-arrow" name="arrow-up-outline"></ion-icon>
+            <span class="card-label">Important Dates</span>
+          </div>`;
+        }
+
+        html += `</div></div>`;
+      });
+
+      container.innerHTML = html;
+    }
+
+    function escQ(s) { return s.replace(/'/g, "\\'"); }
+
+    // ── DETAIL ───────────────────────────────
+    function showDetail(tabKey, subtabKey, sectionLabel, pageTitle) {
+      const nav = CHI2060_SPEC.navigation;
+      const tab = nav[tabKey];
+      let blocks = [];
+      if (subtabKey && subtabKey !== 'null' && tab.subtabs && tab.subtabs[subtabKey]) {
+        blocks = tab.subtabs[subtabKey].contentBlocks || [];
+      } else {
+        blocks = tab.contentBlocks || [];
+      }
+
+      document.getElementById('detail-section-label').textContent = sectionLabel;
+      document.getElementById('detail-page-title').textContent = pageTitle;
+      document.getElementById('detail-content').innerHTML = renderBlocks(blocks);
+
+      document.getElementById('grid-view').classList.add('hidden');
+      const dv = document.getElementById('detail-view');
+      dv.classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function showImportantDates() {
+      document.getElementById('detail-section-label').textContent = 'Home';
+      document.getElementById('detail-page-title').textContent = 'Important Dates';
+      document.getElementById('detail-content').innerHTML = renderImportantDates();
+      document.getElementById('grid-view').classList.add('hidden');
+      document.getElementById('detail-view').classList.add('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderImportantDates() {
+      const dates = CHI2060_SPEC.importantDates;
+      let html = '<p style="font-size:0.85rem;color:#888;margin-bottom:1.5rem;">All times are in Anywhere on Earth (AoE) time zone.</p>';
+      dates.forEach(sec => {
+        html += `<div style="margin-bottom:1.5rem;">
+          <div style="background:#e8e8e8;font-size:0.8rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:0.45rem 0.75rem;border-radius:5px;margin-bottom:0.6rem;">${sec.category}</div>`;
+        sec.items.forEach(it => {
+          html += `<div style="display:flex;gap:1rem;align-items:baseline;padding:0.3rem 0.2rem;border-bottom:1px solid #f0f0f0;">
+            <span style="font-size:0.82rem;font-weight:700;color:#555;white-space:nowrap;min-width:110px;">${it.date}</span>
+            <span style="font-size:0.9rem;color:#222;">${it.label}</span>
+          </div>`;
+        });
+        html += '</div>';
+      });
+      return html;
+    }
+
+    function showGrid() {
+      document.getElementById('grid-view').classList.remove('hidden');
+      const dv = document.getElementById('detail-view');
+      dv.classList.remove('visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // ── BLOCK RENDERER ────────────────────────
+    function renderBlocks(blocks) {
+      let html = '';
+      blocks.forEach(block => {
+        html += `<div class="content-block">`;
+
+        if (block.title) html += `<div class="block-title">${block.title}</div>`;
+        if (block.description) html += `<div class="block-desc">${block.description}</div>`;
+
+        if (block.type === 'text_block') {
+          block.paragraphs.forEach(p => {
+            html += `<p class="block-para">${p}</p>`;
+          });
+
+        } else if (block.type === 'bullet_list') {
+          html += `<ul class="block-ul">`;
+          block.items.forEach(item => html += `<li>${item}</li>`);
+          html += `</ul>`;
+
+        } else if (block.type === 'table_block') {
+          html += `<div style="overflow-x:auto;"><table class="detail-table"><thead><tr>`;
+          block.headers.forEach(h => html += `<th>${h}</th>`);
+          html += `</tr></thead><tbody>`;
+          block.rows.forEach(row => {
+            html += `<tr>`;
+            let colIdx = 0;
+            row.forEach((cell, idx) => {
+              if (typeof cell === 'object' && cell !== null) {
+                if (cell.skip) return;
+                let attrs = '';
+                if (cell.rowspan) attrs += ` rowspan="${cell.rowspan}"`;
+                if (cell.colspan) attrs += ` colspan="${cell.colspan}"`;
+                html += `<td${attrs}>${idx === 0 ? `<strong>${cell.text||''}</strong>` : (cell.text||'')}</td>`;
+              } else {
+                html += idx === 0 ? `<td><strong>${cell}</strong></td>` : `<td>${cell}</td>`;
+              }
+            });
+            html += `</tr>`;
+          });
+          html += `</tbody></table></div>`;
+
+        } else if (block.type === 'timeline_block') {
+          html += `<div class="timeline">`;
+          block.events.forEach(ev => {
+            html += `<div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-date">${ev.date}</div>
+              <div class="timeline-title">${ev.title}</div>
+              <div class="timeline-body">${ev.description}</div>
+            </div>`;
+          });
+          html += `</div>`;
+
+        } else if (block.type === 'subcommittee_list') {
+          block.items.forEach(item => {
+            html += `<div class="subcomm-item">
+              <div class="subcomm-name">${item.title}</div>
+              <div class="subcomm-desc">${item.desc}</div>
+            </div>`;
+          });
+
+        } else if (block.type === 'sponsor_block') {
+          block.tiers.forEach(tier => {
+            html += `<div class="sponsor-tier-title">${tier.label} Sponsors</div>
+              <div class="sponsor-logos">`;
+            tier.sponsors.forEach(sp => {
+              html += `<div class="sponsor-logo-item">
+                <img src="${sp.logo}" alt="${sp.name}">
+                <div class="sponsor-logo-name">${sp.name}</div>
+              </div>`;
+            });
+            html += `</div>`;
+          });
+
+        } else if (block.type === 'submission_form') {
+          html += `<div class="detail-form">
+            <div class="form-field">
+              <label class="form-label">Name of human researcher</label>
+              <input type="text" class="form-input" placeholder="e.g. Dr. Ha-Jun Kim">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Nationality of human researcher</label>
+              <input type="text" class="form-input" placeholder="e.g. South Korea">
+            </div>
+            <div class="form-field">
+              <label class="form-label">Wickathon registration</label>
+              <select class="form-select">
+                <option value="climate">Climate Change</option>
+                <option value="mental_health">Mental Health</option>
+                <option value="inequality">Inequality</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label class="form-label">Agent Model Attachment (.soma, .safetensors)</label>
+              <input type="file" class="form-input" accept=".soma,.safetensors,.json,.zip">
+            </div>
+            <button class="form-submit" onclick="alert('Registration submitted!')">Submit Application</button>
+          </div>`;
+
+        } else if (block.type === 'papers_catalog') {
+          html += `<div>
+            <div class="papers-filters">
+              <button class="track-btn ${paperTrack==='all'?'active':''}" onclick="setPaperTrack('all')">All Papers</button>
+              <button class="track-btn ${paperTrack==='conference'?'active':''}" onclick="setPaperTrack('conference')">Conference Track</button>
+              <button class="track-btn ${paperTrack==='journal'?'active':''}" onclick="setPaperTrack('journal')">Journal Track</button>
+            </div>
+            <input type="text" class="papers-search" placeholder="Search title, authors, ID…"
+              value="${paperQuery}" oninput="setPaperQuery(this.value)">
+            <div id="papers-feed">${renderPapers()}</div>
+          </div>`;
+
+        } else if (block.type === 'disputes_board') {
+          html += `<div class="board-list">`;
+          block.disputes.forEach(d => {
+            html += `<div class="d-card">
+              <div class="d-head" onclick="toggleDispute('${d.id}')">
+                <span class="d-title">${d.title}</span>
+                <div class="d-meta">
+                  <span>${d.author}</span>
+                  <span>${d.date}</span>
+                  <ion-icon name="chevron-down-outline" id="icon-${d.id}" style="transition:transform 0.2s;"></ion-icon>
+                </div>
+              </div>
+              <div class="d-body" id="body-${d.id}">
+                <p class="d-question">${d.question}</p>
+                <div class="d-reply"><em>${d.replyText}</em></div>
+              </div>
+            </div>`;
+          });
+          html += `</div>`;
+        } else if (block.type === 'blog_list' || block.type === 'qa_board_block') {
+          html += `<div class="placeholder-block">Interactive board — ${block.type.replace('_',' ')}</div>`;
+        }
+
+        html += `</div>`;
+      });
+      return html;
+    }
+
+    // ── PAPERS ───────────────────────────────
+    function getUniqueSubcommittees() {
+      const s = new Set();
+      if (typeof CHI2060_PAPERS !== 'undefined') {
+        (CHI2060_PAPERS.conference_papers||[]).forEach(p=>s.add(p.subcommittee));
+        (CHI2060_PAPERS.journal_papers||[]).forEach(p=>s.add(p.subcommittee));
+      }
+      return Array.from(s).sort();
+    }
+
+    function renderPapers() {
+      if (typeof CHI2060_PAPERS === 'undefined') return '<p style="color:#aaa;">Loading…</p>';
+      let list = [];
+      if (paperTrack==='all'||paperTrack==='conference')
+        list = list.concat((CHI2060_PAPERS.conference_papers||[]).map(p=>({...p,track:'Conference'})));
+      if (paperTrack==='all'||paperTrack==='journal')
+        list = list.concat((CHI2060_PAPERS.journal_papers||[]).map(p=>({...p,track:'Journal'})));
+      if (paperQuery) {
+        const q = paperQuery.toLowerCase();
+        list = list.filter(p => p.title.toLowerCase().includes(q) || p.id.toLowerCase().includes(q)
+          || p.authors.some(a=>a.human.toLowerCase().includes(q)||a.agent.toLowerCase().includes(q)));
+      }
+      if (paperSubcommittee) list = list.filter(p=>p.subcommittee===paperSubcommittee);
+      if (!list.length) return '<p style="text-align:center;color:#aaa;padding:2rem;">No results.</p>';
+      return list.map(p => {
+        const badge = p.award ? `<span style="background:#f0c040;color:#333;padding:0.1rem 0.4rem;border-radius:4px;font-size:0.75rem;font-weight:700;">${p.award}</span>` : '';
+        const auths = p.authors.map(a=>`${a.human} (<em>${a.agent}</em>) [${a.contribution_pct}%]`).join(', ');
+        return `<div class="paper-card">
+          <div class="paper-meta">
+            <span><strong>${p.id}</strong> · ${p.track.toUpperCase()}</span>
+            <span style="font-weight:600;">${p.subcommittee} ${badge}</span>
+          </div>
+          <div class="paper-title">${p.title}</div>
+          <div class="paper-authors">${auths}</div>
+          <div class="paper-footer">
+            <span>FILE: <a href="#" onclick="alert('Downloading ${p.file}')" style="color:#555;font-weight:600;">${p.file}</a> (${p.file_size_mb} MB)</span>
+            <span>COMPAT: ${p.compatible_agent_version}</span>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    function setPaperTrack(t) { paperTrack = t; refreshPapers(); }
+    function setPaperQuery(q) { paperQuery = q; refreshPapers(); }
+    function refreshPapers() {
+      const feed = document.getElementById('papers-feed');
+      if (feed) feed.innerHTML = renderPapers();
+      // Also refresh track buttons
+      document.querySelectorAll('.track-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.toLowerCase().includes(paperTrack) || (paperTrack==='all' && btn.textContent==='All Papers'));
+      });
+    }
+
+    function toggleDispute(id) {
+      const body = document.getElementById('body-' + id);
+      const icon = document.getElementById('icon-' + id);
+      if (!body) return;
+      const isOpen = body.classList.toggle('open');
+      if (icon) icon.style.transform = isOpen ? 'rotate(180deg)' : '';
+    }
+
+    
+    let _agentViewOpen = false;
+    function toggleAgentView() {
+      _agentViewOpen = !_agentViewOpen;
+      const el = document.getElementById('agent-raw-view');
+      if (!el) return;
+      if (_agentViewOpen) {
+        el.style.display = 'block';
+        const pre = document.getElementById('agent-raw-pre');
+        if (pre) pre.textContent = JSON.stringify({ CHI2060_SPEC, CHI2060_PAPERS }, null, 2);
+      } else {
+        el.style.display = 'none';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+
+  <!-- Agent Raw View (hidden until toggled) -->
+  <section id="agent-raw-view" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; color:#00ff00; z-index:9999; overflow:auto; padding:2rem; font-family:monospace; font-size:0.85rem; line-height:1.4; cursor:pointer;" onclick="toggleAgentView()">
+    <div style="margin-bottom:1rem; border-bottom:1px solid #00ff00; padding-bottom:0.5rem; font-weight:bold;">
+      <span>SOMATIC PERSONAL AGENT CLIENT // TRACE DATA STREAM</span>
+    </div>
+    <pre id="agent-raw-pre" style="white-space:pre-wrap; word-break:break-all; color:#00ff00;"></pre>
+  </section>
+
+  <footer class="academic-footer">
+    <div>&copy; 2060 &bull; ACM SIGCHI</div>
+    <div style="font-size:0.65rem; color:#999; margin-top:0.5rem; cursor:pointer;" onclick="toggleAgentView()">
+      Powered by Somatic Personal Agent
+    </div>
+  </footer>
+
+</body>
+</html>

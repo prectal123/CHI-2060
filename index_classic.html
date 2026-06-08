@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHI 2060 - Classic Reimagined</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,400&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <style>
+    :root {
+      --font-sans: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-heading: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --bg-body: #ffffff;
+      --text-main: #333333;
+      --text-muted: #666666;
+      --color-primary: #1e5a8f; /* A standard classic link blue */
+      --color-primary-hover: #123759;
+      --color-border: #e0e0e0;
+      --nav-bg-hover: #454545; /* Dark gray */
+    }
+    
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; padding: 0; font-family: var(--font-sans); background: var(--bg-body); color: var(--text-main); line-height: 1.6;
+    }
+    a { color: var(--color-primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    
+    /* Hero Banner Area */
+    .hero-banner {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      background-image: url('CustomBanner.png'), linear-gradient(90deg, #1e3a5f, #2c5364);
+      background-size: cover;
+      background-position: center;
+      background-color: #333;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .hero-content {
+      width: 100%;
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 3rem 2rem 1rem 2rem;
+      color: white;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+    }
+    
+    .hero-title {
+      font-family: var(--font-heading);
+      font-weight: 900;
+      font-size: 2.8rem;
+      margin: 0 0 0.5rem 0;
+    }
+    
+    .hero-subtitle {
+      font-family: var(--font-heading);
+      font-weight: 500;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+    
+    /* Transparent Nav Bar */
+    .nav-bar {
+      width: 100%;
+      max-width: 1300px;
+      margin: auto auto 0 auto;
+      display: flex;
+      padding: 0 2rem;
+    }
+    
+    .nav-item {
+      position: relative;
+      color: white;
+      font-weight: 600;
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.2rem;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    .nav-item:first-child {
+      padding-left: 0;
+    }
+    
+    .nav-item:hover {
+      background: var(--nav-bg-hover);
+      text-shadow: none;
+    }
+    
+    /* Dropdown */
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: var(--nav-bg-hover);
+      min-width: 220px;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    }
+    
+    .nav-item:hover .dropdown {
+      display: block;
+    }
+    
+    .dropdown-item {
+      padding: 0.8rem 1.5rem;
+      color: white;
+      font-weight: 400;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      transition: background 0.2s;
+    }
+    
+    .dropdown-item:last-child {
+      border-bottom: none;
+    }
+    
+    .dropdown-item:hover {
+      background: rgba(0,0,0,0.15);
+    }
+    
+    /* Main Layout */
+    .layout-container {
+      max-width: 1300px;
+      margin: 3rem auto;
+      display: grid;
+      grid-template-columns: 260px 1fr 260px;
+      gap: 3rem;
+      padding: 0 2rem;
+    }
+    
+    /* Left Column: Dates */
+    .left-col h3 {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      color: #222;
+    }
+    
+    .date-intro {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    
+    .date-category-title {
+      background: #f1f1f1;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.5rem 0.8rem;
+      margin-bottom: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .date-category-title:first-of-type {
+      margin-top: 0;
+    }
+    
+    .date-item {
+      font-size: 0.85rem;
+      margin-bottom: 0.3rem;
+      line-height: 1.4;
+    }
+    
+    /* Center Column: Markdown Style Content */
+    .center-col {
+      /* No borders, just pure text flow */
+    }
+    
+    .center-col h2.main-title {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #111;
+      margin-top: 0;
+      margin-bottom: 2rem;
+    }
+    
+    .content-block {
+      margin-bottom: 2.5rem;
+    }
+    
+    .block-title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      color: #222;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 0.5rem;
+    }
+    
+    .block-description {
+      font-style: italic;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    
+    .center-col p {
+      margin-bottom: 1.2rem;
+    }
+    
+    /* Center Tables */
+    .classic-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    .classic-table th, .classic-table td {
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid var(--color-border);
+      text-align: left;
+    }
+    .classic-table th {
+      font-weight: 600;
+      color: #222;
+      border-bottom: 2px solid #ccc;
+    }
+    
+    /* Center Buttons */
+    .markdown-btn {
+      display: inline-block;
+      background: var(--color-primary);
+      color: #fff;
+      padding: 0.6rem 1.2rem;
+      border-radius: 20px;
+      font-weight: 600;
+      text-align: center;
+      margin-right: 0.5rem;
+      margin-bottom: 1rem;
+      border: none;
+      cursor: pointer;
+    }
+    .markdown-btn:hover {
+      background: var(--color-primary-hover);
+      text-decoration: none;
+    }
+    
+    /* Right Column: Sponsors */
+    .right-col h3 {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      color: #222;
+    }
+    
+    .sponsor-wrapper {
+      margin-bottom: 2rem;
+    }
+    
+    .sponsor-divider {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 0.2rem;
+      margin-bottom: 1rem;
+      margin-top: 1.5rem;
+    }
+    
+    .sponsor-divider:first-of-type {
+      margin-top: 0;
+    }
+    
+    .sponsor-logo {
+      display: block;
+      margin-bottom: 1.5rem;
+      max-width: 100%;
+      max-height: 50px;
+      object-fit: contain;
+    }
+    
+    /* Mobile Responsiveness */
+    @media(max-width: 900px) {
+      .layout-container {
+        grid-template-columns: 1fr;
+      }
+      .nav-bar { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+  
+  <header class="hero-banner">
+    <div class="hero-content">
+      <h1 class="hero-title" id="banner-title">ACM CHI 2060</h1>
+      <p class="hero-subtitle" id="banner-subtitle">Intelligence at Scale. Humanity in Focus. • March 29 – April 2, 2060</p>
+      
+
+    </div>
+    
+    <nav class="nav-bar" id="main-nav"></nav>
+  </header>
+
+  <div class="layout-container">
+    <!-- Left Column: Important Dates -->
+    <aside class="left-col" id="left-col-dates"></aside>
+    
+    <!-- Center Column: Markdown Content -->
+    <main class="center-col" id="main-content"></main>
+    
+    <!-- Right Column: Sponsors -->
+    <aside class="right-col">
+      <h3>Sponsors</h3>
+      <div id="sidebar-sponsors"></div>
+    </aside>
+  </div>
+
+  <footer style="background: #e9ecef; color: #555; padding: 2rem 0; text-align: center; margin-top: 3rem; font-size: 0.9rem; border-top:1px solid #ccc;">
+    <p style="margin:0;">&copy; 2060 &bull; ACM SIGCHI</p>
+    <div style="font-family: monospace; font-size: 0.75rem; color: #777; margin-top: 0.5rem; cursor: pointer;" onclick="toggleAgentView()">
+      Powered by Somatic Personal Agent
+    </div>
+  </footer>
+
+  <script src="chi2060_papers.js"></script>
+  <script src="specifications.js"></script>
+  <script>
+    
+    let currentTab = "home";
+    let currentSubtab = "intro";
+    let paperTrack = "all";
+    let paperQuery = "";
+    let paperSubcommittee = "";
+
+
+    function init() {
+      // Setup dynamic banner text
+      document.getElementById("banner-title").textContent = CHI2060_SPEC.conference.name;
+      document.getElementById("banner-subtitle").textContent = `${CHI2060_SPEC.conference.theme} • ${CHI2060_SPEC.conference.location}, ${CHI2060_SPEC.conference.dates}`;
+      
+      renderLeftSidebar();
+      renderSidebar();
+      renderNav();
+      renderContent();
+    }
+
+    
+    function renderLeftSidebar() {
+      const col = document.getElementById("left-col-dates");
+      if (!col) return;
+      let html = `<h3>Important Dates</h3>
+      <div class="date-intro">All times are in Anywhere on Earth (AoE) time zone.</div>`;
+      
+      CHI2060_SPEC.importantDates.forEach(sec => {
+        html += `<div class="date-category-title">${sec.category}</div>`;
+        sec.items.forEach(it => {
+          html += `<div class="date-item"><strong>${it.date}</strong> ${it.label}</div>`;
+        });
+      });
+      col.innerHTML = html;
+    }
+
+    function renderSidebar() {
+      const sb = document.getElementById("sidebar-sponsors");
+      let html = "";
+      CHI2060_SPEC.sidebarSponsors.forEach(s => {
+        if(s.type === "divider") {
+          html += `<div class="sponsor-divider">${s.label} Sponsors</div>`;
+        } else {
+          html += `<a href="#" title="${s.name}"><img class="sponsor-logo" src="${s.logo}" alt="${s.name}"></a>`;
+        }
+      });
+      sb.innerHTML = html;
+    }
+
+    function renderNav() {
+      const nav = document.getElementById("main-nav");
+      let html = "";
+      Object.keys(CHI2060_SPEC.navigation).forEach(key => {
+        const tab = CHI2060_SPEC.navigation[key];
+        
+        let dropdownHtml = "";
+        if (tab.subtabs && Object.keys(tab.subtabs).length > 0) {
+          dropdownHtml += `<div class="dropdown">`;
+          Object.keys(tab.subtabs).forEach(sKey => {
+            const sTab = tab.subtabs[sKey];
+            dropdownHtml += `<div class="dropdown-item" onclick="event.stopPropagation(); selectTabSubtab('${key}', '${sKey}')">${sTab.label}</div>`;
+          });
+          dropdownHtml += `</div><ion-icon name="chevron-down-outline" style="font-size:0.8rem; margin-top:2px;"></ion-icon>`;
+        }
+        
+        html += `<div class="nav-item" onclick="selectTabSubtab('${key}', null)">
+          ${tab.label}
+          ${dropdownHtml}
+        </div>`;
+      });
+      nav.innerHTML = html;
+    }
+
+    function selectTabSubtab(tabKey, subtabKey) {
+      currentTab = tabKey;
+      if (subtabKey) {
+        currentSubtab = subtabKey;
+      } else {
+        const tab = CHI2060_SPEC.navigation[tabKey];
+        if (tab.subtabs && Object.keys(tab.subtabs).length > 0) {
+          currentSubtab = Object.keys(tab.subtabs)[0];
+        } else {
+          currentSubtab = null;
+        }
+      }
+      
+      // If we clicked a nav item, scroll down to the dynamic content area
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      
+      renderContent();
+    }
+
+    function renderContent() {
+      const container = document.getElementById("main-content");
+      let contentBlocks = [];
+      
+      const tab = CHI2060_SPEC.navigation[currentTab];
+      if (currentSubtab && tab.subtabs[currentSubtab]) {
+        contentBlocks = tab.subtabs[currentSubtab].contentBlocks || [];
+      } else {
+        contentBlocks = tab.contentBlocks || [];
+      }
+
+      let html = "";
+      contentBlocks.forEach(block => {
+        html += `<div class="content-block">`;
+        if (block.title) {
+          html += `<h3 class="block-title">${block.title}</h3>`;
+        }
+        if (block.description) {
+          html += `<p class="block-description">${block.description}</p>`;
+        }
+        
+        if (block.type === "text_block") {
+          block.paragraphs.forEach(p => html += `<p>${p}</p>`);
+        } else if (block.type === "bullet_list") {
+          html += `<ul style="padding-left:1.5rem; margin-bottom:1.5rem;">`;
+          block.items.forEach(item => html += `<li style="margin-bottom:0.5rem;">${item}</li>`);
+          html += `</ul>`;
+        } else if (block.type === "table_block") {
+          html += `<div style="overflow-x:auto;"><table class="classic-table"><thead><tr>`;
+          block.headers.forEach(h => html += `<th>${h}</th>`);
+          html += `</tr></thead><tbody>`;
+          block.rows.forEach(row => {
+            html += `<tr>`;
+            row.forEach((cell, idx) => {
+              if (typeof cell === 'object' && cell !== null) {
+                if (cell.skip) return;
+                let attrs = '';
+                if (cell.rowspan) attrs += ` rowspan="${cell.rowspan}"`;
+                if (cell.colspan) attrs += ` colspan="${cell.colspan}"`;
+                let content = cell.text || '';
+                if (idx === 0) content = `<strong>${content}</strong>`;
+                html += `<td${attrs}>${content}</td>`;
+              } else {
+                html += idx === 0 ? `<td><strong>${cell}</strong></td>` : `<td>${cell}</td>`;
+              }
+            });
+            html += `</tr>`;
+          });
+          html += `</tbody></table></div>`;
+        } else if (block.type === "sponsor_block") {
+          block.tiers.forEach(tier => {
+            html += `<h4 style="color:var(--text-muted); font-size:1.1rem; border-bottom:1px dashed #ccc; padding-bottom:0.3rem; margin-top:2rem;">${tier.label} Sponsors</h4><div style="display:flex; flex-wrap:wrap; gap:2rem; align-items:center; margin-top:1rem;">`;
+            tier.sponsors.forEach(sp => {
+              html += `<div style="text-align:center;"><img src="${sp.logo}" alt="${sp.name}" style="max-height:60px; max-width:180px;"><div style="font-size:0.85rem; font-weight:600; margin-top:0.5rem;">${sp.name}</div></div>`;
+            });
+            html += `</div>`;
+          });
+        } else if (block.type === "subcommittee_list") {
+          html += `<div style="display:flex; flex-direction:column; gap:1.5rem;">`;
+          block.items.forEach(item => {
+            html += `<div>
+              <h4 style="margin:0 0 0.5rem; font-size:1.1rem; color:#111;">${item.title}</h4>
+              <p style="margin:0; color:var(--text-muted);">${item.desc}</p>
+            </div>`;
+          });
+          html += `</div>`;
+        } else if (block.type === "submission_form") {
+          const f = block.form || {};
+          html += `<div style="background:#fafafa; border:1px solid #ddd; padding:2rem; margin-top:1rem;">
+            <form>
+              <div style="margin-bottom:1.5rem;">
+                <label style="display:block; font-weight:600; margin-bottom:0.5rem; color:#333;">Name of human researcher</label>
+                <input type="text" style="width:100%; padding:0.6rem; border:1px solid #ccc; font-family:var(--font-sans);" placeholder="e.g. Dr. Ha-Jun Kim" required>
+              </div>
+              <div style="margin-bottom:1.5rem;">
+                <label style="display:block; font-weight:600; margin-bottom:0.5rem; color:#333;">Nationality of human researcher</label>
+                <input type="text" style="width:100%; padding:0.6rem; border:1px solid #ccc; font-family:var(--font-sans);" placeholder="e.g. South Korea" required>
+              </div>
+              <div style="margin-bottom:1.5rem;">
+                <label style="display:block; font-weight:600; margin-bottom:0.5rem; color:#333;">Wickathon Registration</label>
+                <select style="width:100%; padding:0.6rem; border:1px solid #ccc; font-family:var(--font-sans);">
+                  <option value="climate">Climate Change</option>
+                  <option value="mental_health">Mental Health</option>
+                  <option value="inequality">Inequality</option>
+                </select>
+              </div>
+              <div style="margin-bottom:1.5rem;">
+                <label style="display:block; font-weight:600; margin-bottom:0.5rem; color:#333;">Agent Model Attachment (.soma, .safetensors)</label>
+                <input type="file" style="width:100%; padding:0.6rem; border:1px solid #ccc; font-family:var(--font-sans);" accept=".soma,.safetensors,.json,.zip" required>
+              </div>
+              <button type="button" onclick="alert('Registration feature is simplified in Classic layout.');" style="background:var(--color-primary); color:white; border:none; padding:0.8rem 1.5rem; font-weight:600; cursor:pointer;">Submit Application</button>
+            </form>
+          </div>`;
+        } else if (block.type === "timeline_block") {
+          html += `<div style="border-left: 3px solid #ddd; padding-left: 1.5rem; margin-left: 1rem;">`;
+          block.events.forEach(ev => {
+            html += `<div style="position:relative; margin-bottom:2rem;">
+              <div style="position:absolute; left:-2rem; top:0.3rem; width:14px; height:14px; background:white; border:3px solid var(--color-primary); border-radius:50%;"></div>
+              <div style="font-size:0.85rem; color:var(--text-muted); font-weight:600; margin-bottom:0.2rem;">${ev.date}</div>
+              <div style="font-weight:700; color:#222; font-size:1.1rem; margin-bottom:0.4rem;">${ev.title}</div>
+              <div style="color:#444;">${ev.description}</div>
+            </div>`;
+          });
+          html += `</div>`;
+        } else if (block.type === "papers_catalog") {
+          html += `
+            <div style="margin-bottom:1.5rem; display:flex; gap:0.5rem; border-bottom:1px solid var(--color-border); padding-bottom:1rem;">
+              <button class="markdown-btn" style="border-radius:4px; padding:0.4rem 1rem; ${paperTrack === 'all' ? 'background:var(--color-primary-hover);' : 'background:#888;'}" onclick="setPaperTrack('all')">All Papers</button>
+              <button class="markdown-btn" style="border-radius:4px; padding:0.4rem 1rem; ${paperTrack === 'conference' ? 'background:var(--color-primary-hover);' : 'background:#888;'}" onclick="setPaperTrack('conference')">Conference Track</button>
+              <button class="markdown-btn" style="border-radius:4px; padding:0.4rem 1rem; ${paperTrack === 'journal' ? 'background:var(--color-primary-hover);' : 'background:#888;'}" onclick="setPaperTrack('journal')">Journal Track</button>
+            </div>
+            <div style="margin-bottom:1.5rem; display:flex; gap:1rem;">
+              <input type="text" style="flex:1; padding:0.6rem; border:1px solid #ccc; font-family:var(--font-sans);" placeholder="Search title, authors, ID..." value="${paperQuery}" oninput="setPaperQuery(this.value)">
+              <select style="padding:0.6rem; border:1px solid #ccc; font-family:var(--font-sans);" onchange="setPaperSubcommittee(this.value)">
+                <option value="">All Subcommittees</option>
+                ${getUniqueSubcommittees().map(sub => `
+                  <option value="${sub}" ${paperSubcommittee === sub ? 'selected' : ''}>${sub}</option>
+                `).join("")}
+              </select>
+            </div>
+            <div class="papers-list-feed">
+              ${renderFilteredPapersList()}
+            </div>
+          `;
+        } else if (block.type === "blog_list" || block.type === "qa_board_block") {
+          html += `<div style="padding:2rem; text-align:center; background:#fafafa; border:1px solid #eee; color:#888;">Interactive External Component: ${block.type}</div>`;
+        }
+        
+        html += `</div>`;
+      });
+      
+      container.innerHTML = html;
+    }
+
+    function getUniqueSubcommittees() {
+      const subs = new Set();
+      if (typeof CHI2060_PAPERS !== 'undefined' && CHI2060_PAPERS.conference_papers && CHI2060_PAPERS.journal_papers) {
+        CHI2060_PAPERS.conference_papers.forEach(p => subs.add(p.subcommittee));
+        CHI2060_PAPERS.journal_papers.forEach(p => subs.add(p.subcommittee));
+      }
+      return Array.from(subs).sort();
+    }
+
+    function setPaperTrack(track) {
+      paperTrack = track;
+      renderContent();
+    }
+
+    function setPaperQuery(query) {
+      paperQuery = query;
+      const feed = document.querySelector(".papers-list-feed");
+      if (feed) feed.innerHTML = renderFilteredPapersList();
+    }
+
+    function setPaperSubcommittee(sub) {
+      paperSubcommittee = sub;
+      renderContent();
+    }
+
+    function renderFilteredPapersList() {
+      if (typeof CHI2060_PAPERS === 'undefined' || !CHI2060_PAPERS.conference_papers || !CHI2060_PAPERS.journal_papers) return '<p>Loading papers...</p>';
+      let list = [];
+      if (paperTrack === "all" || paperTrack === "conference") {
+        list = list.concat(CHI2060_PAPERS.conference_papers.map(p => ({ ...p, track: "Conference" })));
+      }
+      if (paperTrack === "all" || paperTrack === "journal") {
+        list = list.concat(CHI2060_PAPERS.journal_papers.map(p => ({ ...p, track: "Journal" })));
+      }
+      if (paperQuery) {
+        const q = paperQuery.toLowerCase();
+        list = list.filter(p => p.title.toLowerCase().includes(q) || p.id.toLowerCase().includes(q) || p.authors.some(a => a.human.toLowerCase().includes(q) || a.agent.toLowerCase().includes(q)));
+      }
+      if (paperSubcommittee) {
+        list = list.filter(p => p.subcommittee === paperSubcommittee);
+      }
+      if (list.length === 0) return '<p style="padding:1.5rem; text-align:center; color:#888;">No publications found.</p>';
+
+      return list.map(p => {
+        const badge = p.award ? `<span style="background:#ffc107; color:#000; padding:0.1rem 0.4rem; font-size:0.7rem; font-weight:700; border-radius:3px; margin-left:0.5rem;">${p.award}</span>` : '';
+        const auths = p.authors.map(a => `${a.human} (<span style="color:var(--color-primary);">${a.agent}</span>) [${a.contribution_pct}%]`).join(", ");
+        return `
+          <div style="border:1px solid #eee; margin-bottom:1rem; padding:1.2rem; background:#fff;">
+            <div style="font-size:0.8rem; color:#666; margin-bottom:0.5rem; display:flex; justify-content:space-between;">
+              <span><strong>${p.id}</strong> // TRACK: ${p.track.toUpperCase()}</span>
+              <div>
+                <span style="font-weight:700; border:1px solid #ccc; padding:0.1rem 0.4rem; border-radius:3px;">${p.subcommittee}</span>
+                ${badge}
+              </div>
+            </div>
+            <h4 style="margin:0 0 0.5rem 0; font-size:1.15rem; color:#111;">${p.title}</h4>
+            <div style="font-size:0.9rem; color:#444; margin-bottom:0.8rem;"><strong>Seeders:</strong> ${auths}</div>
+            <div style="font-size:0.8rem; color:#888; display:flex; gap:1.5rem;">
+              <span>FILE: <a href="#download" style="font-weight:600;" onclick="alert('Downloading: ${p.file}')">${p.file}</a> (${p.file_size_mb} MB)</span>
+              <span>COMPATIBILITY: ${p.compatible_agent_version} (${p.compatible_os.join(", ")})</span>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function cycleTheme() {
+      if (window.parent && window.parent !== window && typeof window.parent.cycleTheme === "function") {
+        window.parent.cycleTheme();
+      } else {
+        location.href = "index.html"; 
+      }
+    }
+
+    let _agentViewOpen = false;
+    function toggleAgentView() {
+      _agentViewOpen = !_agentViewOpen;
+      const el = document.getElementById('agent-raw-view');
+      if (!el) return;
+      if (_agentViewOpen) {
+        el.style.display = 'block';
+        const pre = document.getElementById('agent-raw-pre');
+        if (pre) pre.textContent = JSON.stringify({ CHI2060_SPEC, CHI2060_PAPERS }, null, 2);
+      } else {
+        el.style.display = 'none';
+      }
+    }
+
+    window.addEventListener("DOMContentLoaded", init);
+  </script>
+
+  <!-- Agent Raw View (hidden until toggled) -->
+  <section id="agent-raw-view" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:#000000; color:#00ff00; z-index:9999; overflow:auto; padding:2rem; font-family:monospace; font-size:0.85rem; line-height:1.4; cursor:pointer;" onclick="toggleAgentView()">
+    <div style="margin-bottom:1rem; border-bottom:1px solid #00ff00; padding-bottom:0.5rem; font-weight:bold;">
+      <span>SOMATIC PERSONAL AGENT CLIENT // TRACE DATA STREAM</span>
+    </div>
+    <pre id="agent-raw-pre" style="white-space:pre-wrap; word-break:break-all; color:#00ff00;"></pre>
+  </section>
+
+</body>
+</html>
