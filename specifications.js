@@ -585,10 +585,10 @@ const CHI2060_SPEC = {
           ]
         },
         glance: {
-          label: "Schedule at a Glance",
+          label: "Program at a Glance",
           contentBlocks: [
             new TableBlock(
-              "Schedule at a Glance",
+              "Program at a Glance",
               "All times are in Anywhere on Earth (AoE) time zone.",
               ["", "MON", "TUE", "WED", "THU", "FRI"],
               [
