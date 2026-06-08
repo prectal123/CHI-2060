@@ -95,6 +95,9 @@
       .visual-header-banner {
         padding: 1.5rem 2rem;
       }
+      .banner-subtitle {
+        white-space: normal;
+      }
     }
     .banner-title {
       font-size: 2.2rem;
@@ -107,6 +110,7 @@
       font-size: 1rem;
       font-weight: 400;
       color: #94a3b8;
+      white-space: nowrap;
     }
     .banner-meta {
       font-size: 0.8rem;
@@ -117,7 +121,6 @@
     /* Navigation / Toolbar Bar */
     .nav-bar {
       background: #ffffff;
-      border-bottom: 1px solid var(--color-border);
       padding: 0 calc((100vw - 1000px) / 2 + 1.5rem);
       display: flex;
       justify-content: space-between;
@@ -168,14 +171,14 @@
       max-width: 1000px;
       width: 100%;
       margin: 0 auto;
-      padding: 2rem 1.5rem 6rem;
+      padding: 0.5rem 1.5rem 6rem;
       display: flex;
       flex-direction: column;
       gap: 2.5rem;
     }
     @media (max-width: 1040px) {
       .stream-layout {
-        padding: 2rem 2rem 6rem;
+        padding: 0.5rem 2rem 6rem;
       }
     }
 
@@ -496,8 +499,8 @@
 
     function bindAcademicData() {
       document.getElementById("spec-banner-title").textContent = CHI2060_SPEC.conference.name;
-      document.getElementById("spec-banner-subtitle").textContent = CHI2060_SPEC.conference.theme;
-      document.getElementById("spec-banner-meta").textContent = `${CHI2060_SPEC.conference.location} • ${CHI2060_SPEC.conference.dates}`;
+      document.getElementById("spec-banner-subtitle").textContent = CHI2060_SPEC.conference.theme + (CHI2060_SPEC.conference.location ? ' • ' + CHI2060_SPEC.conference.location : '') + ' • ' + CHI2060_SPEC.conference.dates;
+      document.getElementById("spec-banner-meta").style.display = "none";
     }
 
     function renderFeed() {

@@ -63,6 +63,7 @@
       font-weight: 500;
       font-size: 1.2rem;
       margin: 0;
+      white-space: nowrap;
     }
     
     /* Transparent Nav Bar */
@@ -288,6 +289,7 @@
         grid-template-columns: 1fr;
       }
       .nav-bar { flex-wrap: wrap; }
+      .hero-subtitle { white-space: normal; }
     }
   </style>
 </head>
@@ -339,7 +341,7 @@
     function init() {
       // Setup dynamic banner text
       document.getElementById("banner-title").textContent = CHI2060_SPEC.conference.name;
-      document.getElementById("banner-subtitle").textContent = `${CHI2060_SPEC.conference.theme} • ${CHI2060_SPEC.conference.location}, ${CHI2060_SPEC.conference.dates}`;
+      document.getElementById("banner-subtitle").textContent = CHI2060_SPEC.conference.theme + (CHI2060_SPEC.conference.location ? ' • ' + CHI2060_SPEC.conference.location : '') + ' • ' + CHI2060_SPEC.conference.dates;
       
       renderLeftSidebar();
       renderSidebar();
