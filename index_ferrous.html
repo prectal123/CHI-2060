@@ -1923,8 +1923,7 @@
                 <div class="sponsors-grid">
                   ${tier.sponsors.map(sp => `
                     <div class="sponsor-card">
-                      <div class="sponsor-name">${sp.name}</div>
-                      <div class="sponsor-desc">${sp.desc || 'CHI 2060 Support Sponsor'}</div>
+                      <div style="text-align: center; width: 100%;"><img src="${sp.logo}" alt="${sp.name}" title="${sp.name}" style="max-width:100%; max-height:60px; object-fit:contain;"></div>
                     </div>
                   `).join("")}
                 </div>

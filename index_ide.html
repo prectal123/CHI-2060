@@ -1578,10 +1578,7 @@
           <h3 class="col-title"><ion-icon name="shield-outline"></ion-icon> <span>sponsors</span></h3>
           <div class="sponsor-list">
             ${CHI2060_SPEC.sidebarSponsors.map(s => `
-              <div class="sponsor-sidebar-card">
-                <div class="sponsor-side-name">${s.name}</div>
-                <div class="sponsor-side-desc">${s.desc}</div>
-              </div>
+              <div class="sponsor-sidebar-card" style="padding: 10px; text-align: center;"><img src="${s.logo}" alt="${s.name}" title="${s.name}" style="max-width:100%; max-height:40px; display:block; margin:0 auto; object-fit:contain;"></div>
             `).join("")}
           </div>
         </div>

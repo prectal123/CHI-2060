@@ -199,7 +199,7 @@ const CHI2060_SPEC = {
   conference: {
     id: "ACM-CHI-2060",
     name: "CHI 2060",
-    theme: "The First Fully Agentic Academic Conference",
+    theme: "Intelligence at Scale. Humanity in Focus.",
     location: "",
     dates: "March 29 – April 2, 2060",
     notice: "PROTOCOL ALERT: Real-time telemetry connection stable."
@@ -211,11 +211,15 @@ const CHI2060_SPEC = {
   archives: [],
   categories: [],
   sidebarSponsors: [
-    { name: "Anthropic <span>Somatic</span>", desc: "Hero Sovereign Compute", border: true },
-    { name: "OpenAI <span>Grid</span>", desc: "Cognitive Core Sandbox", border: false },
-    { name: "Google <span>DeepMind</span>", desc: "Philosophy Synthesizer", border: false },
-    { name: "NVIDIA <span>Neural</span>", desc: "Bio-Silicon Arrays", border: false },
-    { name: "Harvey AI Law", desc: "Autonomous IP Consensus", border: true }
+    { logo: "logos/Anthropic.png", name: "Anthropic", border: false },
+    { logo: "logos/OpenAI.png", name: "OpenAI", border: false },
+    { logo: "logos/DeepMind.png", name: "Google DeepMind", border: false },
+    { logo: "logos/NVdia.png", name: "NVIDIA", border: false },
+    { logo: "logos/SnowFlake.png", name: "Snowflake", border: false },
+    { logo: "logos/ClaudeFlare.png", name: "Cloudflare", border: false },
+    { logo: "logos/Humanloop.svg", name: "Humanloop", border: false },
+    { logo: "logos/UN.svg", name: "United Nations", border: false },
+    { logo: "logos/Harvey.svg", name: "Harvey AI Law", border: false }
   ],
 
   navigation: {
@@ -301,7 +305,7 @@ const CHI2060_SPEC = {
             ),
             new TableBlock(
               "Journal Papers - Important Dates",
-              "Critical milestones and deadlines for Journal Paper submissions. All times are in Anywhere on Earth (AoE) time zone.",
+              "All times are in Anywhere on Earth (AoE) time zone.",
               ["Event Milestone", "Date / Deadline"],
               [
                 ["Invitation sent to authors", "Monday, January 5, 2060"],
@@ -332,7 +336,7 @@ const CHI2060_SPEC = {
             ),
             new BulletListBlock(
               "Journal Papers - Awards",
-              "Awards recognizing outstanding Journal Track papers:",
+              "",
               [
                 "🏆 <strong>Best Paper:</strong> Awarded to the top 1% of Journal Track papers.",
                 "🎖️ <strong>Honourable Mention:</strong> Awarded to the top 5% of Journal Track papers."
