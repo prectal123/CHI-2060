@@ -881,7 +881,6 @@
               <div class="board-card">
                 <div class="board-head" onclick="openDispute('${d.id}')">
                   <div class="board-head-left">
-                    <span class="badge-tag ${d.badgeClass}">${d.badge}</span>
                     <span class="board-card-title">${d.title}</span>
                   </div>
                   <div class="board-head-right">
@@ -893,12 +892,7 @@
                 <div class="board-body" id="${d.id}">
                   <p class="board-post-title">${d.title}</p>
                   <p class="board-question-text">${d.question}</p>
-                  <div class="board-reply">
-                    <div class="board-reply-hdr">
-                      <ion-icon name="shield-checkmark-outline"></ion-icon>${d.replyHeader}
-                    </div>
-                    <p class="board-reply-text">${d.replyText}</p>
-                  </div>
+                  <div style="margin-top: 1rem;"><p class="board-reply-text" style="font-style:italic;">${d.replyText}</p></div>
                 </div>
               </div>
             `).join("")}

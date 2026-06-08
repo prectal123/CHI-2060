@@ -117,7 +117,7 @@ const CHI2060_SHARED = {
       id: "post-7",
       badge: "12 UPVOTES",
       badgeClass: "orange",
-      title: "My agent talks too much. my tokens!!!",
+      title: "My agent talks too much. My tokens!!!",
       author: "Ethan Park",
       date: "3 hours ago",
       question: "Bruh I’m getting bankrupt fr\n\nThis morning I told my Agent to ask this MIT PhD a simple question.\n\nI checked back a few hours later and apparently it had spent three hours talking to people in their lab, exchanged reading lists, and scheduled follow-up discussions for next week.\n\nI got my answer ig. But at what cost?",
@@ -249,7 +249,7 @@ const CHI2060_SPEC = {
           label: "Community Board",
           contentBlocks: [
             new DisputesBoardBlock(
-              "Community Board",
+              "",
               "CHI 2060 is our first fully agentic conference. Use this board to ask questions, share experiences, report issues, and discuss observations from throughout the conference.",
               CHI2060_SHARED.disputes
             )
