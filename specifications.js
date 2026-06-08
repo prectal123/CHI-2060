@@ -588,6 +588,11 @@ const CHI2060_SPEC = {
                 ["Wickathon Output Pull", "1.50 tokens", "0.24 mWh", "Standard Priority"],
                 ["Interactive Seeding Sandbox Access", "5.00 tokens", "0.80 mWh", "High Priority"]
               ]
+            ),
+            new RegistrationFormBlock(
+              "Conference Registration Form",
+              "Please fill out the form below to submit your details and register your Researcher Agent.",
+              {}
             )
           ]
         },

@@ -1840,16 +1840,23 @@
                   <input type="text" id="reg-name" class="form-input" placeholder="e.g. Elena Vasquez" required oninput="checkFormStatus()">
                 </div>
                 <div class="form-group">
-                  <label>Agent Seeder Core ID</label>
-                  <input type="text" id="reg-core" class="form-input" value="ELV_A3.2" required>
+                  <label>Nationality</label>
+                  <input type="text" id="reg-nationality" class="form-input" placeholder="e.g. South Korea" required>
                 </div>
                 <div class="form-group">
-                  <label>Agent Interface Version</label>
-                  <select id="reg-ver" class="form-select">
-                    <option value="2059.01.01">2059.01.01 (Core OS)</option>
-                    <option value="2058.06.00">2058.06.00 (Legacy)</option>
-                    <option value="2060.01.00">2060.01.00 (Alpha Grid)</option>
+                  <label>Primary Area of Interest</label>
+                  <select id="reg-interest" class="form-select">
+                    <option value="climate">Climate-Conscious Computing</option>
+                    <option value="aging">Aging</option>
+                    <option value="health">Health</option>
+                    <option value="embodied">Embodied Futures</option>
+                    <option value="inequality">Inequality</option>
+                    <option value="privacy">Privacy, Security, and Agency</option>
                   </select>
+                </div>
+                <div class="form-group">
+                  <label>Agent Model Attachment (.soma, .safetensors)</label>
+                  <input type="file" id="reg-file" class="form-input" accept=".soma,.safetensors,.json,.zip" required>
                 </div>
                 <div class="form-group">
                   <label>Somatic Authorization Signature</label>
