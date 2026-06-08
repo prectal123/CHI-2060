@@ -545,6 +545,27 @@
               ${renderFilteredPapersList()}
             </div>
           `;
+        } else if (block.type === "disputes_board") {
+          html += `<div style="display:flex; flex-direction:column; gap:1.5rem;">`;
+          block.disputes.forEach(d => {
+            html += `<div style="border:1px solid #ddd; padding:1.2rem; background:#fafafa;">
+              <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;" onclick="const el = document.getElementById('body-${d.id}'); el.style.display = el.style.display === 'none' ? 'block' : 'none';">
+                <h4 style="margin:0; font-size:1.15rem; color:#111;">${d.title}</h4>
+                <div style="font-size:0.85rem; color:#666; display:flex; gap:1rem; align-items:center;">
+                  <span>${d.author}</span>
+                  <span>${d.date}</span>
+                  <span style="font-size:0.8rem;">▼</span>
+                </div>
+              </div>
+              <div id="body-${d.id}" style="display:none; margin-top:1rem; border-top:1px solid #eee; padding-top:1rem;">
+                <p style="margin-bottom:0.8rem; color:#333; line-height:1.6;">${d.question}</p>
+                <div style="background:#fff; border-left:3px solid var(--color-primary); padding:0.8rem 1rem; font-style:italic; color:#555;">
+                  ${d.replyText}
+                </div>
+              </div>
+            </div>`;
+          });
+          html += `</div>`;
         } else if (block.type === "blog_list" || block.type === "qa_board_block") {
           html += `<div style="padding:2rem; text-align:center; background:#fafafa; border:1px solid #eee; color:#888;">Interactive External Component: ${block.type}</div>`;
         }
