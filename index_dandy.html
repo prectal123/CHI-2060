@@ -17,29 +17,29 @@
       --font-sans: 'Playfair Display', 'Georgia', serif;
       --font-mono: 'Fira Code', monospace;
       
-      --bg-body: #fdfbf7;
-      --bg-light: #f7f3eb;
-      --bg-card: #fdfbf7;
+      --bg-body: #0f172a;
+      --bg-light: rgba(255, 255, 255, 0.05);
+      --bg-card: rgba(255, 255, 255, 0.1);
       
-      --color-border: #d6cfc7;
-      --color-border-dark: #b8aea2;
+      --color-border: rgba(255, 255, 255, 0.2);
+      --color-border-dark: rgba(255, 255, 255, 0.1);
       
-      --text-main: #2c2a29;
-      --text-secondary: #59524c;
-      --text-muted: #8c8174;
-      --color-link: #9a3412;
-      --color-link-hover: #7c2d12;
+      --text-main: #f8fafc;
+      --text-secondary: #e2e8f0;
+      --text-muted: #cbd5e1;
+      --color-link: #38bdf8;
+      --color-link-hover: #bae6fd;
       
-      --radius-custom: 0px;
-      --box-shadow-custom: 3px 3px 0px rgba(184, 174, 162, 0.25);
+      --radius-custom: 16px;
+      --box-shadow-custom: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       
-      --btn-bg: #fdfbf7;
-      --btn-text: #2c2a29;
-      --btn-border: #b8aea2;
-      --btn-primary-bg: #2c2a29;
-      --btn-primary-text: #fdfbf7;
+      --btn-bg: rgba(255, 255, 255, 0.1);
+      --btn-text: #f8fafc;
+      --btn-border: rgba(255, 255, 255, 0.2);
+      --btn-primary-bg: rgba(56, 189, 248, 0.2);
+      --btn-primary-text: #38bdf8;
       
-      --transition-smooth: all 0.2s ease-in-out;
+      --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
 
     * {
@@ -49,13 +49,21 @@
     }
     
     body {
-      background-color: var(--bg-body);
+      background: linear-gradient(-45deg, #4f46e5, #ec4899, #0ea5e9, #14b8a6);
+      background-size: 400% 400%;
+      animation: glassGradientBG 15s ease infinite;
       color: var(--text-main);
       font-family: var(--font-sans);
       line-height: 1.65;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+    }
+
+    @keyframes glassGradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     a {
@@ -78,7 +86,7 @@
       width: 100%;
       height: 240px;
       position: relative;
-      background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55)), url('chi2060_header.png');
+      background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.55));
       background-size: cover;
       background-position: center;
       display: flex;
@@ -86,7 +94,6 @@
       justify-content: flex-end;
       padding: 2.5rem calc((100vw - 1200px) / 2 + 1.5rem) 1.5rem;
       color: #ffffff;
-      filter: sepia(0.55) contrast(0.95);
     }
     @media (max-width: 1240px) {
       .visual-header-banner {
@@ -114,12 +121,16 @@
     /* Navigation Bar */
     .nav-bar {
       background: var(--bg-light);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--color-border);
       padding: 0 calc((100vw - 1200px) / 2 + 1.5rem);
       display: flex;
       justify-content: space-between;
       align-items: center;
       height: 50px;
+      position: relative;
+      z-index: 9000;
     }
     @media (max-width: 1240px) {
       .nav-bar {
@@ -173,12 +184,16 @@
       top: 100%;
       left: 0;
       background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--color-border-dark);
+      border-radius: 0 0 var(--radius-custom) var(--radius-custom);
       list-style: none;
       min-width: 175px;
       z-index: 100;
       margin-top: -1px;
       box-shadow: var(--box-shadow-custom);
+      overflow: hidden;
     }
     .nav-item.open .dropdown-menu {
       display: block;
@@ -198,7 +213,7 @@
     }
     .dropdown-item:hover {
       background: var(--color-link);
-      color: var(--bg-body);
+      color: #fff;
     }
 
     /* Control Panel */
@@ -231,7 +246,9 @@
       border: 1px solid var(--color-border-dark);
       border-radius: var(--radius-custom);
       overflow: hidden;
-      background: #ffffff;
+      background: var(--bg-light);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
     .toggle-btn {
       background: none;
@@ -374,7 +391,10 @@
       border: 1px solid var(--color-border);
       padding: 0.75rem;
       background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       box-shadow: var(--box-shadow-custom);
+      border-radius: var(--radius-custom);
     }
     .sponsor-side-name { font-weight: 700; }
     .sponsor-side-desc { font-size: 0.7rem; color: var(--text-muted); font-family: var(--font-mono); }
@@ -428,8 +448,11 @@
       border: 1px solid var(--color-border);
       padding: 1.75rem;
       background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       box-shadow: var(--box-shadow-custom);
       margin-bottom: 2rem;
+      border-radius: var(--radius-custom);
     }
     .block-title {
       font-size: 1.2rem;
@@ -468,7 +491,7 @@
       border: 1px solid var(--color-border);
       padding: 0.6rem 0.75rem;
     }
-    .dense-table th { background: var(--bg-light); font-weight: 700; }
+    .dense-table th { background: var(--bg-light); font-weight: 700; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 
     .subcommittee-item { margin-bottom: 1rem; }
     .subcommittee-title { font-weight: 700; font-size: 0.95rem; color: var(--text-main); }
@@ -495,18 +518,25 @@
     .form-panel {
       border: 1px solid var(--color-border-dark);
       background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       padding: 1.75rem;
+      border-radius: var(--radius-custom);
+      box-shadow: var(--box-shadow-custom);
     }
     .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
     .form-group { margin-bottom: 1rem; }
     .form-label { display: block; font-size: 0.75rem; font-weight: 700; margin-bottom: 0.25rem; text-transform: uppercase; color: var(--text-secondary); }
     .form-input {
       width: 100%;
-      background: var(--bg-card);
+      background: var(--bg-light);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border: 1px solid var(--color-border);
       padding: 0.5rem 0.75rem;
       color: var(--text-main);
       font-size: 0.85rem;
+      border-radius: 8px;
     }
     .form-checkbox-label { display: flex; gap: 0.5rem; font-size: 0.8rem; cursor: pointer; color: var(--text-secondary); }
     .form-checkbox-label input { margin-top: 0.15rem; }
@@ -527,12 +557,15 @@
 
     .btn {
       background: var(--btn-bg);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       border: 1px solid var(--btn-border);
       color: var(--btn-text);
       padding: 0.4rem 1rem;
       font-size: 0.8rem;
       font-weight: 700;
       cursor: pointer;
+      border-radius: var(--radius-custom);
     }
     .btn:hover { background: var(--btn-primary-bg); color: var(--btn-primary-text); }
     .btn-primary { background: var(--btn-primary-bg); border-color: var(--text-main); color: var(--btn-primary-text); }
@@ -561,7 +594,10 @@
       border: 1px solid var(--color-border);
       padding: 0.75rem;
       background: var(--bg-light);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       box-shadow: var(--box-shadow-custom);
+      border-radius: var(--radius-custom);
     }
     .filter-input {
       flex: 2;
